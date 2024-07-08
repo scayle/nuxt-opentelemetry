@@ -1,0 +1,48 @@
+{
+  "extends": [
+    "//"
+  ],
+  "tasks": {
+    "prep": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "./playground/.nuxt/**"
+      ]
+    },
+    "build": {
+      "dependsOn": [
+        "^build",
+        "prep"
+      ]
+    },
+    "test": {
+      "dependsOn": [
+        "^build",
+        "prep"
+      ]
+    },
+    "test:ci": {
+      "dependsOn": [
+        "^build",
+        "prep"
+      ]
+    },
+    "typecheck": {
+      "dependsOn": [
+        "^build",
+        "build",
+        "prep"
+      ]
+    },
+    "lint": {
+      "dependsOn": [
+        "format",
+        "@scayle/eslint-config-storefront#changes",
+        "prep"
+      ],
+      "outputs": []
+    }
+  }
+}

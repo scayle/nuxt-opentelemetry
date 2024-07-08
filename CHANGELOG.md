@@ -1,0 +1,1 @@
+# @scayle/nuxt-opentelemetry

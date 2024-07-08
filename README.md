@@ -1,0 +1,84 @@
+# @scayle/nuxt-opentelemetry
+
+<div align="center">
+  <img src="https://cdn-prod.scayle.com/public/media/general/SCAYLE-Commerce-Engine-header.png" />
+</div>
+
+<div align="center">
+  <h1>@scayle/nuxt-opentelemetry</h1>
+</div>
+
+<div align="center">
+  <h4><a href="https://scayle.dev/en/storefront-guide/developer-guide/integrations/open-telemetry">Documentation</a> | <a href="https://www.scayle.com/">Website</a></h4>
+</div>
+
+<div align="center">
+  A Nuxt module for OpenTelemetry integration.
+</div>
+<br/>
+<div align="center">
+  <a href="https://www.npmjs.com/package/@scayle/nuxt-opentelemetry"><img src="https://img.shields.io/npm/v/@scayle/nuxt-opentelemetry/latest.svg?style=flat&colorB=007ec6" /></a>
+  <a href="https://www.npmjs.com/package/@scayle/nuxt-opentelemetry"><img src="https://img.shields.io/npm/dm/@scayle/nuxt-opentelemetry.svg?style=flat&colorB=007ec6" /></a>
+  <a href="https://www.npmjs.com/package/@scayle/nuxt-opentelemetry"><img src="https://img.shields.io/badge/license-MIT-blue.svg" /></a>
+  <a href="https://nuxt.com"><img src="https://img.shields.io/badge/Nuxt-18181B?logo=nuxt.js" /></a>
+</div>
+
+## Installation
+
+```bash
+# Using pnpm
+pnpm add @scayle/nuxt-opentelemetry
+
+# Using yarn
+yarn add @scayle/nuxt-opentelemetry
+
+# Using npm
+npm install @scayle/nuxt-opentelemetry
+```
+
+## Usage
+
+```ts
+export default defineNuxtConfig({
+  modules: ['@scayle/nuxt-opentelemetry'],
+  runtimeConfig: {
+    opentelemetry: {
+      enabled: true,
+    },
+  },
+})
+```
+
+## Module Configuration
+
+The internal module can be configured through module options or runtime environment variables. The following options are available.
+
+- `enabled` or `NUXT_OPENTELEMETRY_ENABLED` - This option enables or disables the module. If enabled is set to false at build-time, the module will not install any plugins or modify the entrypoint. If it is set to false at runtime, the plugin will be installed, but spans will not be created for Nitro requests.
+
+- `pathBlocklist` or `NUXT_OPENTELEMETRY_PATH_BLOCKLIST` - This option allows ignoring requests for paths that match the pattern. It can be a regular expression string or plain string. For example, you could use the option `{ pathBlocklist: '^/api/up' }` to skip creating spans for health check requests.
+
+- `pathReplace` - The Nitro span names are derived from the route path. This option can be used to rewrite the path that is used in the name. It should be an array with two elements. The first element is the pattern to match, as a regular expression string or plain string. The second element is the text to replace the match with. This can be used to use the same span name when the paths only differ by a locale prefix. For example: `['^/(en|de|fr)/', '/:locale/']`
+
+## License
+
+Licensed under the [MIT License](https://opensource.org/license/mit/)
+
+## What is SCAYLE?
+
+[SCAYLE](https://scayle.com) is a full-featured e-commerce software solution that comes with flexible APIs. Within SCAYLE, you can manage all aspects of your shop, such as products, stocks, customers, and transactions.
+
+Learn more about [SCAYLE’s architecture](https://scayle.dev/en/getting-started) and commerce modules in the Docs.
+
+## Other channels
+
+- [LinkedIn](https://www.linkedin.com/company/scaylecommerce/)
+- [Jobs](https://careers.smartrecruiters.com/ABOUTYOUGmbH/scayle)
+
+<!-- Badges -->
+
+[npm-version-src]: https://img.shields.io/npm/v/@scayle/nuxt-opentelemetry/latest.svg?style=flat&colorA=18181B&colorB=28CF8D
+[npm-version-href]: https://npmjs.com/package/@scayle/nuxt-opentelemetry
+[npm-downloads-src]: https://img.shields.io/npm/dm/@scayle/nuxt-opentelemetry.svg?style=flat&colorA=18181B&colorB=28CF8D
+[npm-downloads-href]: https://npmjs.com/package/@scayle/nuxt-opentelemetry
+[license-src]: https://img.shields.io/npm/l/@scayle/nuxt-opentelemetry.svg?style=flat&colorA=18181B&colorB=28CF8D
+[license-href]: https://npmjs.com/package/@scayle/nuxt-opentelemetry
