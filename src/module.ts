@@ -48,11 +48,14 @@ interface ModuleOptions {
   pathReplace?: [string, string]
 }
 
+const PACKAGE_NAME = '__package_name'
+const PACKAGE_VERSION = '__package_version'
+
 export default defineNuxtModule<ModuleOptions>({
   meta: {
-    name: '@scayle/nuxt-opentelemetry',
+    name: PACKAGE_NAME,
     configKey: 'opentelemetry',
-    version: '0.1.0',
+    version: PACKAGE_VERSION,
     compatibility: {
       bridge: false,
       nuxt: '>=3.10',
@@ -111,6 +114,10 @@ export default defineNuxtModule<ModuleOptions>({
         const file = resolver.resolve(`./runtime/${path}`)
         nitroConfig.externals?.inline?.push(file)
       })
+
+      nitroConfig.replace = nitroConfig.replace || {}
+      nitroConfig.replace.__otel_version = PACKAGE_VERSION
+      nitroConfig.replace.__otel_package_name = PACKAGE_NAME
     })
 
     nuxt.hooks.hook('nitro:init', (nitro) => {

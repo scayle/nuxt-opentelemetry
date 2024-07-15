@@ -14,8 +14,8 @@ import {
 import { defineNitroPlugin, useRuntimeConfig } from '#imports'
 
 const tracer = trace.getTracer(
-  'nitro',
-  // TODO: Add package version, once we have a separate package
+  '__otel_package_name',
+  '__otel_version',
 )
 
 function getFilter(pathBlocklist?: string): (path: string) => boolean {
