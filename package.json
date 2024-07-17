@@ -73,7 +73,7 @@
     "eslint-formatter-gitlab": "5.1.0",
     "nuxt": "3.12.3",
     "publint": "0.2.9",
-    "rimraf": "5.0.9",
+    "rimraf": "6.0.1",
     "typescript": "5.5.3",
     "vue-tsc": "2.0.26"
   },
