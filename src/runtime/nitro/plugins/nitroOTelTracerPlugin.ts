@@ -1,11 +1,11 @@
-import { getRequestURL } from 'h3'
+import {
+  getRequestHeader,
+  getRequestIP,
+  getRequestURL,
+  getResponseStatus,
+} from 'h3'
 import type { NitroApp } from 'nitropack'
 import { type Span, SpanStatusCode, context, trace } from '@opentelemetry/api'
-import {
-  SEMATTRS_HTTP_HOST,
-  SEMATTRS_HTTP_METHOD,
-  SEMATTRS_HTTP_ROUTE,
-} from '@opentelemetry/semantic-conventions'
 // NOTE: We need to import here from the Nuxt server-specific #imports to mitigate
 // unresolved dependencies in the imported composables from Nitro(nitropack).
 // This results in `nuxi typecheck` not being able to properly infer the correct
@@ -44,6 +44,11 @@ function getReplace(pathReplace?: string[]): (path: string) => string {
   }
 }
 
+/**
+ * Instrument Nitro to create spans for each request
+ * Spans are created according to the semantic conventions for HTTP
+ * https://opentelemetry.io/docs/specs/semconv/http/http-spans/
+ */
 export default defineNitroPlugin((nitro: NitroApp) => {
   const config = useRuntimeConfig().opentelemetry
 
@@ -82,12 +87,27 @@ export default defineNitroPlugin((nitro: NitroApp) => {
         `${event.method} ${replace(event.path)}`,
         {
           attributes: {
-            [SEMATTRS_HTTP_HOST]: url.host,
-            [SEMATTRS_HTTP_METHOD]: event.method,
-            'url.full': url.toString(),
+            // Required
+            'http.request.method': event.method,
             'url.path': url.pathname,
-            'url.query': url.search,
-            'url.scheme': url.protocol,
+            'url.scheme': url.protocol.replace(':', ''),
+            'network.protocol.name': 'http',
+
+            // Recommended
+            'client.address': getRequestIP(event, { xForwardedFor: true }),
+            'client.port': event.node.req.socket.remotePort,
+            'server.address': url.hostname,
+            'server.port': url.port,
+            'network.peer.address': getRequestIP(event, {
+              xForwardedFor: true,
+            }),
+            'network.peer.port': event.node.req.socket.remotePort,
+
+            'user_agent.original': getRequestHeader(event, 'User-Agent'),
+            'network.protocol.version': event.node.req.httpVersion,
+
+            // Conditionally Required
+            ...(url.search ? { 'url.query': url.search } : {}),
           },
         },
         async (span: Span) => {
@@ -97,7 +117,20 @@ export default defineNitroPlugin((nitro: NitroApp) => {
           } catch (e) {
             if (e instanceof Error) {
               span.recordException(e)
+              span.setAttribute('error.type', e.name)
+            } else {
+              span.setAttribute('error.type', 'Unknown Error')
             }
+            span.setStatus({ code: SpanStatusCode.ERROR })
+          }
+
+          // Only 5xx errors should mark the span as Error for a server-side span
+          // https://opentelemetry.io/docs/specs/semconv/http/http-spans/#status
+          if (
+            result instanceof Response && !result.ok && result.status >= 500 &&
+            result.status <= 599
+          ) {
+            span.setAttribute('error.type', 'Unknown Error')
             span.setStatus({ code: SpanStatusCode.ERROR })
           }
 
@@ -115,12 +148,17 @@ export default defineNitroPlugin((nitro: NitroApp) => {
               matchedVueRoute
             ) {
               span.updateName(`${event.method} ${replace(matchedVueRoute)}`)
-              span.setAttribute(SEMATTRS_HTTP_ROUTE, replace(matchedVueRoute))
+              span.setAttribute('http.route', replace(matchedVueRoute))
             } else {
               span.updateName(`${event.method} ${replace(matchedRoute)}`)
-              span.setAttribute(SEMATTRS_HTTP_ROUTE, replace(matchedRoute))
+              span.setAttribute('http.route', replace(matchedRoute))
             }
           }
+
+          span.setAttribute(
+            'http.response.status_code',
+            getResponseStatus(event),
+          )
 
           span.end()
 

@@ -1,5 +1,7 @@
 export default defineNuxtConfig({
   modules: ['../src/module'],
-  myModule: {},
+  opentelemetry: {
+    enabled: true,
+  },
   devtools: { enabled: true },
 })

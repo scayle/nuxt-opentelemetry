@@ -49,6 +49,8 @@ export default defineNuxtConfig({
 })
 ```
 
+This module will instrument requests handled by Nitro according to [Semantic Conventions for HTTP Spans v1.26.0](https://github.com/open-telemetry/semantic-conventions/blob/v1.26.0/docs/http/http-spans.md#http-server)
+
 ## Module Configuration
 
 The internal module can be configured through module options or runtime environment variables. The following options are available.
