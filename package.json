@@ -67,7 +67,7 @@
     "@nuxt/module-builder": "0.8.1",
     "@nuxt/schema": "3.12.4",
     "@scayle/eslint-config-storefront": "4.2.0",
-    "@types/node": "20.14.12",
+    "@types/node": "20.14.13",
     "dprint": "0.47.2",
     "eslint": "9.8.0",
     "eslint-formatter-gitlab": "5.1.0",
@@ -78,6 +78,6 @@
     "vue-tsc": "2.0.29"
   },
   "volta": {
-    "node": "20.15.1"
+    "node": "20.16.0"
   }
 }
