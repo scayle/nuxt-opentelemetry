@@ -1,4 +1,5 @@
 import {
+  H3Error,
   getRequestHeader,
   getRequestIP,
   getRequestURL,
@@ -115,13 +116,26 @@ export default defineNitroPlugin((nitro: NitroApp) => {
           try {
             result = await router?.handler(event)
           } catch (e) {
-            if (e instanceof Error) {
+            if (e instanceof H3Error) {
+              // Only 5xx errors should mark the span as Error for a server-side span
+              // https://opentelemetry.io/docs/specs/semconv/http/http-spans/#status
+              if (e.statusCode >= 500 && e.statusCode <= 599) {
+                span.setAttribute('error.type', 'Unknown Error')
+                span.setStatus({ code: SpanStatusCode.ERROR })
+              }
+              span.setAttribute(
+                'http.response.status_code',
+                e.statusCode,
+              )
+            } else if (e instanceof Error) {
               span.recordException(e)
               span.setAttribute('error.type', e.name)
             } else {
               span.setAttribute('error.type', 'Unknown Error')
             }
             span.setStatus({ code: SpanStatusCode.ERROR })
+            // rethrow the error
+            throw e
           }
 
           // Only 5xx errors should mark the span as Error for a server-side span
