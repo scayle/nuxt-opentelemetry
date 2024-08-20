@@ -56,7 +56,7 @@
     "@opentelemetry/resources": "1.25.1",
     "@opentelemetry/sdk-node": "0.52.1",
     "@opentelemetry/semantic-conventions": "1.25.1",
-    "@vercel/otel": "1.9.2",
+    "@vercel/otel": "1.10.0",
     "defu": "^6.1.4",
     "knitwork": "^1.1.0"
   },
