@@ -55,11 +55,24 @@ This module will instrument requests handled by Nitro according to [Semantic Con
 
 The internal module can be configured through module options or runtime environment variables. The following options are available.
 
-- `enabled` or `NUXT_OPENTELEMETRY_ENABLED` - This option enables or disables the module. If enabled is set to false at build-time, the module will not install any plugins or modify the entrypoint. If it is set to false at runtime, the plugin will be installed, but spans will not be created for Nitro requests.
+- `enabled` or `NUXT_OPENTELEMETRY_ENABLED`
+  - This option enables or disables the module.
+    If enabled is set to false at build-time, the module will not install any plugins or modify the entrypoint.
+    If it is set to false at runtime, the plugin will be installed, but spans will not be created for Nitro requests.
 
-- `pathBlocklist` or `NUXT_OPENTELEMETRY_PATH_BLOCKLIST` - This option allows ignoring requests for paths that match the pattern. It can be a regular expression string or plain string. For example, you could use the option `{ pathBlocklist: '^/api/up' }` to skip creating spans for health check requests.
+- `pathBlocklist` or `NUXT_OPENTELEMETRY_PATH_BLOCKLIST`
+  - This option allows ignoring requests for paths that match the pattern.
+    It can be a regular expression string or plain string. For example,
+    you could use the option `{ pathBlocklist: '^/api/up' }` to skip creating spans for health check requests.
 
-- `pathReplace` - The Nitro span names are derived from the route path. This option can be used to rewrite the path that is used in the name. It should be an array with two elements. The first element is the pattern to match, as a regular expression string or plain string. The second element is the text to replace the match with. This can be used to use the same span name when the paths only differ by a locale prefix. For example: `['^/(en|de|fr)/', '/:locale/']`
+- `pathReplace`
+  - The Nitro span names are derived from the route path.
+    This option can be used to rewrite the path that is used in the name.
+    It should be an array with two elements.
+    The first element is the pattern to match, as a regular expression string or plain string.
+    The second element is the text to replace the match with.
+    This can be used to use the same span name when the paths only differ by a locale prefix.
+    For example: `['^/(en|de|fr)/', '/:locale/']`
 
 ## License
 
@@ -67,7 +80,8 @@ Licensed under the [MIT License](https://opensource.org/license/mit/)
 
 ## What is SCAYLE?
 
-[SCAYLE](https://scayle.com) is a full-featured e-commerce software solution that comes with flexible APIs. Within SCAYLE, you can manage all aspects of your shop, such as products, stocks, customers, and transactions.
+[SCAYLE](https://scayle.com) is a full-featured e-commerce software solution that comes with flexible APIs.
+Within SCAYLE, you can manage all aspects of your shop, such as products, stocks, customers, and transactions.
 
 Learn more about [SCAYLE’s architecture](https://scayle.dev/en/getting-started) and commerce modules in the Docs.
 
@@ -84,3 +98,7 @@ Learn more about [SCAYLE’s architecture](https://scayle.dev/en/getting-started
 [npm-downloads-href]: https://npmjs.com/package/@scayle/nuxt-opentelemetry
 [license-src]: https://img.shields.io/npm/l/@scayle/nuxt-opentelemetry.svg?style=flat&colorA=18181B&colorB=28CF8D
 [license-href]: https://npmjs.com/package/@scayle/nuxt-opentelemetry
+
+## License
+
+Licensed under the [MIT License](https://opensource.org/license/mit/)

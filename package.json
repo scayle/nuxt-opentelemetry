@@ -15,6 +15,7 @@
   "repository": {
     "url": "git+https://github.com/scayle/nuxt-opentelemetry.git"
   },
+  "website": "https://scayle.dev/en/storefront-guide/developer-guide/integrations/open-telemetry",
   "exports": {
     ".": {
       "types": "./dist/module.d.ts",
