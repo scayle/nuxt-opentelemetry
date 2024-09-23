@@ -8,6 +8,7 @@
         "^build"
       ],
       "outputs": [
+        ".nuxt/**",
         "./playground/.nuxt/**"
       ]
     },
