@@ -1,5 +1,11 @@
 # @scayle/nuxt-opentelemetry
 
+## 0.3.2
+
+### Patch Changes
+
+- Update @nuxt/module-builder to 0.8.4
+
 ## 0.3.1
 
 ### Patch Changes
