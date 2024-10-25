@@ -1,5 +1,13 @@
 # @scayle/nuxt-opentelemetry
 
+## 0.3.6
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/exporter-trace-otlp-proto@0.53.0` to `@opentelemetry/exporter-trace-otlp-proto@0.54.0`
+- Updated dependency `@opentelemetry/instrumentation@0.53.0` to `@opentelemetry/instrumentation@0.54.0`
+- Updated dependency `@opentelemetry/resources@1.26.0` to `@opentelemetry/resources@1.27.0`
+
 ## 0.3.5
 
 ### Patch Changes
