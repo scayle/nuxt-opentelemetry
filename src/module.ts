@@ -12,6 +12,8 @@ function getInstrumentedEntryFileForPreset(
   preset: string,
   instrumentationFile: string,
   baseEntry: string,
+  include?: string[],
+  exclude?: string[],
 ) {
   let entryFile
 
@@ -21,7 +23,10 @@ import { register, createRequire } from 'node:module';
 import { pathToFileURL } from 'node:url'
 
 const require = createRequire(import.meta.url)
-register(pathToFileURL(require.resolve("./node-hooks.mjs")))
+register(pathToFileURL(require.resolve("./node-hooks.mjs")), import.meta.url, { data: { 
+  include: ${JSON.stringify(include)},
+  exclude: ${JSON.stringify(exclude)},
+}})
 
 // We should use dynamic imports after registering the customization hooks
 // https://nodejs.org/api/module.html#customization-hooks
@@ -46,6 +51,8 @@ interface ModuleOptions {
   enabled: boolean
   pathBlocklist?: string
   pathReplace?: [string, string]
+  include?: string[]
+  exclude?: string[]
 }
 
 const PACKAGE_NAME = '__package_name'
@@ -140,6 +147,8 @@ export default defineNuxtModule<ModuleOptions>({
         preset,
         instrumentationFile,
         entry,
+        options.include,
+        options.exclude,
       )
 
       if (newEntry) {

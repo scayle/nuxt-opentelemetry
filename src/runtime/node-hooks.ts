@@ -1,7 +1,8 @@
 export {
+  initialize,
   load,
   resolve,
   getFormat,
   getSource,
   // @ts-expect-error no declaration file available
-} from '@opentelemetry/instrumentation/hook.mjs'
+} from 'import-in-the-middle/hook.mjs'

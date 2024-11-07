@@ -79,6 +79,14 @@ The internal module can be configured through module options or runtime environm
     This can be used to use the same span name when the paths only differ by a locale prefix.
     For example: `['^/(en|de|fr)/', '/:locale/']`
 
+### Including and Excluding modules
+
+The below options are passed to `import-in-the-middle` to control its interception behavior.
+You can read more about the behavior of these options in [its documentation](https://github.com/nodejs/import-in-the-middle?tab=readme-ov-file#only-intercepting-hooked-modules).
+
+- `include` An array of module identifiers to include from hooking
+- `exclude` An array of module identifiers to exclude from hooking
+
 ## License
 
 Licensed under the [MIT License](https://opensource.org/license/mit/)
