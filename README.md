@@ -43,8 +43,13 @@ export default defineNuxtConfig({
   modules: ['@scayle/nuxt-opentelemetry'],
   runtimeConfig: {
     opentelemetry: {
-      enabled: true,
+      // Set default runtime config options here.
+      // They can be overridden at runtime with NUXT_OPENTELEMETRY_ environment variables
+      // The properties which can be set at runtime are defined below
     },
+  },
+  opentelemetry: {
+    // Set build-time module configuration options here
   },
 })
 ```
@@ -57,15 +62,15 @@ The internal module can be configured through module options or runtime environm
 
 - `enabled` or `NUXT_OPENTELEMETRY_ENABLED`
   - This option enables or disables the module.
-    If enabled is set to false at build-time, the module will not install any plugins or modify the entrypoint.
-    If it is set to false at runtime, the plugin will be installed, but spans will not be created for Nitro requests.
+    If `enabled` is set to false at build-time (), the module will not install any plugins or modify the entrypoint.
+    If `enabled` is set to false at runtime, the plugin will be installed, but spans will not be created for Nitro requests. They may be created for other instrumentations.
 
 - `pathBlocklist` or `NUXT_OPENTELEMETRY_PATH_BLOCKLIST`
   - This option allows ignoring requests for paths that match the pattern.
     It can be a regular expression string or plain string. For example,
     you could use the option `{ pathBlocklist: '^/api/up' }` to skip creating spans for health check requests.
 
-- `pathReplace`
+- `pathReplace` or `NUXT_OPENTELEMETRY_PATH_REPLACE`
   - The Nitro span names are derived from the route path.
     This option can be used to rewrite the path that is used in the name.
     It should be an array with two elements.

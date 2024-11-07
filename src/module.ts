@@ -62,7 +62,7 @@ export default defineNuxtModule<ModuleOptions>({
     },
   },
   defaults: {
-    enabled: false,
+    enabled: true,
     pathBlocklist: undefined,
     pathReplace: undefined,
   },
