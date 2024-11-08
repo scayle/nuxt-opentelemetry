@@ -1,5 +1,17 @@
 # @scayle/nuxt-opentelemetry
 
+## 0.4.0
+
+### Minor Changes
+
+- Add `include` and `exclude` options to control the `import-in-the-middle` behavior
+
+  For more details on how to use these options see the [README](./README.md#including-and-excluding-modules)
+
+- The default value for `enabled` is now true
+
+  With this change, the module will be enabled when it has been installed. Previously, one had to install the module then add an additional module configuration to actually enable the module.
+
 ## 0.3.9
 
 ### Patch Changes
