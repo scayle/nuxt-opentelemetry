@@ -111,7 +111,3 @@ Learn more about [SCAYLE’s architecture](https://scayle.dev/en/getting-started
 [npm-downloads-href]: https://npmjs.com/package/@scayle/nuxt-opentelemetry
 [license-src]: https://img.shields.io/npm/l/@scayle/nuxt-opentelemetry.svg?style=flat&colorA=18181B&colorB=28CF8D
 [license-href]: https://npmjs.com/package/@scayle/nuxt-opentelemetry
-
-## License
-
-Licensed under the [MIT License](https://opensource.org/license/mit/)
