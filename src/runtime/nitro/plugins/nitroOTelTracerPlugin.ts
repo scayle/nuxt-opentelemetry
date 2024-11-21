@@ -52,17 +52,6 @@ function getReplace(pathReplace?: string[]): (path: string) => string {
 export default defineNitroPlugin((nitro) => {
   const config = useRuntimeConfig().opentelemetry
 
-  // Find the h3 handler which is the nitro router
-  const index = nitro.h3App.stack.findIndex(
-    (layer) => layer.handler.__resolve__,
-  )
-  const router = nitro.h3App.stack[index]
-
-  if (!router) {
-    console.warn('Unable to find router handler')
-    return
-  }
-
   if (!config.enabled) {
     return
   }
@@ -70,114 +59,115 @@ export default defineNitroPlugin((nitro) => {
   const filter = getFilter(config.pathBlocklist)
   const replace = getReplace(config.pathReplace)
 
-  // Wrap the nitro router with code which adds a span
-  nitro.h3App.stack.splice(index, 1, {
-    ...router,
-    handler: async (event) => {
-      const url = getRequestURL(event)
+  // Wrap the nitro handler with code which adds a span
+  const originalHandler = nitro.h3App.handler
+  const handler: typeof originalHandler = async (event) => {
+    const url = getRequestURL(event)
 
-      if (filter(url.pathname)) {
-        return await router?.handler(event)
-      }
+    if (filter(url.pathname)) {
+      return await originalHandler(event)
+    }
 
-      const ctx = context.active()
-      const currentSpan = trace.getSpan(ctx)
+    const ctx = context.active()
+    const currentSpan = trace.getSpan(ctx)
 
-      return await tracer.startActiveSpan(
-        `${event.method} ${replace(event.path)}`,
-        {
-          attributes: {
-            // Required
-            'http.request.method': event.method,
-            'url.path': url.pathname,
-            'url.scheme': url.protocol.replace(':', ''),
-            'network.protocol.name': 'http',
+    return await tracer.startActiveSpan(
+      `${event.method} ${replace(event.path)}`,
+      {
+        attributes: {
+          // Required
+          'http.request.method': event.method,
+          'url.path': url.pathname,
+          'url.scheme': url.protocol.replace(':', ''),
+          'network.protocol.name': 'http',
 
-            // Recommended
-            'client.address': getRequestIP(event, { xForwardedFor: true }),
-            'client.port': event.node.req.socket.remotePort,
-            'server.address': url.hostname,
-            'server.port': url.port,
-            'network.peer.address': getRequestIP(event, {
-              xForwardedFor: true,
-            }),
-            'network.peer.port': event.node.req.socket.remotePort,
+          // Recommended
+          'client.address': getRequestIP(event, { xForwardedFor: true }),
+          'client.port': event.node.req.socket.remotePort,
+          'server.address': url.hostname,
+          'server.port': url.port,
+          'network.peer.address': getRequestIP(event, {
+            xForwardedFor: true,
+          }),
+          'network.peer.port': event.node.req.socket.remotePort,
 
-            'user_agent.original': getRequestHeader(event, 'User-Agent'),
-            'network.protocol.version': event.node.req.httpVersion,
+          'user_agent.original': getRequestHeader(event, 'User-Agent'),
+          'network.protocol.version': event.node.req.httpVersion,
 
-            // Conditionally Required
-            ...(url.search ? { 'url.query': url.search } : {}),
-          },
+          // Conditionally Required
+          ...(url.search ? { 'url.query': url.search } : {}),
         },
-        async (span: Span) => {
-          let result
-          try {
-            result = await router?.handler(event)
-          } catch (e) {
-            if (e instanceof H3Error) {
-              // Only 5xx errors should mark the span as Error for a server-side span
-              // https://opentelemetry.io/docs/specs/semconv/http/http-spans/#status
-              if (e.statusCode >= 500 && e.statusCode <= 599) {
-                span.setAttribute('error.type', 'Unknown Error')
-                span.setStatus({ code: SpanStatusCode.ERROR })
-              }
-              span.setAttribute(
-                'http.response.status_code',
-                e.statusCode,
-              )
-            } else if (e instanceof Error) {
-              span.recordException(e)
-              span.setAttribute('error.type', e.name)
-            } else {
+      },
+      async (span: Span) => {
+        let result
+        try {
+          result = await originalHandler(event)
+        } catch (e) {
+          if (e instanceof H3Error) {
+            // Only 5xx errors should mark the span as Error for a server-side span
+            // https://opentelemetry.io/docs/specs/semconv/http/http-spans/#status
+            if (e.statusCode >= 500 && e.statusCode <= 599) {
               span.setAttribute('error.type', 'Unknown Error')
+              span.setStatus({ code: SpanStatusCode.ERROR })
             }
-            span.setStatus({ code: SpanStatusCode.ERROR })
-            // rethrow the error
-            throw e
-          }
-
-          // Only 5xx errors should mark the span as Error for a server-side span
-          // https://opentelemetry.io/docs/specs/semconv/http/http-spans/#status
-          if (
-            result instanceof Response && !result.ok && result.status >= 500 &&
-            result.status <= 599
-          ) {
+            span.setAttribute(
+              'http.response.status_code',
+              e.statusCode,
+            )
+          } else if (e instanceof Error) {
+            span.recordException(e)
+            span.setAttribute('error.type', e.name)
+          } else {
             span.setAttribute('error.type', 'Unknown Error')
-            span.setStatus({ code: SpanStatusCode.ERROR })
           }
+          span.setStatus({ code: SpanStatusCode.ERROR })
+          // rethrow the error
+          throw e
+        }
 
-          // The matchedRoute exists after the handler has run
-          const matchedRoute = event.context.matchedRoute?.path
-          const matchedVueRoute = event.context.matchedVueRoute?.path
+        // Only 5xx errors should mark the span as Error for a server-side span
+        // https://opentelemetry.io/docs/specs/semconv/http/http-spans/#status
+        if (
+          result instanceof Response && !result.ok && result.status >= 500 &&
+          result.status <= 599
+        ) {
+          span.setAttribute('error.type', 'Unknown Error')
+          span.setStatus({ code: SpanStatusCode.ERROR })
+        }
 
-          if (matchedRoute) {
-            // For the top-most nitro span, we use the vue router route if present.
-            // Inner requests sent from the SSR rendering will use the nitro route as their name.
-            if (
-              (!currentSpan ||
-                // @ts-expect-error Property 'instrumentationLibrary' does not exist on type 'Span'.
-                currentSpan.instrumentationLibrary?.name !== 'nitro') &&
-              matchedVueRoute
-            ) {
-              span.updateName(`${event.method} ${replace(matchedVueRoute)}`)
-              span.setAttribute('http.route', replace(matchedVueRoute))
-            } else {
-              span.updateName(`${event.method} ${replace(matchedRoute)}`)
-              span.setAttribute('http.route', replace(matchedRoute))
-            }
+        // The matchedRoute exists after the handler has run
+        const matchedRoute = event.context.matchedRoute?.path
+        const matchedVueRoute = event.context.matchedVueRoute?.path
+
+        if (matchedRoute) {
+          // For the top-most nitro span, we use the vue router route if present.
+          // Inner requests sent from the SSR rendering will use the nitro route as their name.
+          if (
+            (!currentSpan ||
+              // @ts-expect-error Property 'instrumentationLibrary' does not exist on type 'Span'.
+              currentSpan.instrumentationLibrary?.name !==
+                '__otel_package_name') &&
+            matchedVueRoute
+          ) {
+            span.updateName(`${event.method} ${replace(matchedVueRoute)}`)
+            span.setAttribute('http.route', replace(matchedVueRoute))
+          } else {
+            span.updateName(`${event.method} ${replace(matchedRoute)}`)
+            span.setAttribute('http.route', replace(matchedRoute))
           }
+        }
 
-          span.setAttribute(
-            'http.response.status_code',
-            getResponseStatus(event),
-          )
+        span.setAttribute(
+          'http.response.status_code',
+          getResponseStatus(event),
+        )
 
-          span.end()
+        span.end()
 
-          return result
-        },
-      )
-    },
-  })
+        return result
+      },
+    )
+  }
+
+  nitro.h3App.handler = handler
 })
