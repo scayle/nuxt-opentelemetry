@@ -1,5 +1,15 @@
 # @scayle/nuxt-opentelemetry
 
+## 0.5.0
+
+### Minor Changes
+
+- Expanded Nitro span scope to include middleware execution alongside the primary handler execution, providing a more complete tracing.
+
+### Patch Changes
+
+- Resolved an issue where child request spans incorrectly inherited the pathname from their parent span, ensuring accurate request path tracing.
+
 ## 0.4.2
 
 ### Patch Changes
