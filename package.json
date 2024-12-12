@@ -62,7 +62,7 @@
     "knitwork": "^1.1.0"
   },
   "devDependencies": {
-    "@nuxt/eslint": "0.7.2",
+    "@nuxt/eslint": "0.7.3",
     "@nuxt/eslint-config": "0.7.2",
     "@nuxt/module-builder": "0.8.4",
     "@nuxt/schema": "3.13.2",
