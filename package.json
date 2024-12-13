@@ -46,7 +46,8 @@
     "format:fix": "dprint fmt",
     "lint": "eslint . --format gitlab",
     "lint:fix": "eslint . --fix",
-    "package:lint": "publint"
+    "package:lint": "publint",
+    "typecheck": "vue-tsc --noEmit && cd playground && vue-tsc --noEmit"
   },
   "dependencies": {
     "@nuxt/kit": "^3.12.3",

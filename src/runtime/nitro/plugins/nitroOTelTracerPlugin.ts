@@ -5,6 +5,7 @@ import {
   getRequestURL,
   getResponseStatus,
 } from 'h3'
+import type { NitroApp } from 'nitropack'
 import { type Span, SpanStatusCode, context, trace } from '@opentelemetry/api'
 // NOTE: We need to import here from the Nuxt server-specific #imports to mitigate
 // unresolved dependencies in the imported composables from Nitro(nitropack).
@@ -49,7 +50,7 @@ function getReplace(pathReplace?: string[]): (path: string) => string {
  * Spans are created according to the semantic conventions for HTTP
  * https://opentelemetry.io/docs/specs/semconv/http/http-spans/
  */
-export default defineNitroPlugin((nitro) => {
+export default defineNitroPlugin((nitro: NitroApp) => {
   const config = useRuntimeConfig().opentelemetry
 
   if (!config.enabled) {
