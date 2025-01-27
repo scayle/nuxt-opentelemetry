@@ -6,7 +6,8 @@ import {
   getResponseStatus,
 } from 'h3'
 import type { NitroApp } from 'nitropack'
-import { type Span, SpanStatusCode, context, trace } from '@opentelemetry/api'
+import { SpanStatusCode, context, trace } from '@opentelemetry/api'
+import type { Span } from '@opentelemetry/api'
 // NOTE: We need to import here from the Nuxt server-specific #imports to mitigate
 // unresolved dependencies in the imported composables from Nitro(nitropack).
 // This results in `nuxi typecheck` not being able to properly infer the correct
