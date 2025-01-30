@@ -1,5 +1,12 @@
 # @scayle/nuxt-opentelemetry
 
+## 0.5.7
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.55.3` to `@opentelemetry/auto-instrumentations-node@0.56.0`
+- Updated dependency `@vercel/otel@1.10.0` to `@vercel/otel@1.10.1`
+
 ## 0.5.6
 
 ### Patch Changes
