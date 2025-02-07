@@ -64,7 +64,7 @@
   },
   "devDependencies": {
     "@nuxt/eslint": "1.0.1",
-    "@nuxt/eslint-config": "1.0.0",
+    "@nuxt/eslint-config": "1.0.1",
     "@nuxt/module-builder": "0.8.4",
     "@nuxt/schema": "3.14.1592",
     "@scayle/eslint-config-storefront": "4.4.1",
