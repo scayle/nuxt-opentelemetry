@@ -68,7 +68,7 @@
     "@nuxt/module-builder": "0.8.4",
     "@nuxt/schema": "3.14.1592",
     "@scayle/eslint-config-storefront": "4.4.1",
-    "@types/node": "22.13.2",
+    "@types/node": "22.13.4",
     "dprint": "0.49.0",
     "eslint": "9.20.1",
     "eslint-formatter-gitlab": "5.1.0",
