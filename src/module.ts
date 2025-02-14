@@ -109,19 +109,7 @@ export default defineNuxtModule<ModuleOptions>({
       references.push({ path: template.dst })
     })
 
-    // Add plugins to externals
     nuxt.hooks.hook('nitro:config', (nitroConfig) => {
-      nitroConfig.externals = nitroConfig.externals || {}
-      nitroConfig.externals.inline = nitroConfig.externals.inline || []
-      const runtimePaths = [
-        'nitro/plugins/nitroOTelTracerPlugin',
-        'plugins/matchedVueRoutePlugin',
-      ]
-      runtimePaths.forEach((path) => {
-        const file = resolver.resolve(`./runtime/${path}`)
-        nitroConfig.externals?.inline?.push(file)
-      })
-
       nitroConfig.replace = nitroConfig.replace || {}
       nitroConfig.replace.__otel_version = PACKAGE_VERSION
       nitroConfig.replace.__otel_package_name = PACKAGE_NAME
