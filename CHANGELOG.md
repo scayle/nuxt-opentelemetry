@@ -1,5 +1,11 @@
 # @scayle/nuxt-opentelemetry
 
+## 0.6.0
+
+### Minor Changes
+
+- Remove explicit inline external for runtime helpers
+
 ## 0.5.10
 
 ### Patch Changes
