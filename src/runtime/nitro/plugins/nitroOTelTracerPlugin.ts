@@ -5,7 +5,7 @@ import {
   getRequestURL,
   getResponseStatus,
 } from 'h3'
-import type { NitroApp } from 'nitropack'
+import type { NitroApp } from 'nitropack/types'
 import { SpanStatusCode, context, trace } from '@opentelemetry/api'
 import type { Span } from '@opentelemetry/api'
 // NOTE: We need to import here from the Nuxt server-specific #imports to mitigate
