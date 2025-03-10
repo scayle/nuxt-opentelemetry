@@ -1,5 +1,11 @@
 # @scayle/nuxt-opentelemetry
 
+## 0.6.3
+
+### Patch Changes
+
+- Added `h3@>=1.10.0` to `peerDependencies`.
+
 ## 0.6.2
 
 ### Patch Changes
