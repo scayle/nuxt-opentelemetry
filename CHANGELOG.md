@@ -1,5 +1,11 @@
 # @scayle/nuxt-opentelemetry
 
+## 0.6.2
+
+### Patch Changes
+
+- Updated dependency `@vercel/otel@1.10.1` to `@vercel/otel@1.10.2`
+
 ## 0.6.1
 
 ### Patch Changes
