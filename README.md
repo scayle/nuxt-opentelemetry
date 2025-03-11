@@ -62,7 +62,7 @@ The internal module can be configured through module options or runtime environm
 
 - `enabled` or `NUXT_OPENTELEMETRY_ENABLED`
   - This option enables or disables the module.
-    If `enabled` is set to false at build-time (), the module will not install any plugins or modify the entrypoint.
+    If `enabled` is set to false at build-time, the module will not install any plugins or modify the entrypoint.
     If `enabled` is set to false at runtime, the plugin will be installed, but spans will not be created for Nitro requests. They may be created for other instrumentations.
 
 - `pathBlocklist` or `NUXT_OPENTELEMETRY_PATH_BLOCKLIST`
@@ -78,6 +78,12 @@ The internal module can be configured through module options or runtime environm
     The second element is the text to replace the match with.
     This can be used to use the same span name when the paths only differ by a locale prefix.
     For example: `['^/(en|de|fr)/', '/:locale/']`
+
+- `requestHeaders` or `NUXT_OPENTELEMETRY_REQUEST_HEADERS`
+  - This option allows selecting which request headers to include as span attributes. They will be added as `http.request.header.{name}`. The values are case-insensitive when matching headers. It will be normalized to lowercase in the attribute name. Example: `{ requestHeaders: ['x-custom-header', 'accept'] }` or `NUXT_OPENTELEMETRY_REQUEST_HEADERS=["x-custom-header", "accept"]`
+
+- `responseHeaders` or `NUXT_OPENTELEMETRY_RESPONSE_HEADERS`
+  - This option allows selecting which response headers to include as span attributes. They will be added as `http.response.header.{name}`. The values are case-insensitive when matching headers. It will be normalized to lowercase in the attribute name. Example: `{ responseHeaders: ['content-type'] }` or `NUXT_OPENTELEMETRY_REQUEST_HEADERS=["content-type"]`
 
 ### Including and Excluding modules
 

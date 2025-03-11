@@ -53,6 +53,8 @@ interface ModuleOptions {
   pathReplace?: [string, string]
   include?: string[]
   exclude?: string[]
+  requestHeaders?: string[]
+  responseHeaders?: string[]
 }
 
 const PACKAGE_NAME = '__package_name'
@@ -72,6 +74,8 @@ export default defineNuxtModule<ModuleOptions>({
     enabled: true,
     pathBlocklist: undefined,
     pathReplace: undefined,
+    responseHeaders: [],
+    requestHeaders: [],
   },
   setup(options, nuxt) {
     if (!options.enabled) {
@@ -82,7 +86,12 @@ export default defineNuxtModule<ModuleOptions>({
 
     // Private runtimeConfig
     nuxt.options.runtimeConfig.opentelemetry = defu(
-      { pathBlocklist: undefined, pathReplace: undefined },
+      {
+        pathBlocklist: undefined,
+        pathReplace: undefined,
+        responseHeaders: [],
+        requestHeaders: [],
+      },
       options,
     )
 

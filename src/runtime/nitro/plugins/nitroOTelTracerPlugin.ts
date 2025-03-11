@@ -1,8 +1,10 @@
+import type { H3Event } from 'h3'
 import {
   H3Error,
   getRequestHeader,
   getRequestIP,
   getRequestURL,
+  getResponseHeader,
   getResponseStatus,
 } from 'h3'
 import type { NitroApp } from 'nitropack/types'
@@ -44,6 +46,49 @@ function getReplace(pathReplace?: string[]): (path: string) => string {
   } catch {
     return (path: string) => path.replace(pathReplace[0], pathReplace[1])
   }
+}
+
+/**
+ * Extract the request header attributes from an H3 event according to the configuration and OTEL specification
+ * @param event The H3 request event
+ * @param headers A list of headers to include
+ * @see https://opentelemetry.io/docs/specs/semconv/http/http-spans/#http-server-semantic-conventions
+ * @returns An object with the request header attributes
+ */
+function getRequestHeaderAttributes(
+  event: H3Event,
+  headers: string[],
+): Record<string, string[]> {
+  return headers.reduce<Record<string, string[]>>((attributes, header) => {
+    const headerValue = getRequestHeader(event, header)
+    if (headerValue) {
+      // Note: The OTEL spec requires the value to be an array
+      attributes[`http.request.header.${header.toLowerCase()}`] = [headerValue]
+    }
+    return attributes
+  }, {})
+}
+
+/**
+ * Extract the response header attributes from an H3 event according to the configuration and OTEL specification
+ * @param event The H3 request event
+ * @param headers A list of headers to include
+ * @see https://opentelemetry.io/docs/specs/semconv/http/http-spans/#http-server-semantic-conventions
+ * @returns An object with the response header attributes
+ */
+function getResponseHeaderAttributes(
+  event: H3Event,
+  headers: string[],
+): Record<string, string[]> {
+  return headers.reduce<Record<string, string[]>>((attributes, header) => {
+    const headerValue = getResponseHeader(event, header)
+    if (headerValue) {
+      // Note: The OTEL spec requires the value to be an array
+      attributes[`http.response.header.${header.toLowerCase()}`] =
+        Array.isArray(headerValue) ? headerValue : [String(headerValue)]
+    }
+    return attributes
+  }, {})
 }
 
 /**
@@ -98,6 +143,9 @@ export default defineNitroPlugin((nitro: NitroApp) => {
 
           // Conditionally Required
           ...(url.search ? { 'url.query': url.search } : {}),
+
+          // Headers
+          ...getRequestHeaderAttributes(event, config.requestHeaders ?? []),
         },
       },
       async (span: Span) => {
@@ -162,6 +210,10 @@ export default defineNitroPlugin((nitro: NitroApp) => {
         span.setAttribute(
           'http.response.status_code',
           getResponseStatus(event),
+        )
+
+        span.setAttributes(
+          getResponseHeaderAttributes(event, config.responseHeaders ?? []),
         )
 
         span.end()
