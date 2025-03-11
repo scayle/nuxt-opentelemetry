@@ -1,5 +1,11 @@
 # @scayle/nuxt-opentelemetry
 
+## 0.7.0
+
+### Minor Changes
+
+- Support adding request and response headers to span attributes with the `requestHeaders` and `responseHeaders` options.
+
 ## 0.6.4
 
 ### Patch Changes
