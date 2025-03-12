@@ -92,6 +92,42 @@ function getResponseHeaderAttributes(
 }
 
 /**
+ * Update the route attributes based on the matched route in the h3 or vue router
+ * @param event The H3Event for the request
+ * @param replace The configured replacement function for route names
+ * @param span The span representing the nitro request
+ * @param currentSpan The top level span
+ */
+function addRouteAttributes(
+  event: H3Event,
+  replace: (path: string) => string,
+  span: Span,
+  currentSpan?: Span,
+) {
+  // The matchedRoute exists after the handler has run
+  const matchedRoute = event.context.matchedRoute?.path
+  const matchedVueRoute = event.context.matchedVueRoute?.path
+
+  if (matchedRoute) {
+    // For the top-most nitro span, we use the vue router route if present.
+    // Inner requests sent from the SSR rendering will use the nitro route as their name.
+    if (
+      (!currentSpan ||
+        // @ts-expect-error Property 'instrumentationLibrary' does not exist on type 'Span'.
+        currentSpan.instrumentationLibrary?.name !==
+          '__otel_package_name') &&
+      matchedVueRoute
+    ) {
+      span.updateName(`${event.method} ${replace(matchedVueRoute)}`)
+      span.setAttribute('http.route', replace(matchedVueRoute))
+    } else {
+      span.updateName(`${event.method} ${replace(matchedRoute)}`)
+      span.setAttribute('http.route', replace(matchedRoute))
+    }
+  }
+}
+
+/**
  * Instrument Nitro to create spans for each request
  * Spans are created according to the semantic conventions for HTTP
  * https://opentelemetry.io/docs/specs/semconv/http/http-spans/
@@ -167,54 +203,52 @@ export default defineNitroPlugin((nitro: NitroApp) => {
           } else if (e instanceof Error) {
             span.recordException(e)
             span.setAttribute('error.type', e.name)
+            span.setStatus({ code: SpanStatusCode.ERROR })
+            // Unknown errors will be 500, but if we were to call getResponseStatus
+            // at this point, it would return 200 as the error has not been processed at this point.
+            span.setAttribute(
+              'http.response.status_code',
+              500,
+            )
           } else {
             span.setAttribute('error.type', 'Unknown Error')
+            span.setStatus({ code: SpanStatusCode.ERROR })
+            // Unknown errors will be 500, but if we were to call getResponseStatus
+            // at this point, it would return 200 as the error has not been processed at this point.
+            span.setAttribute(
+              'http.response.status_code',
+              500,
+            )
           }
-          span.setStatus({ code: SpanStatusCode.ERROR })
+
+          span.setAttributes(
+            getResponseHeaderAttributes(event, config.responseHeaders ?? []),
+          )
+          addRouteAttributes(event, replace, span, currentSpan)
+          span.end()
+
           // rethrow the error
           throw e
         }
 
+        const status = getResponseStatus(event)
         // Only 5xx errors should mark the span as Error for a server-side span
         // https://opentelemetry.io/docs/specs/semconv/http/http-spans/#status
-        if (
-          result instanceof Response && !result.ok && result.status >= 500 &&
-          result.status <= 599
-        ) {
+        if (status >= 500 && status <= 599) {
           span.setAttribute('error.type', 'Unknown Error')
           span.setStatus({ code: SpanStatusCode.ERROR })
         }
 
-        // The matchedRoute exists after the handler has run
-        const matchedRoute = event.context.matchedRoute?.path
-        const matchedVueRoute = event.context.matchedVueRoute?.path
-
-        if (matchedRoute) {
-          // For the top-most nitro span, we use the vue router route if present.
-          // Inner requests sent from the SSR rendering will use the nitro route as their name.
-          if (
-            (!currentSpan ||
-              // @ts-expect-error Property 'instrumentationLibrary' does not exist on type 'Span'.
-              currentSpan.instrumentationLibrary?.name !==
-                '__otel_package_name') &&
-            matchedVueRoute
-          ) {
-            span.updateName(`${event.method} ${replace(matchedVueRoute)}`)
-            span.setAttribute('http.route', replace(matchedVueRoute))
-          } else {
-            span.updateName(`${event.method} ${replace(matchedRoute)}`)
-            span.setAttribute('http.route', replace(matchedRoute))
-          }
-        }
-
         span.setAttribute(
           'http.response.status_code',
-          getResponseStatus(event),
+          status,
         )
 
         span.setAttributes(
           getResponseHeaderAttributes(event, config.responseHeaders ?? []),
         )
+
+        addRouteAttributes(event, replace, span, currentSpan)
 
         span.end()
 
