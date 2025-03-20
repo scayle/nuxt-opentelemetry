@@ -108,7 +108,7 @@ export default defineNuxtModule<ModuleOptions>({
         import type { RouteRecordNormalized } from '#vue-router'
         declare module 'h3' {
           interface H3EventContext {
-            matchedVueRoute?: RouteRecordNormalized
+            matchedVueRoute?: Record<string, RouteRecordNormalized>
           }
         }
         export {}`,

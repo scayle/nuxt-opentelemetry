@@ -9,7 +9,11 @@ export default defineNuxtPlugin(() => {
     const nuxtApp = useNuxtApp()
 
     if (nuxtApp.ssrContext) {
-      nuxtApp.ssrContext.event.context.matchedVueRoute = to.matched[0]
+      const event = nuxtApp.ssrContext.event
+
+      event.context.matchedVueRoute = {
+        [event.path]: to.matched[0],
+      }
     }
   })
 })

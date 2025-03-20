@@ -8,7 +8,7 @@ import {
   getResponseStatus,
 } from 'h3'
 import type { NitroApp } from 'nitropack/types'
-import { SpanStatusCode, context, trace } from '@opentelemetry/api'
+import { SpanStatusCode, trace } from '@opentelemetry/api'
 import type { Span } from '@opentelemetry/api'
 // NOTE: We need to import here from the Nuxt server-specific #imports to mitigate
 // unresolved dependencies in the imported composables from Nitro(nitropack).
@@ -96,35 +96,19 @@ function getResponseHeaderAttributes(
  * @param event The H3Event for the request
  * @param replace The configured replacement function for route names
  * @param span The span representing the nitro request
- * @param currentSpan The top level span
  */
 function addRouteAttributes(
   event: H3Event,
   replace: (path: string) => string,
   span: Span,
-  currentSpan?: Span,
 ) {
   // The matchedRoute exists after the handler has run
-  const matchedRoute = event.context.matchedRoute?.path
-  const matchedVueRoute = event.context.matchedVueRoute?.path
+  const matchedRoute = event.context.matchedVueRoute?.[event.path]?.path ??
+    event.context.matchedRoute?.path
+  const routeName = replace(matchedRoute ?? event.path)
 
-  if (matchedRoute) {
-    // For the top-most nitro span, we use the vue router route if present.
-    // Inner requests sent from the SSR rendering will use the nitro route as their name.
-    if (
-      (!currentSpan ||
-        // @ts-expect-error Property 'instrumentationLibrary' does not exist on type 'Span'.
-        currentSpan.instrumentationLibrary?.name !==
-          '__otel_package_name') &&
-      matchedVueRoute
-    ) {
-      span.updateName(`${event.method} ${replace(matchedVueRoute)}`)
-      span.setAttribute('http.route', replace(matchedVueRoute))
-    } else {
-      span.updateName(`${event.method} ${replace(matchedRoute)}`)
-      span.setAttribute('http.route', replace(matchedRoute))
-    }
-  }
+  span.updateName(`${event.method} ${routeName}`)
+  span.setAttribute('http.route', routeName)
 }
 
 /**
@@ -150,9 +134,6 @@ export default defineNitroPlugin((nitro: NitroApp) => {
     if (filter(url.pathname)) {
       return await originalHandler(event)
     }
-
-    const ctx = context.active()
-    const currentSpan = trace.getSpan(ctx)
 
     return await tracer.startActiveSpan(
       `${event.method} ${replace(event.path)}`,
@@ -224,7 +205,7 @@ export default defineNitroPlugin((nitro: NitroApp) => {
           span.setAttributes(
             getResponseHeaderAttributes(event, config.responseHeaders ?? []),
           )
-          addRouteAttributes(event, replace, span, currentSpan)
+          addRouteAttributes(event, replace, span)
           span.end()
 
           // rethrow the error
@@ -248,7 +229,7 @@ export default defineNitroPlugin((nitro: NitroApp) => {
           getResponseHeaderAttributes(event, config.responseHeaders ?? []),
         )
 
-        addRouteAttributes(event, replace, span, currentSpan)
+        addRouteAttributes(event, replace, span)
 
         span.end()
 
