@@ -1,16 +1,16 @@
 import type { H3Event } from 'h3'
 import {
-  H3Error,
   getRequestHeader,
   getRequestIP,
   getRequestURL,
   getResponseHeader,
   getResponseStatus,
+  isError,
 } from 'h3'
 import type { NitroApp } from 'nitropack/types'
 import { SpanStatusCode, trace, context } from '@opentelemetry/api'
 import { getRPCMetadata, RPCType } from '@opentelemetry/core'
-import type { Span } from '@opentelemetry/api'
+import type { Span, Context } from '@opentelemetry/api'
 // NOTE: We need to import here from the Nuxt server-specific #imports to mitigate
 // unresolved dependencies in the imported composables from Nitro(nitropack).
 // This results in `nuxi typecheck` not being able to properly infer the correct
@@ -46,6 +46,16 @@ function getReplace(pathReplace?: string[]): (path: string) => string {
     return (path: string) => path.replace(regex, pathReplace[1])
   } catch {
     return (path: string) => path.replace(pathReplace[0], pathReplace[1])
+  }
+}
+
+declare module 'h3' {
+  export interface H3EventContext {
+    otel?: {
+      ctx: Context
+      span: Span
+      _endTime?: number
+    }
   }
 }
 
@@ -143,6 +153,96 @@ export default defineNitroPlugin((nitro: NitroApp) => {
   const filter = getFilter(config.pathBlocklist)
   const replace = getReplace(config.pathReplace)
 
+  nitro.hooks.hook('afterResponse', (event) => {
+    if (!event.context.otel?.span) {
+      return
+    }
+
+    const span = event.context.otel.span
+    const status = getResponseStatus(event)
+
+    // Only 5xx errors should mark the span as Error for a server-side span
+    // https://opentelemetry.io/docs/specs/semconv/http/http-spans/#status
+    if (status >= 500 && status <= 599) {
+      span.setAttribute('error.type', 'Unknown Error')
+      span.setStatus({ code: SpanStatusCode.ERROR })
+    } else {
+      span.setStatus({ code: SpanStatusCode.OK })
+    }
+
+    span.setAttribute(
+      'http.response.status_code',
+      status,
+    )
+
+    span.setAttributes(
+      getResponseHeaderAttributes(
+        event,
+        config.responseHeaders ?? [],
+      ),
+    )
+
+    addRouteAttributes(event, replace, span)
+
+    span.end(event.context.otel._endTime)
+  })
+
+  nitro.hooks.hook('error', (e, { event }) => {
+    if (!event) {
+      const span = trace.getActiveSpan()
+      if (span) {
+        span.recordException(e)
+        span.end()
+      }
+      return
+    }
+
+    if (!event.context.otel?.span) {
+      return
+    }
+
+    const { span } = event.context.otel
+
+    if (isError(e)) {
+      // Only 5xx errors should mark the span as Error for a server-side span
+      // https://opentelemetry.io/docs/specs/semconv/http/http-spans/#status
+      if (e.statusCode >= 500 && e.statusCode <= 599) {
+        span.setAttribute('error.type', 'Unknown Error')
+        span.setStatus({ code: SpanStatusCode.ERROR })
+      }
+      span.setAttribute(
+        'http.response.status_code',
+        e.statusCode,
+      )
+      if (e.cause instanceof Error) {
+        span.recordException(e.cause)
+        span.setAttribute('error.type', e.cause.name)
+      }
+    } else {
+      if (e instanceof Error) {
+        span.recordException(e)
+        span.setAttribute('error.type', e.name)
+      }
+      span.setStatus({ code: SpanStatusCode.ERROR })
+      // Unknown errors will be 500, but if we were to call getResponseStatus
+      // at this point, it would return 200 as the error has not been processed at this point.
+      span.setAttribute(
+        'http.response.status_code',
+        500,
+      )
+    }
+
+    span.setAttributes(
+      getResponseHeaderAttributes(
+        event,
+        config.responseHeaders ?? [],
+      ),
+    )
+
+    addRouteAttributes(event, replace, span)
+    span.end(event.context.otel._endTime)
+  })
+
   const originalHandler = router.handler
   // Wrap the nitro router with code which adds a span
   nitro.h3App.stack.splice(index, 1, {
@@ -154,7 +254,7 @@ export default defineNitroPlugin((nitro: NitroApp) => {
         return await originalHandler(event)
       }
 
-      return await tracer.startActiveSpan(
+      const span = tracer.startSpan(
         `${event.method} ${replace(event.path)}`,
         {
           attributes: {
@@ -184,77 +284,23 @@ export default defineNitroPlugin((nitro: NitroApp) => {
             ...getRequestHeaderAttributes(event, config.requestHeaders ?? []),
           },
         },
-        async (span: Span) => {
-          let result
-          try {
-            result = await originalHandler(event)
-          } catch (e) {
-            if (e instanceof H3Error) {
-              // Only 5xx errors should mark the span as Error for a server-side span
-              // https://opentelemetry.io/docs/specs/semconv/http/http-spans/#status
-              if (e.statusCode >= 500 && e.statusCode <= 599) {
-                span.setAttribute('error.type', 'Unknown Error')
-                span.setStatus({ code: SpanStatusCode.ERROR })
-              }
-              span.setAttribute(
-                'http.response.status_code',
-                e.statusCode,
-              )
-            } else if (e instanceof Error) {
-              span.recordException(e)
-              span.setAttribute('error.type', e.name)
-              span.setStatus({ code: SpanStatusCode.ERROR })
-              // Unknown errors will be 500, but if we were to call getResponseStatus
-              // at this point, it would return 200 as the error has not been processed at this point.
-              span.setAttribute(
-                'http.response.status_code',
-                500,
-              )
-            } else {
-              span.setAttribute('error.type', 'Unknown Error')
-              span.setStatus({ code: SpanStatusCode.ERROR })
-              // Unknown errors will be 500, but if we were to call getResponseStatus
-              // at this point, it would return 200 as the error has not been processed at this point.
-              span.setAttribute(
-                'http.response.status_code',
-                500,
-              )
-            }
-
-            span.setAttributes(
-              getResponseHeaderAttributes(event, config.responseHeaders ?? []),
-            )
-            addRouteAttributes(event, replace, span)
-            span.end()
-
-            // rethrow the error
-            throw e
-          }
-
-          const status = getResponseStatus(event)
-          // Only 5xx errors should mark the span as Error for a server-side span
-          // https://opentelemetry.io/docs/specs/semconv/http/http-spans/#status
-          if (status >= 500 && status <= 599) {
-            span.setAttribute('error.type', 'Unknown Error')
-            span.setStatus({ code: SpanStatusCode.ERROR })
-          }
-
-          span.setAttribute(
-            'http.response.status_code',
-            status,
-          )
-
-          span.setAttributes(
-            getResponseHeaderAttributes(event, config.responseHeaders ?? []),
-          )
-
-          addRouteAttributes(event, replace, span)
-
-          span.end()
-
-          return result
-        },
       )
+
+      const ctx = trace.setSpan(context.active(), span)
+
+      event.context.otel = {
+        span,
+        ctx,
+        _endTime: undefined,
+      }
+
+      return await context.with(trace.setSpan(ctx, span), async () => {
+        const result = await originalHandler(event)
+        if (event.context.otel) {
+          event.context.otel._endTime = Date.now()
+        }
+        return result
+      })
     },
   })
 })
