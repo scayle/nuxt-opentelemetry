@@ -1,5 +1,18 @@
 # @scayle/nuxt-opentelemetry
 
+## 0.7.2
+
+### Patch Changes
+
+- Added dependency `@opentelemetry/core@2.0.0`
+- Removed dependency `@opentelemetry/resources@1.30.1`
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.56.1` to `@opentelemetry/auto-instrumentations-node@0.57.0`
+- Updated dependency `@opentelemetry/exporter-trace-otlp-proto@0.57.2` to `@opentelemetry/exporter-trace-otlp-proto@0.200.0`
+- Updated dependency `@opentelemetry/instrumentation@0.57.2` to `@opentelemetry/instrumentation@0.200.0`
+- Updated dependency `@opentelemetry/sdk-node@0.52.1` to `@opentelemetry/sdk-node@0.200.0`
+- Spans for successful requests should have SpanStatusCode.OK (Previously they were set to SpanStatusCode.UNSET)
+- Fix incorrect status codes attributes for requests resulting in an error.
+
 ## 0.7.1
 
 ### Patch Changes
