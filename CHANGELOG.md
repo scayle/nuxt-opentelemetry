@@ -1,5 +1,17 @@
 # @scayle/nuxt-opentelemetry
 
+## 0.8.0
+
+### Minor Changes
+
+- This release refactors the implementation to use a `NitroInstrumentation` class rather than a Nitro plugin. The change enables better testing and in the future may provide more flexibility for customization. The module should continue to work as before without any necessary changes for module users.
+
+### Patch Changes
+
+- The `?` character is no longer included in the `url.query` span attribute
+- When no `pathBlocklist` is provided, the default should be to allow everything instead of blocking everything.
+- Configure the HTTP instrumentation to ignore requests for static assets
+
 ## 0.7.2
 
 ### Patch Changes
