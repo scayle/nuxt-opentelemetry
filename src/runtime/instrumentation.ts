@@ -15,6 +15,26 @@ import type { H3Event } from 'h3'
 import type { NitroApp } from 'nitropack/types'
 import { subscribe, unsubscribe } from 'node:diagnostics_channel'
 import type { ChannelListener } from 'node:diagnostics_channel'
+import {
+  ATTR_CLIENT_ADDRESS,
+  ATTR_CLIENT_PORT,
+  ATTR_ERROR_TYPE,
+  ATTR_HTTP_REQUEST_HEADER,
+  ATTR_HTTP_REQUEST_METHOD,
+  ATTR_HTTP_RESPONSE_HEADER,
+  ATTR_HTTP_RESPONSE_STATUS_CODE,
+  ATTR_HTTP_ROUTE,
+  ATTR_NETWORK_PEER_ADDRESS,
+  ATTR_NETWORK_PEER_PORT,
+  ATTR_NETWORK_PROTOCOL_NAME,
+  ATTR_NETWORK_PROTOCOL_VERSION,
+  ATTR_SERVER_ADDRESS,
+  ATTR_SERVER_PORT,
+  ATTR_URL_PATH,
+  ATTR_URL_QUERY,
+  ATTR_URL_SCHEME,
+  ATTR_USER_AGENT_ORIGINAL,
+} from '@opentelemetry/semantic-conventions'
 
 interface NitroInstrumentationConfig {
   enabled?: boolean
@@ -66,7 +86,7 @@ function getRequestHeaderAttributes(
     const headerValue = getRequestHeader(event, header)
     if (headerValue) {
       // Note: The OTEL spec requires the value to be an array
-      attributes[`http.request.header.${header.toLowerCase()}`] = [headerValue]
+      attributes[ATTR_HTTP_REQUEST_HEADER(header.toLowerCase())] = [headerValue]
     }
     return attributes
   }, {})
@@ -87,7 +107,7 @@ function getResponseHeaderAttributes(
     const headerValue = getResponseHeader(event, header)
     if (headerValue) {
       // Note: The OTEL spec requires the value to be an array
-      attributes[`http.response.header.${header.toLowerCase()}`] =
+      attributes[ATTR_HTTP_RESPONSE_HEADER(header.toLowerCase())] =
         Array.isArray(headerValue) ? headerValue : [String(headerValue)]
     }
     return attributes
@@ -119,7 +139,7 @@ export class NitroInstrumentation
     const route = this.getRouteName(event)
 
     span.updateName(`${event.method} ${route}`)
-    span.setAttribute('http.route', route)
+    span.setAttribute(ATTR_HTTP_ROUTE, route)
 
     const rpcMetadata = getRPCMetadata(context.active())
     if (rpcMetadata?.type === RPCType.HTTP) {
@@ -169,14 +189,14 @@ export class NitroInstrumentation
         // Only 5xx errors should mark the span as Error for a server-side span
         // https://opentelemetry.io/docs/specs/semconv/http/http-spans/#status
         if (status >= 500 && status <= 599) {
-          span.setAttribute('error.type', 'Unknown Error')
+          span.setAttribute(ATTR_ERROR_TYPE, 'Unknown Error')
           span.setStatus({ code: SpanStatusCode.ERROR })
         } else {
           span.setStatus({ code: SpanStatusCode.OK })
         }
 
         span.setAttribute(
-          'http.response.status_code',
+          ATTR_HTTP_RESPONSE_STATUS_CODE,
           status,
         )
 
@@ -210,27 +230,27 @@ export class NitroInstrumentation
           // Only 5xx errors should mark the span as Error for a server-side span
           // https://opentelemetry.io/docs/specs/semconv/http/http-spans/#status
           if (e.statusCode >= 500 && e.statusCode <= 599) {
-            span.setAttribute('error.type', 'Unknown Error')
+            span.setAttribute(ATTR_ERROR_TYPE, 'Unknown Error')
             span.setStatus({ code: SpanStatusCode.ERROR })
           }
           span.setAttribute(
-            'http.response.status_code',
+            ATTR_HTTP_RESPONSE_STATUS_CODE,
             e.statusCode,
           )
           if (e.cause instanceof Error) {
             span.recordException(e.cause)
-            span.setAttribute('error.type', e.cause.name)
+            span.setAttribute(ATTR_ERROR_TYPE, e.cause.name)
           }
         } else {
           if (e instanceof Error) {
             span.recordException(e)
-            span.setAttribute('error.type', e.name)
+            span.setAttribute(ATTR_ERROR_TYPE, e.name)
           }
           span.setStatus({ code: SpanStatusCode.ERROR })
           // Unknown errors will be 500, but if we were to call getResponseStatus
           // at this point, it would return 200 as the error has not been processed at this point.
           span.setAttribute(
-            'http.response.status_code',
+            ATTR_HTTP_RESPONSE_STATUS_CODE,
             500,
           )
         }
@@ -265,26 +285,33 @@ export class NitroInstrumentation
             {
               attributes: {
                 // Required
-                'http.request.method': event.method,
-                'url.path': url.pathname,
-                'url.scheme': url.protocol.replace(':', ''),
-                'network.protocol.name': 'http',
+                [ATTR_HTTP_REQUEST_METHOD]: event.method,
+                [ATTR_URL_PATH]: url.pathname,
+                [ATTR_URL_SCHEME]: url.protocol.replace(':', ''),
+                [ATTR_NETWORK_PROTOCOL_NAME]: 'http',
 
                 // Recommended
-                'client.address': getRequestIP(event, { xForwardedFor: true }),
-                'client.port': event.node.req.socket.remotePort,
-                'server.address': url.hostname,
-                'server.port': url.port,
-                'network.peer.address': getRequestIP(event, {
+                [ATTR_CLIENT_ADDRESS]: getRequestIP(event, {
                   xForwardedFor: true,
                 }),
-                'network.peer.port': event.node.req.socket.remotePort,
+                [ATTR_CLIENT_PORT]: event.node.req.socket.remotePort,
+                [ATTR_SERVER_ADDRESS]: url.hostname,
+                [ATTR_SERVER_PORT]: url.port,
+                [ATTR_NETWORK_PEER_ADDRESS]: getRequestIP(event, {
+                  xForwardedFor: true,
+                }),
+                [ATTR_NETWORK_PEER_PORT]: event.node.req.socket.remotePort,
 
-                'user_agent.original': getRequestHeader(event, 'User-Agent'),
-                'network.protocol.version': event.node.req.httpVersion,
+                [ATTR_USER_AGENT_ORIGINAL]: getRequestHeader(
+                  event,
+                  'User-Agent',
+                ),
+                [ATTR_NETWORK_PROTOCOL_VERSION]: event.node.req.httpVersion,
 
                 // Conditionally Required
-                ...(url.search ? { 'url.query': url.search.substring(1) } : {}),
+                ...(url.search
+                  ? { [ATTR_URL_QUERY]: url.search.substring(1) }
+                  : {}),
 
                 // Headers
                 ...getRequestHeaderAttributes(
