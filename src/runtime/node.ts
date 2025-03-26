@@ -1,7 +1,8 @@
 import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node'
 import { NodeSDK } from '@opentelemetry/sdk-node'
-
+import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics'
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-proto'
+import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-proto'
 import { NitroInstrumentation } from './instrumentation'
 import { useRuntimeConfig } from 'nitropack/runtime'
 import { getReplace, getRouteName, getFilter } from './utils'
@@ -14,6 +15,9 @@ const filter = getFilter(config.opentelemetry.pathBlocklist)
 // In this file we initialize the Node OpenTelemetry SDK and the OTLP Exporter
 const sdk = new NodeSDK({
   traceExporter: new OTLPTraceExporter(),
+  metricReader: new PeriodicExportingMetricReader({
+    exporter: new OTLPMetricExporter(),
+  }),
   instrumentations: [
     getNodeAutoInstrumentations({
       '@opentelemetry/instrumentation-http': {
