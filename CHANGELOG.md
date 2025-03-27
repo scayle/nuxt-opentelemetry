@@ -1,5 +1,16 @@
 # @scayle/nuxt-opentelemetry
 
+## 0.9.0
+
+### Minor Changes
+
+- Enable the exporting of metrics in the SDK initialization. Like traces, metrics will be exported via the OTLP protocol (using `@opentelemetry/exporter-metrics-otlp-proto`) so your existing collector will likely be able to collect metrics automatically without additional configuration.
+
+### Patch Changes
+
+- Added dependency `@opentelemetry/exporter-metrics-otlp-proto@0.200.0`
+- Added dependency `@opentelemetry/sdk-metrics@2.0.0`
+
 ## 0.8.0
 
 ### Minor Changes
