@@ -1,4 +1,4 @@
-import { createResolver } from '@nuxt/kit'
+import { createResolver, useLogger } from '@nuxt/kit'
 import { genImport } from 'knitwork'
 import type { NitroConfig, Nitro } from 'nitropack'
 
@@ -14,7 +14,6 @@ export interface ModuleOptions {
 
 function getInstrumentedEntryFileForPreset(
   preset: string,
-  instrumentationFile: string,
   baseEntry: string,
   include?: string[],
   exclude?: string[],
@@ -35,14 +34,10 @@ function getInstrumentedEntryFileForPreset(
   // We should use dynamic imports after registering the customization hooks
   // https://nodejs.org/api/module.html#customization-hooks
   
-  // First load the instrumentation file which initialized the OTEL SDK
-  import("${instrumentationFile}")
-  
   // Then load our application's entry point
   import("${baseEntry}")`
   } else if (preset.includes('vercel')) {
     entryFile = `
-    ${genImport(instrumentationFile)}
     ${genImport(baseEntry, 'handler')}
     export default handler
     `
@@ -53,30 +48,37 @@ function getInstrumentedEntryFileForPreset(
 
 export async function nitroSetup(nitroConfig: NitroConfig) {
   const { resolve } = createResolver(import.meta.url)
+  const logger = useLogger('@scayle/nuxt-opentelemetry')
+
+  nitroConfig.externals ??= {}
+  nitroConfig.externals.traceInclude ??= []
+  nitroConfig.externals.traceInclude.push('import-in-the-middle')
 
   // Add nitro server plugins
   nitroConfig.plugins = nitroConfig.plugins ?? []
   nitroConfig.plugins.push(
     resolve('./runtime/nitro/plugins/nitroAppPlugin'),
   )
+
+  if (nitroConfig.preset?.includes('vercel')) {
+    nitroConfig.plugins.push(
+      resolve('./runtime/nitro/plugins/sdkInitVercel'),
+    )
+  } else {
+    if (!(nitroConfig.preset?.startsWith('node'))) {
+      logger.warn(
+        `Using preset: ${nitroConfig.preset}. Only node and vercel presets are officially supported.`,
+      )
+    }
+    nitroConfig.plugins.push(
+      resolve('./runtime/nitro/plugins/sdkInitNode'),
+    )
+  }
 }
 
 export function prepareEntry(nitro: Nitro, options: ModuleOptions) {
   const resolver = createResolver(import.meta.url)
   const { entry, preset } = nitro.options
-
-  let instrumentationFile
-
-  if (preset === 'node-server') {
-    instrumentationFile = resolver.resolve('./runtime/node')
-  } else if (preset.includes('vercel')) {
-    instrumentationFile = resolver.resolve('./runtime/vercel')
-  } else {
-    return
-  }
-
-  // Add the entry to moduleSideEffects so we don't treeshake away our server!
-  nitro.options.moduleSideEffects.push(entry, instrumentationFile)
 
   // For the node presets, we need to add module customization hooks
   if (preset === 'node-server') {
@@ -98,7 +100,6 @@ export function prepareEntry(nitro: Nitro, options: ModuleOptions) {
 
   const newEntry = getInstrumentedEntryFileForPreset(
     preset,
-    instrumentationFile,
     entry,
     options.include,
     options.exclude,

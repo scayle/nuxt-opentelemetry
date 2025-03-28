@@ -75,11 +75,8 @@ export default defineNuxtModule<ModuleOptions>({
       references.push({ path: template.dst })
     })
 
-    nuxt.hooks.hook('nitro:config', async (nitroConfig) => {
-      await nitroSetup(nitroConfig)
-    })
-
-    nuxt.hooks.hook('nitro:init', (nitro) => {
+    nuxt.hooks.hook('nitro:init', async (nitro) => {
+      await nitroSetup(nitro.options)
       prepareEntry(nitro, options)
     })
   },
