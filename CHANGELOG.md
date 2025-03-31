@@ -1,5 +1,13 @@
 # @scayle/nuxt-opentelemetry
 
+## 0.9.1
+
+### Patch Changes
+
+- Added dependency `@opentelemetry/sdk-trace-base@2.0.0`
+- Added dependency `@opentelemetry/sdk-trace-node@2.0.0`
+- Added dependency `import-in-the-middle@1.13.1`
+
 ## 0.9.0
 
 ### Minor Changes
