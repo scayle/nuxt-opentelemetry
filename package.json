@@ -86,7 +86,7 @@
     "eslint-formatter-gitlab": "5.1.0",
     "eslint": "9.23.0",
     "nitropack": "2.10.4",
-    "nitro-test-utils": "0.9.1",
+    "nitro-test-utils": "0.9.2",
     "nuxt": "3.15.4",
     "publint": "0.2.12",
     "rimraf": "6.0.1",
