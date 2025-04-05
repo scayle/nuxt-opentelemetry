@@ -90,7 +90,7 @@
     "nuxt": "3.15.4",
     "publint": "0.2.12",
     "rimraf": "6.0.1",
-    "typescript": "5.8.2",
+    "typescript": "5.8.3",
     "unbuild": "2.0.0",
     "vitest": "2.1.9",
     "vue-tsc": "2.2.8"
