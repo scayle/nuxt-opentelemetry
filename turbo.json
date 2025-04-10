@@ -36,14 +36,6 @@
         "build",
         "prep"
       ]
-    },
-    "lint": {
-      "dependsOn": [
-        "format",
-        "@scayle/eslint-config-storefront#changes",
-        "prep"
-      ],
-      "outputs": []
     }
   }
 }
