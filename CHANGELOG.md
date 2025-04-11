@@ -1,5 +1,11 @@
 # @scayle/nuxt-opentelemetry
 
+## 0.9.3
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/semantic-conventions@1.30.0` to `@opentelemetry/semantic-conventions@1.32.0`
+
 ## 0.9.2
 
 ### Patch Changes
