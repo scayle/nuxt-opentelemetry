@@ -18,14 +18,12 @@
   "website": "https://scayle.dev/en/storefront-guide/developer-guide/integrations/open-telemetry",
   "exports": {
     ".": {
-      "types": "./dist/module.d.ts",
-      "require": "./dist/module.cjs",
+      "types": "./dist/module.d.mts",
       "import": "./dist/module.mjs"
     }
   },
   "main": "./dist/module.mjs",
   "type": "module",
-  "types": "./dist/module.d.ts",
   "files": [
     "CHANGELOG.md",
     "dist/**"
