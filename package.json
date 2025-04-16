@@ -39,7 +39,7 @@
     "build": "nuxt-module-build build",
     "dev": "nuxi dev playground",
     "dev:build": "nuxi build playground",
-    "prep": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
+    "prep": "nuxt-module-build prepare && nuxi prepare playground",
     "format": "dprint check",
     "format:fix": "dprint fmt",
     "lint": "eslint .",
