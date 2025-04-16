@@ -46,6 +46,7 @@
     "lint:ci": "eslint . --format gitlab",
     "lint:fix": "eslint . --fix",
     "package:lint": "publint",
+    "verify-packaging": "attw --pack . --profile esm-only",
     "typecheck": "vue-tsc --noEmit && cd playground && vue-tsc --noEmit",
     "test": "vitest --run --passWithNoTests",
     "test:watch": "vitest --passWithNoTests",
@@ -73,6 +74,7 @@
     "knitwork": "^1.1.0"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "0.17.4",
     "@nuxt/eslint-config": "1.3.0",
     "@nuxt/eslint": "1.3.0",
     "@nuxt/module-builder": "1.0.1",
