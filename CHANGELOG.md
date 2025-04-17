@@ -1,5 +1,11 @@
 # @scayle/nuxt-opentelemetry
 
+## 0.10.0
+
+### Minor Changes
+
+- Update to `@nuxt/module-builder@1`. This version of Nuxt Module Builder is ESM-only, so CommonJS (`.cjs`) files will no longer be built or distributed with the package. However as of Nuxt 3, only esm is used so this should not have any impact as this module does not support Nuxt 2.
+
 ## 0.9.4
 
 ### Patch Changes

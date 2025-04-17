@@ -1,6 +1,6 @@
 {
   "name": "@scayle/nuxt-opentelemetry",
-  "version": "0.9.4",
+  "version": "0.10.0",
   "description": "A Nuxt module for OpenTelemetry integration",
   "author": "SCAYLE Commerce Engine",
   "license": "MIT",
