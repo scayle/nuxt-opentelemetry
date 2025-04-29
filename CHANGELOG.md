@@ -1,5 +1,11 @@
 # @scayle/nuxt-opentelemetry
 
+## 0.11.0
+
+### Minor Changes
+
+- Initialize the OTel SDK in a Nitro plugin instead of the entrypoint to support usage in dev builds. However, not all instrumentations will be available in dev mode as they require `import-in-the-middle` hooks.
+
 ## 0.10.1
 
 ### Patch Changes
