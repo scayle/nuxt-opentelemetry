@@ -8,10 +8,14 @@ import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-proto'
 import { NitroInstrumentation } from '../../instrumentation'
 import { useRuntimeConfig } from 'nitropack/runtime'
 import { getReplace, getRouteName, getFilter } from '../../utils'
+// @ts-expect-error import aliases are currently unable to be properly resolved during typechecking
+import { assets } from '#opentelemetry/public-assets'
 
 function ignorePath(path: string): boolean {
-  return path.startsWith('/_nuxt') || path.startsWith('/__nuxt_vite_node__') ||
-    path.startsWith('/_fonts') || path.startsWith('/favicon')
+  return path.startsWith('/_nuxt') ||
+    path.startsWith('/_fonts') ||
+    path.startsWith('/__nuxt_vite_node__') ||
+    (assets as Set<string>).has(path)
 }
 
 export default defineNitroPlugin((_nitroApp: NitroApp) => {
@@ -33,13 +37,13 @@ export default defineNitroPlugin((_nitroApp: NitroApp) => {
             if (!req.url) {
               return false
             }
-            return ignorePath(req.url)
+            return ignorePath(req.url) || filter(req.url)
           },
         },
         '@opentelemetry/instrumentation-undici': {
           // Filter out static _nuxt requests
           ignoreRequestHook({ path }) {
-            return ignorePath(path)
+            return ignorePath(path) || filter(path)
           },
         },
       }),

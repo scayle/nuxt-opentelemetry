@@ -9,6 +9,7 @@ export default defineConfig({
       exclude: [
         ...(configDefaults.coverage.exclude || []),
         './playground/**',
+        '__mocks__/**',
       ],
     },
     poolOptions: {

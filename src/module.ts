@@ -1,11 +1,12 @@
 import {
   addPlugin,
+  addServerTemplate,
   addTypeTemplate,
   createResolver,
   defineNuxtModule,
 } from '@nuxt/kit'
 import { defu } from 'defu'
-import { nitroSetup, prepareEntry } from './utils'
+import { getPublicAssets, nitroSetup, prepareEntry } from './utils'
 
 export interface ModuleOptions {
   enabled: boolean
@@ -37,7 +38,7 @@ export default defineNuxtModule<ModuleOptions>({
     responseHeaders: [],
     requestHeaders: [],
   },
-  setup(options, nuxt) {
+  async setup(options, nuxt) {
     if (!options.enabled) {
       return
     }
@@ -69,6 +70,20 @@ export default defineNuxtModule<ModuleOptions>({
           }
         }
         export {}`,
+    })
+
+    addServerTemplate({
+      filename: '#opentelemetry/public-assets',
+      getContents: async () => `
+        export const assets = new Set([
+          ${
+        (await getPublicAssets(nuxt, resolver)).map((asset) => `'${asset}'`)
+          .join(
+            ',',
+          )
+      }
+        ])
+      `,
     })
 
     nuxt.hook('prepare:types', ({ references }) => {
