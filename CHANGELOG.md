@@ -1,5 +1,11 @@
 # @scayle/nuxt-opentelemetry
 
+## 0.12.0
+
+### Minor Changes
+
+- Do not trace requests for files located within the nuxt `public` directory.
+
 ## 0.11.0
 
 ### Minor Changes
