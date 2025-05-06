@@ -16,6 +16,7 @@ export interface ModuleOptions {
   exclude?: string[]
   requestHeaders?: string[]
   responseHeaders?: string[]
+  disableAutomaticInstrumentation?: boolean
 }
 
 const PACKAGE_NAME = '__package_name'
@@ -37,6 +38,7 @@ export default defineNuxtModule<ModuleOptions>({
     pathReplace: undefined,
     responseHeaders: [],
     requestHeaders: [],
+    disableAutomaticInstrumentation: false,
   },
   async setup(options, nuxt) {
     if (!options.enabled) {
@@ -91,7 +93,7 @@ export default defineNuxtModule<ModuleOptions>({
     })
 
     nuxt.hooks.hook('nitro:init', async (nitro) => {
-      await nitroSetup(nitro.options)
+      await nitroSetup(nitro.options, nuxt.options.runtimeConfig.opentelemetry)
       prepareEntry(nitro, options)
     })
   },

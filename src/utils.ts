@@ -5,16 +5,7 @@ import type { NitroConfig, Nitro } from 'nitropack'
 import { existsSync, readdirSync, statSync } from 'node:fs'
 import { join, relative } from 'node:path'
 import type { Nuxt } from 'nuxt/schema'
-
-export interface ModuleOptions {
-  enabled: boolean
-  pathBlocklist?: string
-  pathReplace?: [string, string]
-  include?: string[]
-  exclude?: string[]
-  requestHeaders?: string[]
-  responseHeaders?: string[]
-}
+import type { ModuleOptions } from './module'
 
 function getInstrumentedEntryFileForPreset(
   preset: string,
@@ -50,7 +41,10 @@ function getInstrumentedEntryFileForPreset(
   return entryFile
 }
 
-export async function nitroSetup(nitroConfig: NitroConfig) {
+export async function nitroSetup(
+  nitroConfig: NitroConfig,
+  moduleOptions: ModuleOptions,
+) {
   const { resolve } = createResolver(import.meta.url)
   const logger = useLogger('@scayle/nuxt-opentelemetry')
 
@@ -64,7 +58,11 @@ export async function nitroSetup(nitroConfig: NitroConfig) {
     resolve('./runtime/nitro/plugins/nitroAppPlugin'),
   )
 
-  if (nitroConfig.preset?.includes('vercel')) {
+  if (moduleOptions.disableAutomaticInstrumentation) {
+    logger.warn(
+      'Automatic instrumentation is disabled. Please add instrumentation manually.',
+    )
+  } else if (nitroConfig.preset?.includes('vercel')) {
     nitroConfig.plugins.push(
       resolve('./runtime/nitro/plugins/sdkInitVercel'),
     )

@@ -85,6 +85,9 @@ The internal module can be configured through module options or runtime environm
 - `responseHeaders` or `NUXT_OPENTELEMETRY_RESPONSE_HEADERS`
   - This option allows selecting which response headers to include as span attributes. They will be added as `http.response.header.{name}`. The values are case-insensitive when matching headers. It will be normalized to lowercase in the attribute name. Example: `{ responseHeaders: ['content-type'] }` or `NUXT_OPENTELEMETRY_REQUEST_HEADERS=["content-type"]`
 
+- `disableAutomaticInstrumentation` or `NUXT_OPENTELEMETRY_DISABLE_AUTOMATIC_INSTRUMENTATION`
+  - This option allows for manual instrumentation of the application via a Nitro plugin. This enables adjustment of the application's instrumentation to better suit specific needs.
+
 ### Including and Excluding modules
 
 The below options are passed to `import-in-the-middle` to control its interception behavior.
@@ -92,6 +95,35 @@ You can read more about the behavior of these options in [its documentation](htt
 
 - `include` An array of module identifiers to include from hooking
 - `exclude` An array of module identifiers to exclude from hooking
+
+### Custom instrumentation
+
+To leverage custom instrumentation, set `disableAutomaticInstrumentation` to `true`. This enables the creation of custom instrumentation within a Nitro plugin located in the `./server/plugins` directory, offering enhanced customization and adaptability for your instrumentation configuration. The example provided demonstrates a basic instrumentation setup utilizing the `@opentelemetry/sdk-node`.
+
+```ts
+// ./server/plugins/instrumentation.ts
+import { defineNitroPlugin } from 'nitropack/runtime/plugin'
+import type { NitroApp } from 'nitropack/types'
+import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node'
+import { NodeSDK } from '@opentelemetry/sdk-node'
+import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics'
+import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-proto'
+import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-proto'
+
+export default defineNitroPlugin((_nitroApp: NitroApp) => {
+  const sdk = new NodeSDK({
+    traceExporter: new OTLPTraceExporter(),
+    metricReader: new PeriodicExportingMetricReader({
+      exporter: new OTLPMetricExporter(),
+    }),
+    instrumentations: [
+      getNodeAutoInstrumentations(),
+    ],
+  })
+
+  sdk.start()
+})
+```
 
 ## License
 
