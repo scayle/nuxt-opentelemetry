@@ -1,6 +1,6 @@
 {
   "name": "@scayle/nuxt-opentelemetry",
-  "version": "0.12.0",
+  "version": "0.12.1",
   "description": "A Nuxt module for OpenTelemetry integration",
   "author": "SCAYLE Commerce Engine",
   "license": "MIT",
@@ -81,7 +81,7 @@
     "@nuxt/schema": "3.16.2",
     "@opentelemetry/context-async-hooks": "2.0.0",
     "@opentelemetry/instrumentation-http": "0.200.0",
-    "@scayle/eslint-config-storefront": "4.5.0",
+    "@scayle/eslint-config-storefront": "4.5.1",
     "@types/node": "22.15.12",
     "dprint": "0.49.1",
     "eslint": "9.26.0",
