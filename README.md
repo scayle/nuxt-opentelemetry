@@ -85,7 +85,7 @@ The internal module can be configured through module options or runtime environm
 - `responseHeaders` or `NUXT_OPENTELEMETRY_RESPONSE_HEADERS`
   - This option allows selecting which response headers to include as span attributes. They will be added as `http.response.header.{name}`. The values are case-insensitive when matching headers. It will be normalized to lowercase in the attribute name. Example: `{ responseHeaders: ['content-type'] }` or `NUXT_OPENTELEMETRY_REQUEST_HEADERS=["content-type"]`
 
-- `disableAutomaticInstrumentation` or `NUXT_OPENTELEMETRY_DISABLE_AUTOMATIC_INSTRUMENTATION`
+- `disableAutomaticInitialization` or `NUXT_OPENTELEMETRY_DISABLE_AUTOMATIC_INITIALIZATION`
   - This option allows for manual instrumentation of the application via a Nitro plugin. This enables adjustment of the application's instrumentation to better suit specific needs.
 
 ### Including and Excluding modules
