@@ -16,7 +16,7 @@ export interface ModuleOptions {
   exclude?: string[]
   requestHeaders?: string[]
   responseHeaders?: string[]
-  disableAutomaticInstrumentation?: boolean
+  disableAutomaticInitialization?: boolean
 }
 
 const PACKAGE_NAME = '__package_name'
@@ -38,7 +38,7 @@ export default defineNuxtModule<ModuleOptions>({
     pathReplace: undefined,
     responseHeaders: [],
     requestHeaders: [],
-    disableAutomaticInstrumentation: false,
+    disableAutomaticInitialization: false,
   },
   async setup(options, nuxt) {
     if (!options.enabled) {

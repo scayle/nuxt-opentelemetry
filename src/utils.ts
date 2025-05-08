@@ -58,10 +58,8 @@ export async function nitroSetup(
     resolve('./runtime/nitro/plugins/nitroAppPlugin'),
   )
 
-  if (moduleOptions.disableAutomaticInstrumentation) {
-    logger.warn(
-      'Automatic instrumentation is disabled. Please add instrumentation manually.',
-    )
+  if (moduleOptions.disableAutomaticInitialization) {
+    logger.info('Automatic instrumentation is disabled.')
   } else if (nitroConfig.preset?.includes('vercel')) {
     nitroConfig.plugins.push(
       resolve('./runtime/nitro/plugins/sdkInitVercel'),
