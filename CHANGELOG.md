@@ -1,5 +1,46 @@
 # @scayle/nuxt-opentelemetry
 
+## 0.13.0
+
+### Minor Changes
+
+- Support disabling the automatic instrumentation and using a custom implementation. This allows for full control over the behavior of OpenTelemetry. To manually initialize the SDK, set the `disableAutomaticInitialization` option to `true`, which will disables the default SDK initialization of this module.
+
+  Then you can manually initialize OpenTelemetry within a [Nitro plugin](https://nuxt.com/docs/guide/directory-structure/server#server-plugins) located in the `./server/plugins` directory, allowing for enhanced customization and adaptability in your instrumentation configuration. The example provided demonstrates a basic setup using the `@opentelemetry/sdk-node` package.
+
+  ```ts
+  // ./server/plugins/instrument.ts
+  import { defineNitroPlugin } from 'nitropack/runtime/plugin'
+  import type { NitroApp } from 'nitropack/types'
+  import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node'
+  import { NodeSDK } from '@opentelemetry/sdk-node'
+  import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics'
+  import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-proto'
+  import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-proto'
+
+  export default defineNitroPlugin((_nitroApp: NitroApp) => {
+    const sdk = new NodeSDK({
+      traceExporter: new OTLPTraceExporter(),
+      metricReader: new PeriodicExportingMetricReader({
+        exporter: new OTLPMetricExporter(),
+      }),
+      instrumentations: [
+        getNodeAutoInstrumentations({
+          '@opentelemetry/instrumentation-http': {},
+          '@opentelemetry/instrumentation-undici': {},
+        }),
+      ],
+    })
+
+    sdk.start()
+  })
+  ```
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/semantic-conventions@1.32.0` to `@opentelemetry/semantic-conventions@1.33.0`
+- Updated dependency `@vercel/otel@1.11.0` to `@vercel/otel@1.12.0`
+
 ## 0.12.1
 
 ### Patch Changes
