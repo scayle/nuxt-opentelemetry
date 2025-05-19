@@ -48,9 +48,9 @@
     "package:lint": "publint",
     "verify-packaging": "attw --pack . --profile esm-only",
     "typecheck": "vue-tsc --noEmit && cd playground && vue-tsc --noEmit",
-    "test": "vitest --run --passWithNoTests",
-    "test:watch": "vitest --passWithNoTests",
-    "test:ci": "vitest --run --passWithNoTests --coverage --reporter=default --reporter=junit --outputFile=./coverage/junit.xml"
+    "test": "vitest --run",
+    "test:watch": "vitest",
+    "test:ci": "vitest --run --coverage --reporter=default --reporter=junit --outputFile=./coverage/junit.xml"
   },
   "peerDependencies": {
     "h3": "^1.10.0"
