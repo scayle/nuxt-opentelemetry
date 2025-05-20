@@ -82,7 +82,7 @@
     "@opentelemetry/context-async-hooks": "2.0.1",
     "@opentelemetry/instrumentation-http": "0.201.1",
     "@scayle/eslint-config-storefront": "4.5.2",
-    "@types/node": "22.15.19",
+    "@types/node": "22.15.20",
     "dprint": "0.50.0",
     "eslint": "9.27.0",
     "eslint-formatter-gitlab": "6.0.0",
