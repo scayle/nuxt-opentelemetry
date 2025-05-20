@@ -75,7 +75,7 @@
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "0.18.1",
-    "@nuxt/eslint": "1.4.0",
+    "@nuxt/eslint": "1.4.1",
     "@nuxt/eslint-config": "1.4.0",
     "@nuxt/module-builder": "1.0.1",
     "@nuxt/schema": "3.16.2",
