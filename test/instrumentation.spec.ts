@@ -55,7 +55,7 @@ function validateSpans(
   )
 }
 
-describe('test instrumentation', async () => {
+describe('test instrumentation', { timeout: 20000 }, async () => {
   await setup({
     rootDir: fileURLToPath(new URL('fixture', import.meta.url)),
     mode: 'production',

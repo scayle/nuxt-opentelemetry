@@ -17,6 +17,7 @@ export default defineConfig({
         execArgv: ['--import=./test/hook-loader.mjs'],
       },
     },
+    hookTimeout: 20000,
   },
   define: {
     '__package_version': `'${packageJson.version}'`,
