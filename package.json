@@ -85,7 +85,7 @@
     "@types/node": "22.15.29",
     "@vitest/coverage-v8": "3.1.4",
     "dprint": "0.50.0",
-    "eslint": "9.27.0",
+    "eslint": "9.28.0",
     "eslint-formatter-gitlab": "6.0.0",
     "memfs": "4.17.2",
     "nitro-test-utils": "0.9.2",
