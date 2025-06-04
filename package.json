@@ -37,9 +37,9 @@
   "scripts": {
     "clean": "rimraf ./dist",
     "build": "nuxt-module-build build",
-    "dev": "nuxi dev playground",
-    "dev:build": "nuxi build playground",
-    "prep": "nuxt-module-build prepare && nuxi prepare playground",
+    "dev": "nuxt dev playground",
+    "dev:build": "nuxt build playground",
+    "prep": "nuxt-module-build prepare && nuxt prepare playground",
     "format": "dprint check",
     "format:fix": "dprint fmt",
     "lint": "eslint .",
