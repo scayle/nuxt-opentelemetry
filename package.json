@@ -74,7 +74,7 @@
     "knitwork": "^1.1.0"
   },
   "devDependencies": {
-    "@arethetypeswrong/cli": "0.18.1",
+    "@arethetypeswrong/cli": "0.18.2",
     "@nuxt/eslint": "1.4.1",
     "@nuxt/eslint-config": "1.4.1",
     "@nuxt/module-builder": "1.0.1",
