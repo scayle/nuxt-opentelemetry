@@ -1,5 +1,11 @@
 # @scayle/nuxt-opentelemetry
 
+## 0.13.9
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.60.0` to `@opentelemetry/auto-instrumentations-node@0.60.1`
+
 ## 0.13.8
 
 ### Patch Changes
