@@ -1,5 +1,11 @@
 # @scayle/nuxt-opentelemetry
 
+## 0.13.10
+
+### Patch Changes
+
+- Updated dependency `import-in-the-middle@1.14.0` to `import-in-the-middle@1.14.2`
+
 ## 0.13.9
 
 ### Patch Changes
