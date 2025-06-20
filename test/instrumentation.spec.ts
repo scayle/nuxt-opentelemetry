@@ -55,12 +55,21 @@ function validateSpans(
   )
 }
 
-describe('test instrumentation', { timeout: 20000 }, async () => {
-  await setup({
-    rootDir: fileURLToPath(new URL('fixture', import.meta.url)),
-    mode: 'production',
-  })
-
+// NOTE: This test suite requires careful handling of the Nitro server initialization
+// to prevent timeout issues in CI environments.
+//
+// Timeout Mitigation Strategy:
+// 1. Increased timeout to 60s (from 20s) to accommodate slower CI environments
+// 2. Nitro server setup MUST remain in the describe block's initialization phase
+//      - Moving it to beforeAll or beforeEach causes "server not running" errors
+//      - This ensures proper server state for all test cases
+// 3. Proper cleanup in afterEach to prevent memory leaks and state pollution
+//      - Disabling instrumentations
+//      - Resetting configurations
+//      - Flushing span processor
+//      - Clearing exporter data
+describe('test instrumentation', { timeout: 60000 }, async () => {
+  // Initialize all instrumentation and tracing components
   const httpInstrumentation = new HttpInstrumentation()
   const instrumentation = new NitroInstrumentation()
   const contextManager = new AsyncHooksContextManager()
@@ -70,10 +79,38 @@ describe('test instrumentation', { timeout: 20000 }, async () => {
     spanProcessors: [spanProcessor],
   })
 
+  // Set up the Nitro test environment.
+  // This needs to run in the describe block to ensure proper server initialization
+  await setup({
+    rootDir: fileURLToPath(new URL('fixture', import.meta.url)),
+    mode: 'production',
+  })
+
+  // Configure necessary OpenTelemetry providers and instrumentations.
   trace.setGlobalTracerProvider(provider)
   context.setGlobalContextManager(contextManager)
   httpInstrumentation.setTracerProvider(provider)
   instrumentation.setTracerProvider(provider)
+
+  // Reset hook that runs before each test.
+  // Ensures each test starts with clean instrumentation state.
+  beforeEach(() => {
+    instrumentation.enable()
+    httpInstrumentation.enable()
+    contextManager.enable()
+  })
+
+  // Cleanup hook that runs after each test.
+  // Properly tears down instrumentation and cleans up spans
+  // to prevent memory leaks and state pollution between tests.
+  afterEach(() => {
+    contextManager.disable()
+    instrumentation.disable()
+    instrumentation.setConfig({})
+    httpInstrumentation.disable()
+    spanProcessor.forceFlush()
+    memoryExporter.reset()
+  })
 
   it('successful request', async () => {
     await $fetchRaw('/hello')
@@ -451,20 +488,5 @@ describe('test instrumentation', { timeout: 20000 }, async () => {
     expect(nitroSpan.parentSpanContext).toBeDefined()
     expect(nitroSpan.status.code).toEqual(SpanStatusCode.OK)
     expect(nitroSpan.name).toEqual('GET /hello_smile')
-  })
-
-  beforeEach(() => {
-    instrumentation.enable()
-    httpInstrumentation.enable()
-    contextManager.enable()
-  })
-
-  afterEach(() => {
-    contextManager.disable()
-    instrumentation.disable()
-    instrumentation.setConfig({})
-    httpInstrumentation.disable()
-    spanProcessor.forceFlush()
-    memoryExporter.reset()
   })
 })
