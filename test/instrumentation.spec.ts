@@ -60,6 +60,8 @@ function validateSpans(
 //
 // Timeout Mitigation Strategy:
 // 1. Increased timeout to 60s (from 20s) to accommodate slower CI environments
+//      - Increased `hookTimeout` and `testTimeout` to 60s in `vitest.config.ts`,
+//        as the test-specific `timeout` option is not impacting the `hookTimeout`
 // 2. Nitro server setup MUST remain in the describe block's initialization phase
 //      - Moving it to beforeAll or beforeEach causes "server not running" errors
 //      - This ensures proper server state for all test cases
@@ -68,7 +70,7 @@ function validateSpans(
 //      - Resetting configurations
 //      - Flushing span processor
 //      - Clearing exporter data
-describe('test instrumentation', { timeout: 60000 }, async () => {
+describe('test instrumentation', async () => {
   // Initialize all instrumentation and tracing components
   const httpInstrumentation = new HttpInstrumentation()
   const instrumentation = new NitroInstrumentation()

@@ -60,7 +60,7 @@ declare global {
   // eslint-disable-next-line vars-on-top
   var __nitro__: {
     app: NitroApp
-    [key: string]: any
+    [key: string]: unknown
   }
   // eslint-disable-next-line vars-on-top
   var __package_name: string
@@ -167,7 +167,7 @@ export class NitroInstrumentation
       }
 
       // Use the beforeResponse hook to update the route information
-      // At this point we have the matchedRoute informationw which is not available
+      // At this point we have the matchedRoute information which is not available
       // in the request hook, but afterResponse is too late to affect the http span.
       nitroApp.hooks.hook('beforeResponse', (event) => {
         if (!event.context.otel?.span) {
