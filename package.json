@@ -77,7 +77,7 @@
     "@arethetypeswrong/cli": "0.18.2",
     "@nuxt/eslint": "1.7.1",
     "@nuxt/eslint-config": "1.4.1",
-    "@nuxt/module-builder": "1.0.1",
+    "@nuxt/module-builder": "1.0.2",
     "@nuxt/schema": "catalog:",
     "@opentelemetry/context-async-hooks": "2.0.1",
     "@opentelemetry/instrumentation-http": "0.203.0",
