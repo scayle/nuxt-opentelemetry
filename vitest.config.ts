@@ -1,5 +1,6 @@
 import { defineConfig, configDefaults } from 'vitest/config'
 import packageJson from './package.json'
+import { vitestConfigPoolForksLimited } from '@scayle/vitest-config-storefront'
 
 export default defineConfig({
   test: {
@@ -12,9 +13,16 @@ export default defineConfig({
         '__mocks__/**',
       ],
     },
+    // As we modify the forks.execArgv here, we can't override the config via the vitestCIThreading,
+    // hence we manually replicate it here.
+    // As we modify the forks.execArgv here and thus use the values from the vitestConfigPoolForksLimited.
+    pool: vitestConfigPoolForksLimited.pool,
     poolOptions: {
       forks: {
         execArgv: ['--import=./test/hook-loader.mjs'],
+        ...(process.env.CI && {
+          ...vitestConfigPoolForksLimited.poolOptions?.forks,
+        }),
       },
     },
     hookTimeout: 60000,
