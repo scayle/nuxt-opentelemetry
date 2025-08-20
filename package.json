@@ -97,7 +97,7 @@
     "typescript": "5.9.2",
     "unbuild": "3.6.1",
     "vitest": "3.2.4",
-    "vue-tsc": "3.0.5"
+    "vue-tsc": "3.0.6"
   },
   "volta": {
     "node": "22.18.0"
