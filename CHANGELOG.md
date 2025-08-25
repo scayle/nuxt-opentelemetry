@@ -1,5 +1,15 @@
 # @scayle/nuxt-opentelemetry
 
+## 0.14.0
+
+### Minor Changes
+
+- Include `@opentelemetry/instrumentation-runtime-node` to capture node runtime metrics.
+
+### Patch Changes
+
+- Added dependency `@opentelemetry/instrumentation-runtime-node@0.17.1`
+
 ## 0.13.14
 
 ### Patch Changes
