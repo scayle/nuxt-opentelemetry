@@ -5,6 +5,7 @@ import { NodeSDK } from '@opentelemetry/sdk-node'
 import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics'
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-proto'
 import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-proto'
+import { RuntimeNodeInstrumentation } from '@opentelemetry/instrumentation-runtime-node'
 import { NitroInstrumentation } from '../../instrumentation'
 import { useRuntimeConfig } from 'nitropack/runtime'
 import { getReplace, getRouteName, getFilter } from '../../utils'
@@ -54,6 +55,7 @@ export default defineNitroPlugin((_nitroApp: NitroApp) => {
         },
         ignoreRequestHook: (event) => filter(event.path),
       }),
+      new RuntimeNodeInstrumentation(),
     ],
   })
 
