@@ -95,7 +95,7 @@
     "nuxt": "catalog:",
     "publint": "0.3.13",
     "rimraf": "6.0.1",
-    "typescript": "5.9.2",
+    "typescript": "5.9.3",
     "unbuild": "3.6.1",
     "vitest": "3.2.4",
     "vue-tsc": "3.1.0"
