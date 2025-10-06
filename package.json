@@ -93,7 +93,7 @@
     "nitro-test-utils": "0.9.4",
     "nitropack": "2.12.6",
     "nuxt": "catalog:",
-    "publint": "0.3.13",
+    "publint": "0.3.14",
     "rimraf": "6.0.1",
     "typescript": "5.9.3",
     "unbuild": "3.6.1",
