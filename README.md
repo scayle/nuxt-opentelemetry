@@ -9,7 +9,7 @@
 </div>
 
 <div align="center">
-  <h4><a href="https://scayle.dev/en/storefront-guide/developer-guide/integrations/open-telemetry">Documentation</a> | <a href="https://www.scayle.com/">Website</a></h4>
+  <h4><a href="https://scayle.dev/en/core-documentation/storefront-guide/storefront-application/integrations/open-telemetry">Documentation</a> | <a href="https://www.scayle.com/">Website</a></h4>
 </div>
 
 <div align="center">
@@ -134,7 +134,7 @@ Licensed under the [MIT License](https://opensource.org/license/mit/)
 [SCAYLE](https://scayle.com) is a full-featured e-commerce software solution that comes with flexible APIs.
 Within SCAYLE, you can manage all aspects of your shop, such as products, stocks, customers, and transactions.
 
-Learn more about [SCAYLE’s architecture](https://scayle.dev/en/getting-started) and commerce modules in the Docs.
+Learn more about [SCAYLE’s architecture](https://scayle.dev/en/core-documentation/welcome-to-scayle/getting-started) and commerce modules in the Docs.
 
 ## Other channels
 
