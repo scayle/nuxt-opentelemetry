@@ -1,5 +1,11 @@
 # @scayle/nuxt-opentelemetry
 
+## 0.14.6
+
+### Patch Changes
+
+- Updated SCAYLE Resource Center references
+
 ## 0.14.5
 
 ### Patch Changes
