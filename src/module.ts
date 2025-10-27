@@ -8,6 +8,8 @@ import {
 import { defu } from 'defu'
 import { getPublicAssets, nitroSetup, prepareEntry } from './utils'
 
+export { NitroInstrumentation } from './runtime/instrumentation'
+
 export interface ModuleOptions {
   enabled: boolean
   pathBlocklist?: string

@@ -104,6 +104,7 @@ To leverage custom instrumentation, set `disableAutomaticInstrumentation` to `tr
 // ./server/plugins/instrumentation.ts
 import { defineNitroPlugin } from 'nitropack/runtime/plugin'
 import type { NitroApp } from 'nitropack/types'
+import { NitroInstrumentation } from '@scayle/nuxt-opentelemetry'
 import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node'
 import { NodeSDK } from '@opentelemetry/sdk-node'
 import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics'
@@ -118,6 +119,7 @@ export default defineNitroPlugin((_nitroApp: NitroApp) => {
     }),
     instrumentations: [
       getNodeAutoInstrumentations(),
+      new NitroInstrumentation()
     ],
   })
 
