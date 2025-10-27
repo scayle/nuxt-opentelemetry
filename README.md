@@ -98,7 +98,7 @@ You can read more about the behavior of these options in [its documentation](htt
 
 ### Custom instrumentation
 
-To leverage custom instrumentation, set `disableAutomaticInstrumentation` to `true`. This enables the creation of custom instrumentation within a Nitro plugin located in the `./server/plugins` directory, offering enhanced customization and adaptability for your instrumentation configuration. The example provided demonstrates a basic instrumentation setup utilizing the `@opentelemetry/sdk-node`.
+To leverage custom instrumentation, set `disableAutomaticInitialization` to `true`. This enables the creation of custom instrumentation within a Nitro plugin located in the `./server/plugins` directory, offering enhanced customization and adaptability for your instrumentation configuration. The example provided demonstrates a basic instrumentation setup utilizing the `@opentelemetry/sdk-node`.
 
 ```ts
 // ./server/plugins/instrumentation.ts
