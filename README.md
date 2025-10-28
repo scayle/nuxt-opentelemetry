@@ -63,7 +63,8 @@ The internal module can be configured through module options or runtime environm
 - `enabled` or `NUXT_OPENTELEMETRY_ENABLED`
   - This option enables or disables the module.
     If `enabled` is set to false at build-time, the module will not install any plugins or modify the entrypoint.
-    If `enabled` is set to false at runtime, the plugin will be installed, but spans will not be created for Nitro requests. They may be created for other instrumentations.
+    If `enabled` is set to false at runtime, the plugin will be installed, but spans will not be created for Nitro requests.
+    They may be created for other instrumentations.
 
 - `pathBlocklist` or `NUXT_OPENTELEMETRY_PATH_BLOCKLIST`
   - This option allows ignoring requests for paths that match the pattern.
@@ -80,13 +81,19 @@ The internal module can be configured through module options or runtime environm
     For example: `['^/(en|de|fr)/', '/:locale/']`
 
 - `requestHeaders` or `NUXT_OPENTELEMETRY_REQUEST_HEADERS`
-  - This option allows selecting which request headers to include as span attributes. They will be added as `http.request.header.{name}`. The values are case-insensitive when matching headers. It will be normalized to lowercase in the attribute name. Example: `{ requestHeaders: ['x-custom-header', 'accept'] }` or `NUXT_OPENTELEMETRY_REQUEST_HEADERS=["x-custom-header", "accept"]`
+  - This option allows selecting which request headers to include as span attributes. They will be added as `http.request.header.{name}`.
+    The values are case-insensitive when matching headers. It will be normalized to lowercase in the attribute name.
+    - Example: `{ requestHeaders: ['x-custom-header', 'accept'] }` or `NUXT_OPENTELEMETRY_REQUEST_HEADERS=["x-custom-header", "accept"]`
 
 - `responseHeaders` or `NUXT_OPENTELEMETRY_RESPONSE_HEADERS`
-  - This option allows selecting which response headers to include as span attributes. They will be added as `http.response.header.{name}`. The values are case-insensitive when matching headers. It will be normalized to lowercase in the attribute name. Example: `{ responseHeaders: ['content-type'] }` or `NUXT_OPENTELEMETRY_REQUEST_HEADERS=["content-type"]`
+  - This option allows selecting which response headers to include as span attributes.
+    They will be added as `http.response.header.{name}`. The values are case-insensitive when matching headers.
+    It will be normalized to lowercase in the attribute name.
+    - Example: `{ responseHeaders: ['content-type'] }` or `NUXT_OPENTELEMETRY_REQUEST_HEADERS=["content-type"]`
 
 - `disableAutomaticInitialization` or `NUXT_OPENTELEMETRY_DISABLE_AUTOMATIC_INITIALIZATION`
-  - This option allows for manual instrumentation of the application via a Nitro plugin. This enables adjustment of the application's instrumentation to better suit specific needs.
+  - This option allows for manual instrumentation of the application via a Nitro plugin.
+    This enables adjustment of the application's instrumentation to better suit specific needs.
 
 ### Including and Excluding modules
 
@@ -98,7 +105,10 @@ You can read more about the behavior of these options in [its documentation](htt
 
 ### Custom instrumentation
 
-To leverage custom instrumentation, set `disableAutomaticInstrumentation` to `true`. This enables the creation of custom instrumentation within a Nitro plugin located in the `./server/plugins` directory, offering enhanced customization and adaptability for your instrumentation configuration. The example provided demonstrates a basic instrumentation setup utilizing the `@opentelemetry/sdk-node`.
+To leverage custom instrumentation, set `disableAutomaticInitialization` to `true`.
+This enables the creation of custom instrumentation within a Nitro plugin located in the `./server/plugins` directory,
+offering enhanced customization and adaptability for your instrumentation configuration.
+The example provided demonstrates a basic instrumentation setup utilizing the `@opentelemetry/sdk-node`.
 
 ```ts
 // ./server/plugins/instrumentation.ts
@@ -140,12 +150,3 @@ Learn more about [SCAYLE’s architecture](https://scayle.dev/en/core-documentat
 
 - [LinkedIn](https://www.linkedin.com/company/scaylecommerce/)
 - [Jobs](https://careers.smartrecruiters.com/ABOUTYOUGmbH/scayle)
-
-<!-- Badges -->
-
-[npm-version-src]: https://img.shields.io/npm/v/@scayle/nuxt-opentelemetry/latest.svg?style=flat&colorA=18181B&colorB=28CF8D
-[npm-version-href]: https://npmjs.com/package/@scayle/nuxt-opentelemetry
-[npm-downloads-src]: https://img.shields.io/npm/dm/@scayle/nuxt-opentelemetry.svg?style=flat&colorA=18181B&colorB=28CF8D
-[npm-downloads-href]: https://npmjs.com/package/@scayle/nuxt-opentelemetry
-[license-src]: https://img.shields.io/npm/l/@scayle/nuxt-opentelemetry.svg?style=flat&colorA=18181B&colorB=28CF8D
-[license-href]: https://npmjs.com/package/@scayle/nuxt-opentelemetry
