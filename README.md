@@ -78,7 +78,7 @@ The internal module can be configured through module options or runtime environm
     The first element is the pattern to match, as a regular expression string or plain string.
     The second element is the text to replace the match with.
     This can be used to use the same span name when the paths only differ by a locale prefix.
-    For example: `['^/(en|de|fr)/', '/:locale/']`
+    - Example: `['^/(en|de|fr)/', '/:locale/']`
 
 - `requestHeaders` or `NUXT_OPENTELEMETRY_REQUEST_HEADERS`
   - This option allows selecting which request headers to include as span attributes. They will be added as `http.request.header.{name}`.
@@ -110,11 +110,15 @@ This enables the creation of custom instrumentation within a Nitro plugin locate
 offering enhanced customization and adaptability for your instrumentation configuration.
 The example provided demonstrates a basic instrumentation setup utilizing the `@opentelemetry/sdk-node`.
 
+For advanced use cases, like customizing HTTP span instrumentation,
+you can import and extend the `NitroInstrumentation` class from `@scayle/nuxt-opentelemetry/instrumentation`.
+
 ```ts
 // ./server/plugins/instrumentation.ts
 import { defineNitroPlugin } from 'nitropack/runtime/plugin'
 import type { NitroApp } from 'nitropack/types'
 import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node'
+import { NitroInstrumentation } from '@scayle/nuxt-opentelemetry/instrumentation'
 import { NodeSDK } from '@opentelemetry/sdk-node'
 import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics'
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-proto'
@@ -128,6 +132,9 @@ export default defineNitroPlugin((_nitroApp: NitroApp) => {
     }),
     instrumentations: [
       getNodeAutoInstrumentations(),
+      new NitroInstrumentation({
+        // Custom configuration
+      }),
     ],
   })
 

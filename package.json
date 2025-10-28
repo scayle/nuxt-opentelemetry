@@ -20,6 +20,10 @@
     ".": {
       "types": "./dist/module.d.mts",
       "import": "./dist/module.mjs"
+    },
+    "./instrumentation": {
+      "types": "./dist/runtime/instrumentation.d.ts",
+      "import": "./dist/runtime/instrumentation.js"
     }
   },
   "main": "./dist/module.mjs",
