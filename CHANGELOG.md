@@ -1,5 +1,29 @@
 # @scayle/nuxt-opentelemetry
 
+## 0.14.7
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.65.0` to `@opentelemetry/auto-instrumentations-node@0.66.0`
+- Updated dependency `@opentelemetry/core@2.1.0` to `@opentelemetry/core@2.2.0`
+- Updated dependency `@opentelemetry/exporter-metrics-otlp-proto@0.206.0` to `@opentelemetry/exporter-metrics-otlp-proto@0.207.0`
+- Updated dependency `@opentelemetry/exporter-trace-otlp-proto@0.206.0` to `@opentelemetry/exporter-trace-otlp-proto@0.207.0`
+- Updated dependency `@opentelemetry/instrumentation@0.206.0` to `@opentelemetry/instrumentation@0.207.0`
+- Updated dependency `@opentelemetry/instrumentation-runtime-node@0.20.0` to `@opentelemetry/instrumentation-runtime-node@0.21.0`
+- Updated dependency `@opentelemetry/sdk-metrics@2.1.0` to `@opentelemetry/sdk-metrics@2.2.0`
+- Updated dependency `@opentelemetry/sdk-trace-base@2.1.0` to `@opentelemetry/sdk-trace-base@2.2.0`
+- Updated dependency `@opentelemetry/sdk-trace-node@2.1.0` to `@opentelemetry/sdk-trace-node@2.2.0`
+- Updated dependency `@vercel/otel@1.13.1` to `@vercel/otel@1.14.0`
+- Expose `NitroInstrumentation` via the new public export `@scayle/nuxt-opentelemetry/instrumentation`.
+
+  - Add subpath export for `NitroInstrumentation`
+  - Document usage in README with example
+  - No runtime behavior changes (non‑breaking)
+
+  Thanks [euaaaio](https://github.com/euaaaio) for the contribution.
+
+- Cleaned up README.md and added CONTRIBUTING.md. No functional changes.
+
 ## 0.14.6
 
 ### Patch Changes
