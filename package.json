@@ -94,7 +94,7 @@
     "eslint": "9.38.0",
     "eslint-formatter-gitlab": "6.0.1",
     "memfs": "4.50.0",
-    "nitro-test-utils": "0.9.4",
+    "nitro-test-utils": "0.10.1",
     "nitropack": "2.12.8",
     "nuxt": "catalog:",
     "publint": "0.3.15",
