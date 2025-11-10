@@ -1,11 +1,12 @@
 import { defineConfig, configDefaults } from 'vitest/config'
 import packageJson from './package.json'
-import { vitestConfigPoolForksLimited } from '@scayle/vitest-config-storefront'
+import { vitestCIConfigThreading } from '@scayle/vitest-config-storefront'
 
 export default defineConfig({
   test: {
     coverage: {
       provider: 'v8',
+      include: ['src/**/*.{ts,js,mjs}'],
       reporter: ['text', 'cobertura'],
       exclude: [
         ...(configDefaults.coverage.exclude || []),
@@ -13,18 +14,10 @@ export default defineConfig({
         '__mocks__/**',
       ],
     },
-    // As we modify the forks.execArgv here, we can't override the config via the vitestCIThreading,
-    // hence we manually replicate it here.
-    // As we modify the forks.execArgv here and thus use the values from the vitestConfigPoolForksLimited.
-    pool: vitestConfigPoolForksLimited.pool,
-    poolOptions: {
-      forks: {
-        execArgv: ['--import=./test/hook-loader.mjs'],
-        ...(process.env.CI && {
-          ...vitestConfigPoolForksLimited.poolOptions?.forks,
-        }),
-      },
-    },
+    setupFiles: [
+      './test/hook-loader.mjs',
+    ],
+    ...vitestCIConfigThreading,
     hookTimeout: 60000,
     testTimeout: 60000,
   },
