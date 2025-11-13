@@ -1,5 +1,13 @@
 # @scayle/nuxt-opentelemetry
 
+## 0.14.9
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.66.0` to `@opentelemetry/auto-instrumentations-node@0.67.0`
+- Updated dependency `@opentelemetry/instrumentation-runtime-node@0.21.0` to `@opentelemetry/instrumentation-runtime-node@0.22.0`
+- Updated dependency `@opentelemetry/semantic-conventions@1.37.0` to `@opentelemetry/semantic-conventions@1.38.0`
+
 ## 0.14.8
 
 ### Patch Changes
