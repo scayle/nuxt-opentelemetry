@@ -230,16 +230,20 @@ export class NitroInstrumentation
           // Only 5xx errors should mark the span as Error for a server-side span
           // https://opentelemetry.io/docs/specs/semconv/http/http-spans/#status
           if (e.statusCode >= 500 && e.statusCode <= 599) {
-            span.setAttribute(ATTR_ERROR_TYPE, 'Unknown Error')
             span.setStatus({ code: SpanStatusCode.ERROR })
           }
           span.setAttribute(
             ATTR_HTTP_RESPONSE_STATUS_CODE,
             e.statusCode,
           )
-          if (e.cause instanceof Error) {
+
+          span.recordException(e)
+          span.setAttribute(ATTR_ERROR_TYPE, e.name)
+
+          // Similar to the rpc handler in storefront-nuxt, we record the cause if it is an error
+          // https://github.com/open-telemetry/semantic-conventions/issues/941
+          if (e.cause && e.cause instanceof Error) {
             span.recordException(e.cause)
-            span.setAttribute(ATTR_ERROR_TYPE, e.cause.name)
           }
         } else {
           if (e instanceof Error) {
