@@ -92,7 +92,7 @@
     "@vitest/coverage-v8": "catalog:",
     "dprint": "0.50.2",
     "eslint": "9.39.1",
-    "eslint-formatter-gitlab": "7.0.0",
+    "eslint-formatter-gitlab": "7.0.1",
     "memfs": "4.51.1",
     "nitro-test-utils": "0.10.1",
     "nitropack": "2.12.8",
