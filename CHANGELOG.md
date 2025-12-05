@@ -1,5 +1,13 @@
 # @scayle/nuxt-opentelemetry
 
+## 0.16.0
+
+### Minor Changes
+
+- Updated `NitroInstrumentation` to record exception details for unhandled errors.
+
+  Previously, unhandled h3 HTTP errors were reported as a generic `Unknown Error`. Now, the exception is explicitly recorded on the span and the error type is derived from the exception name. This improvement makes it easier to identify the root cause of 5xx errors.
+
 ## 0.15.2
 
 ### Patch Changes
