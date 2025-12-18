@@ -61,7 +61,7 @@
   },
   "dependencies": {
     "@nuxt/kit": "^3.12.3",
-    "@opentelemetry/api": "1.9.0",
+    "@opentelemetry/api": "catalog:",
     "@opentelemetry/auto-instrumentations-node": "0.67.3",
     "@opentelemetry/core": "2.2.0",
     "@opentelemetry/exporter-metrics-otlp-proto": "0.208.0",
@@ -74,37 +74,32 @@
     "@opentelemetry/sdk-trace-node": "2.2.0",
     "@opentelemetry/semantic-conventions": "1.38.0",
     "@vercel/otel": "2.1.0",
-    "defu": "^6.1.4",
-    "import-in-the-middle": "1.15.0",
-    "knitwork": "^1.1.0"
+    "defu": "catalog:",
+    "import-in-the-middle": "catalog:",
+    "knitwork": "catalog:"
   },
   "devDependencies": {
-    "@arethetypeswrong/cli": "0.18.2",
-    "@nuxt/eslint": "1.12.1",
-    "@nuxt/eslint-config": "1.12.1",
-    "@nuxt/module-builder": "1.0.2",
+    "@arethetypeswrong/cli": "catalog:",
+    "@nuxt/module-builder": "catalog:",
     "@nuxt/schema": "catalog:",
     "@opentelemetry/context-async-hooks": "2.2.0",
     "@opentelemetry/instrumentation-http": "0.208.0",
     "@scayle/eslint-config-storefront": "workspace:*",
     "@scayle/vitest-config-storefront": "workspace:*",
-    "@types/node": "22.19.3",
+    "@types/node": "catalog:",
     "@vitest/coverage-v8": "catalog:",
-    "dprint": "0.50.2",
-    "eslint": "9.39.2",
-    "eslint-formatter-gitlab": "7.0.1",
+    "dprint": "catalog:",
+    "eslint": "catalog:",
+    "eslint-formatter-gitlab": "catalog:",
     "memfs": "4.51.1",
     "nitro-test-utils": "0.10.1",
-    "nitropack": "2.12.8",
+    "nitropack": "catalog:",
     "nuxt": "catalog:",
-    "publint": "0.3.16",
-    "rimraf": "6.1.2",
-    "typescript": "5.9.3",
-    "unbuild": "3.6.1",
+    "publint": "catalog:",
+    "rimraf": "catalog:",
+    "typescript": "catalog:",
+    "unbuild": "catalog:",
     "vitest": "catalog:",
-    "vue-tsc": "3.1.8"
-  },
-  "volta": {
-    "node": "22.21.1"
+    "vue-tsc": "catalog:"
   }
 }
