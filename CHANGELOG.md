@@ -1,5 +1,15 @@
 # @scayle/nuxt-opentelemetry
 
+## 0.16.2
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/api@1.9.0` to `@opentelemetry/api@catalog:`
+- Updated dependency `defu@^6.1.4` to `defu@catalog:`
+- Updated dependency `import-in-the-middle@1.15.0` to `import-in-the-middle@catalog:`
+- Updated dependency `knitwork@^1.1.0` to `knitwork@catalog:`
+- This is an internal change only. The packages now use the PNPM catalog feature to ensure dependencies use the identical version across packages.
+
 ## 0.16.1
 
 ### Patch Changes
