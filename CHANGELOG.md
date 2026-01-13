@@ -1,5 +1,31 @@
 # @scayle/nuxt-opentelemetry
 
+## 0.17.0
+
+### Minor Changes
+
+- Introduced support for Nuxt 4 while maintaining full backward compatibility with Nuxt 3.
+  This enables consumers to migrate to Nuxt 4 ahead of the Nuxt 3 end of support on 31 Jan 2026.
+
+  - **Version Requirements:**
+    - Nuxt 3: `v3.13.0+`
+    - Nuxt 4: `v4.2.0+`
+
+  **NOTE:** Please be aware that the SCAYLE Storefront Application itself does not yet support Nuxt 4. These package updates are a prerequisite. We recommend remaining on Nuxt 3 for your Storefront implementation until further notice.
+
+  See the [Nuxt 4 Migration Guide](https://nuxt.com/docs/4.x/getting-started/upgrade) for general upgrade details.
+
+### Patch Changes
+
+- Removed dependency `@nuxt/kit@^3.12.3`
+- Updated dependency `@opentelemetry/core@2.2.0` to `@opentelemetry/core@2.3.0`
+- Updated dependency `@opentelemetry/exporter-metrics-otlp-proto@0.208.0` to `@opentelemetry/exporter-metrics-otlp-proto@0.209.0`
+- Updated dependency `@opentelemetry/exporter-trace-otlp-proto@0.208.0` to `@opentelemetry/exporter-trace-otlp-proto@0.209.0`
+- Updated dependency `@opentelemetry/instrumentation@0.208.0` to `@opentelemetry/instrumentation@0.209.0`
+- Updated dependency `@opentelemetry/sdk-metrics@2.2.0` to `@opentelemetry/sdk-metrics@2.3.0`
+- Updated dependency `@opentelemetry/sdk-trace-base@2.2.0` to `@opentelemetry/sdk-trace-base@2.3.0`
+- Updated dependency `@opentelemetry/sdk-trace-node@2.2.0` to `@opentelemetry/sdk-trace-node@2.3.0`
+
 ## 0.16.2
 
 ### Patch Changes
