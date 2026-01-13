@@ -57,10 +57,10 @@
     "test:ci": "vitest --run --coverage --reporter=default --reporter=junit --outputFile=./coverage/junit.xml"
   },
   "peerDependencies": {
-    "h3": "^1.10.0"
+    "h3": "^1.10.0",
+    "@nuxt/kit": "^3.13.0 || ^4.2.0"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.12.3",
     "@opentelemetry/api": "catalog:",
     "@opentelemetry/auto-instrumentations-node": "0.67.3",
     "@opentelemetry/core": "2.3.0",

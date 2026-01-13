@@ -29,7 +29,7 @@ export default defineNuxtModule<ModuleOptions>({
     version: PACKAGE_VERSION,
     compatibility: {
       bridge: false,
-      nuxt: '>=3.10',
+      nuxt: '>=3.13',
     },
   },
   defaults: {
