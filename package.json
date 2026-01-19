@@ -91,7 +91,7 @@
     "dprint": "catalog:",
     "eslint": "catalog:",
     "eslint-formatter-gitlab": "catalog:",
-    "memfs": "4.51.1",
+    "memfs": "4.52.0",
     "nitro-test-utils": "0.10.1",
     "nitropack": "catalog:",
     "nuxt": "catalog:",
