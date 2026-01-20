@@ -1,5 +1,20 @@
 # @scayle/nuxt-opentelemetry
 
+## 0.17.1
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.67.3` to `@opentelemetry/auto-instrumentations-node@0.68.0`
+- Updated dependency `@opentelemetry/core@2.3.0` to `@opentelemetry/core@2.4.0`
+- Updated dependency `@opentelemetry/exporter-metrics-otlp-proto@0.209.0` to `@opentelemetry/exporter-metrics-otlp-proto@0.210.0`
+- Updated dependency `@opentelemetry/exporter-trace-otlp-proto@0.209.0` to `@opentelemetry/exporter-trace-otlp-proto@0.210.0`
+- Updated dependency `@opentelemetry/instrumentation@0.209.0` to `@opentelemetry/instrumentation@0.210.0`
+- Updated dependency `@opentelemetry/instrumentation-runtime-node@0.22.0` to `@opentelemetry/instrumentation-runtime-node@0.23.0`
+- Updated dependency `@opentelemetry/sdk-metrics@2.3.0` to `@opentelemetry/sdk-metrics@2.4.0`
+- Updated dependency `@opentelemetry/sdk-trace-base@2.3.0` to `@opentelemetry/sdk-trace-base@2.4.0`
+- Updated dependency `@opentelemetry/sdk-trace-node@2.3.0` to `@opentelemetry/sdk-trace-node@2.4.0`
+- Updated dependency `@opentelemetry/semantic-conventions@1.38.0` to `@opentelemetry/semantic-conventions@1.39.0`
+
 ## 0.17.0
 
 ### Minor Changes
