@@ -81,7 +81,7 @@
   "devDependencies": {
     "@arethetypeswrong/cli": "catalog:",
     "@nuxt/module-builder": "catalog:",
-    "@nuxt/schema": "catalog:",
+    "@nuxt/schema": "catalog:nuxt3",
     "@opentelemetry/context-async-hooks": "2.5.0",
     "@opentelemetry/instrumentation-http": "0.211.0",
     "@scayle/eslint-config-storefront": "workspace:*",
@@ -94,7 +94,7 @@
     "memfs": "4.56.9",
     "nitro-test-utils": "0.10.1",
     "nitropack": "catalog:",
-    "nuxt": "catalog:",
+    "nuxt": "catalog:nuxt3",
     "publint": "catalog:",
     "rimraf": "catalog:",
     "typescript": "catalog:",
