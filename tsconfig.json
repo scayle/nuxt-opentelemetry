@@ -1,7 +1,0 @@
-{
-  "extends": "./.nuxt/tsconfig.json",
-  "compilerOptions": {
-    "moduleResolution": "bundler",
-    "erasableSyntaxOnly": true
-  }
-}
