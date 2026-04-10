@@ -33,7 +33,7 @@
     "dist/**"
   ],
   "engines": {
-    "node": ">= 18.15.0"
+    "node": ">= 22.0.0"
   },
   "compatibility": {
     "nuxt": "^3.10"
