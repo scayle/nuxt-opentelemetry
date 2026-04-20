@@ -1,0 +1,711 @@
+# @scayle/nuxt-opentelemetry
+
+## 1.0.0
+
+### Major Changes
+
+- All packages now require Node.js 22 or later, in line with the current Node.js LTS release schedule. See the [Node.js release schedule](https://nodejs.org/en/about/previous-releases#release-schedule) for details.
+
+  If your project is still running an older Node.js version, now is a good time to upgrade to Node.js 22 at minimum, or ideally Node.js 24, for the latest security patches and stability improvements.
+
+## 0.17.4
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.69.0` to `@opentelemetry/auto-instrumentations-node@0.72.0`
+- Updated dependency `@opentelemetry/core@2.5.0` to `@opentelemetry/core@2.6.1`
+- Updated dependency `@opentelemetry/exporter-metrics-otlp-proto@0.211.0` to `@opentelemetry/exporter-metrics-otlp-proto@0.214.0`
+- Updated dependency `@opentelemetry/exporter-trace-otlp-proto@0.211.0` to `@opentelemetry/exporter-trace-otlp-proto@0.214.0`
+- Updated dependency `@opentelemetry/instrumentation@0.211.0` to `@opentelemetry/instrumentation@0.214.0`
+- Updated dependency `@opentelemetry/instrumentation-runtime-node@0.24.0` to `@opentelemetry/instrumentation-runtime-node@0.27.0`
+- Updated dependency `@opentelemetry/sdk-metrics@2.5.0` to `@opentelemetry/sdk-metrics@2.6.1`
+- Updated dependency `@opentelemetry/sdk-trace-base@2.5.0` to `@opentelemetry/sdk-trace-base@2.6.1`
+- Updated dependency `@opentelemetry/sdk-trace-node@2.5.0` to `@opentelemetry/sdk-trace-node@2.6.1`
+- Updated dependency `@opentelemetry/semantic-conventions@1.39.0` to `@opentelemetry/semantic-conventions@1.40.0`
+- Updated dependency `@vercel/otel@2.1.0` to `@vercel/otel@2.1.1`
+
+## 0.17.3
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.68.0` to `@opentelemetry/auto-instrumentations-node@0.69.0`
+- Updated dependency `@opentelemetry/core@2.4.0` to `@opentelemetry/core@2.5.0`
+- Updated dependency `@opentelemetry/exporter-metrics-otlp-proto@0.210.0` to `@opentelemetry/exporter-metrics-otlp-proto@0.211.0`
+- Updated dependency `@opentelemetry/exporter-trace-otlp-proto@0.210.0` to `@opentelemetry/exporter-trace-otlp-proto@0.211.0`
+- Updated dependency `@opentelemetry/instrumentation@0.210.0` to `@opentelemetry/instrumentation@0.211.0`
+- Updated dependency `@opentelemetry/instrumentation-runtime-node@0.23.0` to `@opentelemetry/instrumentation-runtime-node@0.24.0`
+- Updated dependency `@opentelemetry/sdk-metrics@2.4.0` to `@opentelemetry/sdk-metrics@2.5.0`
+- Updated dependency `@opentelemetry/sdk-trace-base@2.4.0` to `@opentelemetry/sdk-trace-base@2.5.0`
+- Updated dependency `@opentelemetry/sdk-trace-node@2.4.0` to `@opentelemetry/sdk-trace-node@2.5.0`
+
+## 0.17.2
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/core@2.4.0` to `@opentelemetry/core@2.5.0`
+- Updated dependency `@opentelemetry/exporter-metrics-otlp-proto@0.210.0` to `@opentelemetry/exporter-metrics-otlp-proto@0.211.0`
+- Updated dependency `@opentelemetry/exporter-trace-otlp-proto@0.210.0` to `@opentelemetry/exporter-trace-otlp-proto@0.211.0`
+- Updated dependency `@opentelemetry/instrumentation@0.210.0` to `@opentelemetry/instrumentation@0.211.0`
+- Updated dependency `@opentelemetry/sdk-metrics@2.4.0` to `@opentelemetry/sdk-metrics@2.5.0`
+- Updated dependency `@opentelemetry/sdk-trace-base@2.4.0` to `@opentelemetry/sdk-trace-base@2.5.0`
+- Updated dependency `@opentelemetry/sdk-trace-node@2.4.0` to `@opentelemetry/sdk-trace-node@2.5.0`
+
+## 0.17.1
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.67.3` to `@opentelemetry/auto-instrumentations-node@0.68.0`
+- Updated dependency `@opentelemetry/core@2.3.0` to `@opentelemetry/core@2.4.0`
+- Updated dependency `@opentelemetry/exporter-metrics-otlp-proto@0.209.0` to `@opentelemetry/exporter-metrics-otlp-proto@0.210.0`
+- Updated dependency `@opentelemetry/exporter-trace-otlp-proto@0.209.0` to `@opentelemetry/exporter-trace-otlp-proto@0.210.0`
+- Updated dependency `@opentelemetry/instrumentation@0.209.0` to `@opentelemetry/instrumentation@0.210.0`
+- Updated dependency `@opentelemetry/instrumentation-runtime-node@0.22.0` to `@opentelemetry/instrumentation-runtime-node@0.23.0`
+- Updated dependency `@opentelemetry/sdk-metrics@2.3.0` to `@opentelemetry/sdk-metrics@2.4.0`
+- Updated dependency `@opentelemetry/sdk-trace-base@2.3.0` to `@opentelemetry/sdk-trace-base@2.4.0`
+- Updated dependency `@opentelemetry/sdk-trace-node@2.3.0` to `@opentelemetry/sdk-trace-node@2.4.0`
+- Updated dependency `@opentelemetry/semantic-conventions@1.38.0` to `@opentelemetry/semantic-conventions@1.39.0`
+
+## 0.17.0
+
+### Minor Changes
+
+- Introduced support for Nuxt 4 while maintaining full backward compatibility with Nuxt 3.
+  This enables consumers to migrate to Nuxt 4 ahead of the Nuxt 3 end of support on 31 Jan 2026.
+
+  - **Version Requirements:**
+    - Nuxt 3: `v3.13.0+`
+    - Nuxt 4: `v4.2.0+`
+
+  **NOTE:** Please be aware that the SCAYLE Storefront Application itself does not yet support Nuxt 4. These package updates are a prerequisite. We recommend remaining on Nuxt 3 for your Storefront implementation until further notice.
+
+  See the [Nuxt 4 Migration Guide](https://nuxt.com/docs/4.x/getting-started/upgrade) for general upgrade details.
+
+### Patch Changes
+
+- Removed dependency `@nuxt/kit@^3.12.3`
+- Updated dependency `@opentelemetry/core@2.2.0` to `@opentelemetry/core@2.3.0`
+- Updated dependency `@opentelemetry/exporter-metrics-otlp-proto@0.208.0` to `@opentelemetry/exporter-metrics-otlp-proto@0.209.0`
+- Updated dependency `@opentelemetry/exporter-trace-otlp-proto@0.208.0` to `@opentelemetry/exporter-trace-otlp-proto@0.209.0`
+- Updated dependency `@opentelemetry/instrumentation@0.208.0` to `@opentelemetry/instrumentation@0.209.0`
+- Updated dependency `@opentelemetry/sdk-metrics@2.2.0` to `@opentelemetry/sdk-metrics@2.3.0`
+- Updated dependency `@opentelemetry/sdk-trace-base@2.2.0` to `@opentelemetry/sdk-trace-base@2.3.0`
+- Updated dependency `@opentelemetry/sdk-trace-node@2.2.0` to `@opentelemetry/sdk-trace-node@2.3.0`
+
+## 0.16.2
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/api@1.9.0` to `@opentelemetry/api@catalog:`
+- Updated dependency `defu@^6.1.4` to `defu@catalog:`
+- Updated dependency `import-in-the-middle@1.15.0` to `import-in-the-middle@catalog:`
+- Updated dependency `knitwork@^1.1.0` to `knitwork@catalog:`
+- This is an internal change only. The packages now use the PNPM catalog feature to ensure dependencies use the identical version across packages.
+
+## 0.16.1
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.67.2` to `@opentelemetry/auto-instrumentations-node@0.67.3`
+
+## 0.16.0
+
+### Minor Changes
+
+- Updated `NitroInstrumentation` to record exception details for unhandled errors.
+
+  Previously, unhandled h3 HTTP errors were reported as a generic `Unknown Error`. Now, the exception is explicitly recorded on the span and the error type is derived from the exception name. This improvement makes it easier to identify the root cause of 5xx errors.
+
+## 0.15.2
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.67.1` to `@opentelemetry/auto-instrumentations-node@0.67.2`
+
+## 0.15.1
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.67.0` to `@opentelemetry/auto-instrumentations-node@0.67.1`
+
+## 0.15.0
+
+### Minor Changes
+
+- Update `@vercel/otel` to version 2.1.0
+
+### Patch Changes
+
+- Updated dependency `@vercel/otel@1.14.0` to `@vercel/otel@2.1.0`
+
+## 0.14.9
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.66.0` to `@opentelemetry/auto-instrumentations-node@0.67.0`
+- Updated dependency `@opentelemetry/instrumentation-runtime-node@0.21.0` to `@opentelemetry/instrumentation-runtime-node@0.22.0`
+- Updated dependency `@opentelemetry/semantic-conventions@1.37.0` to `@opentelemetry/semantic-conventions@1.38.0`
+
+## 0.14.8
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/exporter-metrics-otlp-proto@0.207.0` to `@opentelemetry/exporter-metrics-otlp-proto@0.208.0`
+- Updated dependency `@opentelemetry/exporter-trace-otlp-proto@0.207.0` to `@opentelemetry/exporter-trace-otlp-proto@0.208.0`
+- Updated dependency `@opentelemetry/instrumentation@0.207.0` to `@opentelemetry/instrumentation@0.208.0`
+
+## 0.14.7
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.65.0` to `@opentelemetry/auto-instrumentations-node@0.66.0`
+- Updated dependency `@opentelemetry/core@2.1.0` to `@opentelemetry/core@2.2.0`
+- Updated dependency `@opentelemetry/exporter-metrics-otlp-proto@0.206.0` to `@opentelemetry/exporter-metrics-otlp-proto@0.207.0`
+- Updated dependency `@opentelemetry/exporter-trace-otlp-proto@0.206.0` to `@opentelemetry/exporter-trace-otlp-proto@0.207.0`
+- Updated dependency `@opentelemetry/instrumentation@0.206.0` to `@opentelemetry/instrumentation@0.207.0`
+- Updated dependency `@opentelemetry/instrumentation-runtime-node@0.20.0` to `@opentelemetry/instrumentation-runtime-node@0.21.0`
+- Updated dependency `@opentelemetry/sdk-metrics@2.1.0` to `@opentelemetry/sdk-metrics@2.2.0`
+- Updated dependency `@opentelemetry/sdk-trace-base@2.1.0` to `@opentelemetry/sdk-trace-base@2.2.0`
+- Updated dependency `@opentelemetry/sdk-trace-node@2.1.0` to `@opentelemetry/sdk-trace-node@2.2.0`
+- Updated dependency `@vercel/otel@1.13.1` to `@vercel/otel@1.14.0`
+- Expose `NitroInstrumentation` via the new public export `@scayle/nuxt-opentelemetry/instrumentation`.
+
+  - Add subpath export for `NitroInstrumentation`
+  - Document usage in README with example
+  - No runtime behavior changes (non‑breaking)
+
+  Thanks [euaaaio](https://github.com/euaaaio) for the contribution.
+
+- Cleaned up README.md and added CONTRIBUTING.md. No functional changes.
+
+## 0.14.6
+
+### Patch Changes
+
+- Updated SCAYLE Resource Center references
+
+## 0.14.5
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.64.1` to `@opentelemetry/auto-instrumentations-node@0.65.0`
+- Updated dependency `@opentelemetry/exporter-metrics-otlp-proto@0.205.0` to `@opentelemetry/exporter-metrics-otlp-proto@0.206.0`
+- Updated dependency `@opentelemetry/exporter-trace-otlp-proto@0.205.0` to `@opentelemetry/exporter-trace-otlp-proto@0.206.0`
+- Updated dependency `@opentelemetry/instrumentation@0.205.0` to `@opentelemetry/instrumentation@0.206.0`
+- Updated dependency `@opentelemetry/instrumentation-runtime-node@0.19.0` to `@opentelemetry/instrumentation-runtime-node@0.20.0`
+- Updated dependency `@vercel/otel@1.13.0` to `@vercel/otel@1.13.1`
+- Updated dependency `import-in-the-middle@1.14.2` to `import-in-the-middle@1.15.0`
+
+## 0.14.4
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.62.2` to `@opentelemetry/auto-instrumentations-node@0.64.1`
+- Updated dependency `@opentelemetry/exporter-metrics-otlp-proto@0.204.0` to `@opentelemetry/exporter-metrics-otlp-proto@0.205.0`
+- Updated dependency `@opentelemetry/exporter-trace-otlp-proto@0.204.0` to `@opentelemetry/exporter-trace-otlp-proto@0.205.0`
+- Updated dependency `@opentelemetry/instrumentation@0.204.0` to `@opentelemetry/instrumentation@0.205.0`
+- Updated dependency `@opentelemetry/instrumentation-runtime-node@0.17.1` to `@opentelemetry/instrumentation-runtime-node@0.19.0`
+- Use latest `nuxt@3.19.2` for build. Compatibility with previous version has not changed and is specified via package `peerDependencies` and Nuxt `compatibility` flag.
+
+## 0.14.3
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/core@2.0.1` to `@opentelemetry/core@2.1.0`
+- Updated dependency `@opentelemetry/exporter-metrics-otlp-proto@0.203.0` to `@opentelemetry/exporter-metrics-otlp-proto@0.204.0`
+- Updated dependency `@opentelemetry/exporter-trace-otlp-proto@0.203.0` to `@opentelemetry/exporter-trace-otlp-proto@0.204.0`
+- Updated dependency `@opentelemetry/instrumentation@0.203.0` to `@opentelemetry/instrumentation@0.204.0`
+- Updated dependency `@opentelemetry/sdk-metrics@2.0.1` to `@opentelemetry/sdk-metrics@2.1.0`
+- Updated dependency `@opentelemetry/sdk-trace-base@2.0.1` to `@opentelemetry/sdk-trace-base@2.1.0`
+- Updated dependency `@opentelemetry/sdk-trace-node@2.0.1` to `@opentelemetry/sdk-trace-node@2.1.0`
+
+## 0.14.2
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/semantic-conventions@1.36.0` to `@opentelemetry/semantic-conventions@1.37.0`
+
+## 0.14.1
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.62.1` to `@opentelemetry/auto-instrumentations-node@0.62.2`
+
+## 0.14.0
+
+### Minor Changes
+
+- Include `@opentelemetry/instrumentation-runtime-node` to capture node runtime metrics.
+
+### Patch Changes
+
+- Added dependency `@opentelemetry/instrumentation-runtime-node@0.17.1`
+
+## 0.13.14
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.62.0` to `@opentelemetry/auto-instrumentations-node@0.62.1`
+
+## 0.13.13
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.60.1` to `@opentelemetry/auto-instrumentations-node@0.62.0`
+- Updated dependency `@opentelemetry/exporter-metrics-otlp-proto@0.202.0` to `@opentelemetry/exporter-metrics-otlp-proto@0.203.0`
+- Updated dependency `@opentelemetry/exporter-trace-otlp-proto@0.202.0` to `@opentelemetry/exporter-trace-otlp-proto@0.203.0`
+- Updated dependency `@opentelemetry/instrumentation@0.202.0` to `@opentelemetry/instrumentation@0.203.0`
+- Updated dependency `@opentelemetry/semantic-conventions@1.34.0` to `@opentelemetry/semantic-conventions@1.36.0`
+
+## 0.13.12
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.60.1` to `@opentelemetry/auto-instrumentations-node@0.62.0`
+- Updated dependency `@opentelemetry/exporter-metrics-otlp-proto@0.202.0` to `@opentelemetry/exporter-metrics-otlp-proto@0.203.0`
+- Updated dependency `@opentelemetry/exporter-trace-otlp-proto@0.202.0` to `@opentelemetry/exporter-trace-otlp-proto@0.203.0`
+- Updated dependency `@opentelemetry/instrumentation@0.202.0` to `@opentelemetry/instrumentation@0.203.0`
+- Updated dependency `@opentelemetry/semantic-conventions@1.34.0` to `@opentelemetry/semantic-conventions@1.36.0`
+
+## 0.13.11
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.60.1` to `@opentelemetry/auto-instrumentations-node@0.62.0`
+- Updated dependency `@opentelemetry/exporter-metrics-otlp-proto@0.202.0` to `@opentelemetry/exporter-metrics-otlp-proto@0.203.0`
+- Updated dependency `@opentelemetry/exporter-trace-otlp-proto@0.202.0` to `@opentelemetry/exporter-trace-otlp-proto@0.203.0`
+- Updated dependency `@opentelemetry/instrumentation@0.202.0` to `@opentelemetry/instrumentation@0.203.0`
+
+## 0.13.10
+
+### Patch Changes
+
+- Updated dependency `import-in-the-middle@1.14.0` to `import-in-the-middle@1.14.2`
+
+## 0.13.9
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.60.0` to `@opentelemetry/auto-instrumentations-node@0.60.1`
+
+## 0.13.8
+
+### Patch Changes
+
+- Updated dependency `@vercel/otel@1.12.0` to `@vercel/otel@1.13.0`
+
+## 0.13.7
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.59.0` to `@opentelemetry/auto-instrumentations-node@0.60.0`
+- Updated dependency `@opentelemetry/exporter-metrics-otlp-proto@0.201.1` to `@opentelemetry/exporter-metrics-otlp-proto@0.202.0`
+- Updated dependency `@opentelemetry/exporter-trace-otlp-proto@0.201.1` to `@opentelemetry/exporter-trace-otlp-proto@0.202.0`
+- Updated dependency `@opentelemetry/instrumentation@0.201.1` to `@opentelemetry/instrumentation@0.202.0`
+
+## 0.13.6
+
+### Patch Changes
+
+- Updated dependency `import-in-the-middle@1.13.2` to `import-in-the-middle@1.14.0`
+
+## 0.13.5
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/semantic-conventions@1.33.1` to `@opentelemetry/semantic-conventions@1.34.0`
+
+## 0.13.4
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/semantic-conventions@1.33.0` to `@opentelemetry/semantic-conventions@1.33.1`
+
+## 0.13.3
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/exporter-metrics-otlp-proto@0.201.0` to `@opentelemetry/exporter-metrics-otlp-proto@0.201.1`
+- Updated dependency `@opentelemetry/exporter-trace-otlp-proto@0.201.0` to `@opentelemetry/exporter-trace-otlp-proto@0.201.1`
+- Updated dependency `@opentelemetry/instrumentation@0.201.0` to `@opentelemetry/instrumentation@0.201.1`
+
+## 0.13.2
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.58.1` to `@opentelemetry/auto-instrumentations-node@0.59.0`
+- Updated dependency `@opentelemetry/core@2.0.0` to `@opentelemetry/core@2.0.1`
+- Updated dependency `@opentelemetry/exporter-metrics-otlp-proto@0.200.0` to `@opentelemetry/exporter-metrics-otlp-proto@0.201.0`
+- Updated dependency `@opentelemetry/exporter-trace-otlp-proto@0.200.0` to `@opentelemetry/exporter-trace-otlp-proto@0.201.0`
+- Updated dependency `@opentelemetry/instrumentation@0.200.0` to `@opentelemetry/instrumentation@0.201.0`
+- Updated dependency `@opentelemetry/sdk-metrics@2.0.0` to `@opentelemetry/sdk-metrics@2.0.1`
+- Updated dependency `@opentelemetry/sdk-trace-base@2.0.0` to `@opentelemetry/sdk-trace-base@2.0.1`
+- Updated dependency `@opentelemetry/sdk-trace-node@2.0.0` to `@opentelemetry/sdk-trace-node@2.0.1`
+
+## 0.13.1
+
+### Patch Changes
+
+- Updated dependency `import-in-the-middle@1.13.1` to `import-in-the-middle@1.13.2`
+
+## 0.13.0
+
+### Minor Changes
+
+- Support disabling the automatic instrumentation and using a custom implementation. This allows for full control over the behavior of OpenTelemetry. To manually initialize the SDK, set the `disableAutomaticInitialization` option to `true`, which will disables the default SDK initialization of this module.
+
+  Then you can manually initialize OpenTelemetry within a [Nitro plugin](https://nuxt.com/docs/guide/directory-structure/server#server-plugins) located in the `./server/plugins` directory, allowing for enhanced customization and adaptability in your instrumentation configuration. The example provided demonstrates a basic setup using the `@opentelemetry/sdk-node` package.
+
+  ```ts
+  // ./server/plugins/instrument.ts
+  import { defineNitroPlugin } from 'nitropack/runtime/plugin'
+  import type { NitroApp } from 'nitropack/types'
+  import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node'
+  import { NodeSDK } from '@opentelemetry/sdk-node'
+  import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics'
+  import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-proto'
+  import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-proto'
+
+  export default defineNitroPlugin((_nitroApp: NitroApp) => {
+    const sdk = new NodeSDK({
+      traceExporter: new OTLPTraceExporter(),
+      metricReader: new PeriodicExportingMetricReader({
+        exporter: new OTLPMetricExporter(),
+      }),
+      instrumentations: [
+        getNodeAutoInstrumentations({
+          '@opentelemetry/instrumentation-http': {},
+          '@opentelemetry/instrumentation-undici': {},
+        }),
+      ],
+    })
+
+    sdk.start()
+  })
+  ```
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/semantic-conventions@1.32.0` to `@opentelemetry/semantic-conventions@1.33.0`
+- Updated dependency `@vercel/otel@1.11.0` to `@vercel/otel@1.12.0`
+
+## 0.12.1
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.58.0` to `@opentelemetry/auto-instrumentations-node@0.58.1`
+
+## 0.12.0
+
+### Minor Changes
+
+- Do not trace requests for files located within the nuxt `public` directory.
+
+## 0.11.0
+
+### Minor Changes
+
+- Initialize the OTel SDK in a Nitro plugin instead of the entrypoint to support usage in dev builds. However, not all instrumentations will be available in dev mode as they require `import-in-the-middle` hooks.
+
+## 0.10.1
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.57.1` to `@opentelemetry/auto-instrumentations-node@0.58.0`
+
+## 0.10.0
+
+### Minor Changes
+
+- Update to `@nuxt/module-builder@1`. This version of Nuxt Module Builder is ESM-only, so CommonJS (`.cjs`) files will no longer be built or distributed with the package. However as of Nuxt 3, only esm is used so this should not have any impact as this module does not support Nuxt 2.
+
+## 0.9.4
+
+### Patch Changes
+
+- Updated dependency `@vercel/otel@1.10.4` to `@vercel/otel@1.11.0`
+
+## 0.9.3
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/semantic-conventions@1.30.0` to `@opentelemetry/semantic-conventions@1.32.0`
+
+## 0.9.2
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.57.0` to `@opentelemetry/auto-instrumentations-node@0.57.1`
+
+## 0.9.1
+
+### Patch Changes
+
+- Added dependency `@opentelemetry/sdk-trace-base@2.0.0`
+- Added dependency `@opentelemetry/sdk-trace-node@2.0.0`
+- Added dependency `import-in-the-middle@1.13.1`
+
+## 0.9.0
+
+### Minor Changes
+
+- Enable the exporting of metrics in the SDK initialization. Like traces, metrics will be exported via the OTLP protocol (using `@opentelemetry/exporter-metrics-otlp-proto`) so your existing collector will likely be able to collect metrics automatically without additional configuration.
+
+### Patch Changes
+
+- Added dependency `@opentelemetry/exporter-metrics-otlp-proto@0.200.0`
+- Added dependency `@opentelemetry/sdk-metrics@2.0.0`
+
+## 0.8.0
+
+### Minor Changes
+
+- This release refactors the implementation to use a `NitroInstrumentation` class rather than a Nitro plugin. The change enables better testing and in the future may provide more flexibility for customization. The module should continue to work as before without any necessary changes for module users.
+
+### Patch Changes
+
+- The `?` character is no longer included in the `url.query` span attribute
+- When no `pathBlocklist` is provided, the default should be to allow everything instead of blocking everything.
+- Configure the HTTP instrumentation to ignore requests for static assets
+
+## 0.7.2
+
+### Patch Changes
+
+- Added dependency `@opentelemetry/core@2.0.0`
+- Removed dependency `@opentelemetry/resources@1.30.1`
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.56.1` to `@opentelemetry/auto-instrumentations-node@0.57.0`
+- Updated dependency `@opentelemetry/exporter-trace-otlp-proto@0.57.2` to `@opentelemetry/exporter-trace-otlp-proto@0.200.0`
+- Updated dependency `@opentelemetry/instrumentation@0.57.2` to `@opentelemetry/instrumentation@0.200.0`
+- Updated dependency `@opentelemetry/sdk-node@0.52.1` to `@opentelemetry/sdk-node@0.200.0`
+- Spans for successful requests should have SpanStatusCode.OK (Previously they were set to SpanStatusCode.UNSET)
+- Fix incorrect status codes attributes for requests resulting in an error.
+
+## 0.7.1
+
+### Patch Changes
+
+- Updated dependency `@vercel/otel@1.10.3` to `@vercel/otel@1.10.4`
+
+## 0.7.0
+
+### Minor Changes
+
+- Support adding request and response headers to span attributes with the `requestHeaders` and `responseHeaders` options.
+
+## 0.6.4
+
+### Patch Changes
+
+- Updated dependency `@vercel/otel@1.10.2` to `@vercel/otel@1.10.3`
+
+## 0.6.3
+
+### Patch Changes
+
+- Added `h3@>=1.10.0` to `peerDependencies`.
+
+## 0.6.2
+
+### Patch Changes
+
+- Updated dependency `@vercel/otel@1.10.1` to `@vercel/otel@1.10.2`
+
+## 0.6.1
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.56.0` to `@opentelemetry/auto-instrumentations-node@0.56.1`
+
+## 0.6.0
+
+### Minor Changes
+
+- Remove explicit inline external for runtime helpers
+
+## 0.5.10
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/exporter-trace-otlp-proto@0.57.1` to `@opentelemetry/exporter-trace-otlp-proto@0.57.2`
+- Updated dependency `@opentelemetry/instrumentation@0.57.1` to `@opentelemetry/instrumentation@0.57.2`
+
+## 0.5.9
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/semantic-conventions@1.29.0` to `@opentelemetry/semantic-conventions@1.30.0`
+
+## 0.5.8
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/semantic-conventions@1.28.0` to `@opentelemetry/semantic-conventions@1.29.0`
+
+## 0.5.7
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.55.3` to `@opentelemetry/auto-instrumentations-node@0.56.0`
+- Updated dependency `@vercel/otel@1.10.0` to `@vercel/otel@1.10.1`
+
+## 0.5.6
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.55.2` to `@opentelemetry/auto-instrumentations-node@0.55.3`
+
+## 0.5.5
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.55.1` to `@opentelemetry/auto-instrumentations-node@0.55.2`
+- Updated dependency `@opentelemetry/exporter-trace-otlp-proto@0.57.0` to `@opentelemetry/exporter-trace-otlp-proto@0.57.1`
+- Updated dependency `@opentelemetry/instrumentation@0.57.0` to `@opentelemetry/instrumentation@0.57.1`
+- Updated dependency `@opentelemetry/resources@1.30.0` to `@opentelemetry/resources@1.30.1`
+
+## 0.5.4
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.55.0` to `@opentelemetry/auto-instrumentations-node@0.55.1`
+
+## 0.5.3
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.54.0` to `@opentelemetry/auto-instrumentations-node@0.55.0`
+- Updated dependency `@opentelemetry/exporter-trace-otlp-proto@0.56.0` to `@opentelemetry/exporter-trace-otlp-proto@0.57.0`
+- Updated dependency `@opentelemetry/instrumentation@0.56.0` to `@opentelemetry/instrumentation@0.57.0`
+- Updated dependency `@opentelemetry/resources@1.29.0` to `@opentelemetry/resources@1.30.0`
+
+## 0.5.2
+
+### Patch Changes
+
+- We've updated to `nuxt@3.14`
+
+## 0.5.1
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.53.0` to `@opentelemetry/auto-instrumentations-node@0.54.0`
+- Updated dependency `@opentelemetry/exporter-trace-otlp-proto@0.55.0` to `@opentelemetry/exporter-trace-otlp-proto@0.56.0`
+- Updated dependency `@opentelemetry/instrumentation@0.55.0` to `@opentelemetry/instrumentation@0.56.0`
+- Updated dependency `@opentelemetry/resources@1.28.0` to `@opentelemetry/resources@1.29.0`
+
+## 0.5.0
+
+### Minor Changes
+
+- Expanded Nitro span scope to include middleware execution alongside the primary handler execution, providing a more complete tracing.
+
+### Patch Changes
+
+- Resolved an issue where child request spans incorrectly inherited the pathname from their parent span, ensuring accurate request path tracing.
+
+## 0.4.2
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/semantic-conventions@1.27.0` to `@opentelemetry/semantic-conventions@1.28.0`
+
+## 0.4.1
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.52.1` to `@opentelemetry/auto-instrumentations-node@0.53.0`
+- Updated dependency `@opentelemetry/exporter-trace-otlp-proto@0.54.2` to `@opentelemetry/exporter-trace-otlp-proto@0.55.0`
+- Updated dependency `@opentelemetry/instrumentation@0.54.2` to `@opentelemetry/instrumentation@0.55.0`
+- Updated dependency `@opentelemetry/resources@1.27.0` to `@opentelemetry/resources@1.28.0`
+
+## 0.4.0
+
+### Minor Changes
+
+- Add `include` and `exclude` options to control the `import-in-the-middle` behavior
+
+  For more details on how to use these options see the [README](./README.md#including-and-excluding-modules)
+
+- The default value for `enabled` is now true
+
+  With this change, the module will be enabled when it has been installed. Previously, one had to install the module then add an additional module configuration to actually enable the module.
+
+## 0.3.9
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.52.0` to `@opentelemetry/auto-instrumentations-node@0.52.1`
+- Updated dependency `@opentelemetry/exporter-trace-otlp-proto@0.54.1` to `@opentelemetry/exporter-trace-otlp-proto@0.54.2`
+- Updated dependency `@opentelemetry/instrumentation@0.54.1` to `@opentelemetry/instrumentation@0.54.2`
+
+## 0.3.8
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/exporter-trace-otlp-proto@0.54.0` to `@opentelemetry/exporter-trace-otlp-proto@0.54.1`
+- Updated dependency `@opentelemetry/instrumentation@0.54.0` to `@opentelemetry/instrumentation@0.54.1`
+
+## 0.3.7
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.51.0` to `@opentelemetry/auto-instrumentations-node@0.52.0`
+
+## 0.3.6
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/exporter-trace-otlp-proto@0.53.0` to `@opentelemetry/exporter-trace-otlp-proto@0.54.0`
+- Updated dependency `@opentelemetry/instrumentation@0.53.0` to `@opentelemetry/instrumentation@0.54.0`
+- Updated dependency `@opentelemetry/resources@1.26.0` to `@opentelemetry/resources@1.27.0`
+
+## 0.3.5
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.50.2` to `@opentelemetry/auto-instrumentations-node@0.51.0`
+
+## 0.3.4
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/sdk-node@0.53.0` to `@opentelemetry/sdk-node@0.52.1`
+- Downgrade the `@opentelemetry/sdk-node` package
+
+  There is a bug in the Nuxt build process which causes it to fail when this package is part of the build. To workaround this, we've temporarily downgraded this package until the bug is fixed.
+
+## 0.3.3
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.50.0` to `@opentelemetry/auto-instrumentations-node@0.50.2`
+
+## 0.3.2
+
+### Patch Changes
+
+- Update @nuxt/module-builder to 0.8.4
+
+## 0.3.1
+
+### Patch Changes
+
+- Set the span status to Error for 5xx errors from H3
+
+## 0.3.0
+
+### Minor Changes
+
+- Include additional attributes on Nitro spans: `http.status_code`, `client.address`, `server.address`, `server.port`, and `user_agent.original`. Additionally, other attributes were renamed to conform to [Semantic Conventions for HTTP Spans](https://opentelemetry.io/docs/specs/semconv/http/http-spans/).
+
+## 0.2.0
+
+### Minor Changes
+
+- Add the package version of the instrumentation in the trace
+
+## 0.1.0
+
+### Minor Changes
+
+- Initial release of `@scayle/nuxt-opentelemetry`

@@ -1,0 +1,99 @@
+{
+  "name": "@scayle/nuxt-opentelemetry",
+  "version": "1.0.0",
+  "description": "A Nuxt module for OpenTelemetry integration",
+  "author": "SCAYLE Commerce Engine",
+  "license": "MIT",
+  "keywords": [
+    "nuxt",
+    "opentelemetry"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "repository": {
+    "url": "git+https://github.com/scayle/nuxt-opentelemetry.git"
+  },
+  "website": "https://scayle.dev/en/core-documentation/storefront-guide/storefront-application/integrations/open-telemetry",
+  "exports": {
+    ".": {
+      "types": "./dist/module.d.mts",
+      "import": "./dist/module.mjs"
+    },
+    "./instrumentation": {
+      "types": "./dist/runtime/instrumentation.d.ts",
+      "import": "./dist/runtime/instrumentation.js"
+    }
+  },
+  "main": "./dist/module.mjs",
+  "type": "module",
+  "files": [
+    "CHANGELOG.md",
+    "dist/**"
+  ],
+  "engines": {
+    "node": ">= 22.0.0"
+  },
+  "compatibility": {
+    "nuxt": "^3.10"
+  },
+  "scripts": {
+    "clean": "rimraf ./dist",
+    "build": "nuxt-module-build build",
+    "dev": "nuxt dev playground",
+    "dev:build": "nuxt build playground",
+    "prep": "nuxt-module-build prepare && nuxt prepare playground",
+    "lint": "eslint .",
+    "lint:ci": "eslint . --format gitlab",
+    "lint:fix": "eslint . --fix",
+    "package:lint": "publint",
+    "verify-packaging": "attw --pack . --profile esm-only",
+    "typecheck": "vue-tsc --noEmit && cd playground && vue-tsc --noEmit"
+  },
+  "peerDependencies": {
+    "h3": "^1.10.0",
+    "@nuxt/kit": "^3.13.0 || ^4.2.0"
+  },
+  "dependencies": {
+    "@opentelemetry/api": "catalog:",
+    "@opentelemetry/auto-instrumentations-node": "0.72.0",
+    "@opentelemetry/core": "2.6.1",
+    "@opentelemetry/exporter-metrics-otlp-proto": "0.214.0",
+    "@opentelemetry/exporter-trace-otlp-proto": "0.214.0",
+    "@opentelemetry/instrumentation": "0.214.0",
+    "@opentelemetry/instrumentation-runtime-node": "0.27.0",
+    "@opentelemetry/sdk-metrics": "2.6.1",
+    "@opentelemetry/sdk-node": "0.200.0",
+    "@opentelemetry/sdk-trace-base": "2.6.1",
+    "@opentelemetry/sdk-trace-node": "2.6.1",
+    "@opentelemetry/semantic-conventions": "1.40.0",
+    "@vercel/otel": "2.1.1",
+    "defu": "catalog:",
+    "import-in-the-middle": "catalog:",
+    "knitwork": "catalog:"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "catalog:",
+    "@nuxt/module-builder": "catalog:",
+    "@nuxt/schema": "catalog:nuxt3",
+    "@opentelemetry/context-async-hooks": "2.6.1",
+    "@opentelemetry/instrumentation-http": "0.214.0",
+    "@scayle/eslint-config-storefront": "catalog:",
+    "@scayle/vitest-config-storefront": "workspace:*",
+    "@types/node": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
+    "eslint": "catalog:",
+    "eslint-formatter-gitlab": "catalog:",
+    "memfs": "4.57.1",
+    "nitro-test-utils": "0.11.2",
+    "nitropack": "catalog:",
+    "nuxt": "catalog:nuxt3",
+    "publint": "catalog:",
+    "rimraf": "catalog:",
+    "typescript": "catalog:",
+    "unbuild": "catalog:",
+    "vitest": "catalog:",
+    "vue-tsc": "catalog:"
+  }
+}
