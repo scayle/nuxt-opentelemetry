@@ -68,7 +68,7 @@
     "@opentelemetry/sdk-trace-base": "2.7.0",
     "@opentelemetry/sdk-trace-node": "2.7.0",
     "@opentelemetry/semantic-conventions": "1.40.0",
-    "@vercel/otel": "2.1.1",
+    "@vercel/otel": "2.1.2",
     "defu": "catalog:",
     "import-in-the-middle": "catalog:",
     "knitwork": "catalog:"
