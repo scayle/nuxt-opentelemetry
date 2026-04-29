@@ -1,5 +1,20 @@
 # @scayle/nuxt-opentelemetry
 
+## 1.0.1
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@0.72.0` to `@opentelemetry/auto-instrumentations-node@0.73.0`
+- Updated dependency `@opentelemetry/core@2.6.1` to `@opentelemetry/core@2.7.0`
+- Updated dependency `@opentelemetry/exporter-metrics-otlp-proto@0.214.0` to `@opentelemetry/exporter-metrics-otlp-proto@0.215.0`
+- Updated dependency `@opentelemetry/exporter-trace-otlp-proto@0.214.0` to `@opentelemetry/exporter-trace-otlp-proto@0.215.0`
+- Updated dependency `@opentelemetry/instrumentation@0.214.0` to `@opentelemetry/instrumentation@0.215.0`
+- Updated dependency `@opentelemetry/instrumentation-runtime-node@0.27.0` to `@opentelemetry/instrumentation-runtime-node@0.28.0`
+- Updated dependency `@opentelemetry/sdk-metrics@2.6.1` to `@opentelemetry/sdk-metrics@2.7.0`
+- Updated dependency `@opentelemetry/sdk-trace-base@2.6.1` to `@opentelemetry/sdk-trace-base@2.7.0`
+- Updated dependency `@opentelemetry/sdk-trace-node@2.6.1` to `@opentelemetry/sdk-trace-node@2.7.0`
+- Updated dependency `@vercel/otel@2.1.1` to `@vercel/otel@2.1.2`
+
 ## 1.0.0
 
 ### Major Changes
@@ -357,13 +372,13 @@
 
   ```ts
   // ./server/plugins/instrument.ts
-  import { defineNitroPlugin } from 'nitropack/runtime/plugin'
-  import type { NitroApp } from 'nitropack/types'
-  import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node'
-  import { NodeSDK } from '@opentelemetry/sdk-node'
-  import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics'
-  import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-proto'
-  import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-proto'
+  import { defineNitroPlugin } from "nitropack/runtime/plugin";
+  import type { NitroApp } from "nitropack/types";
+  import { getNodeAutoInstrumentations } from "@opentelemetry/auto-instrumentations-node";
+  import { NodeSDK } from "@opentelemetry/sdk-node";
+  import { PeriodicExportingMetricReader } from "@opentelemetry/sdk-metrics";
+  import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-proto";
+  import { OTLPMetricExporter } from "@opentelemetry/exporter-metrics-otlp-proto";
 
   export default defineNitroPlugin((_nitroApp: NitroApp) => {
     const sdk = new NodeSDK({
@@ -373,14 +388,14 @@
       }),
       instrumentations: [
         getNodeAutoInstrumentations({
-          '@opentelemetry/instrumentation-http': {},
-          '@opentelemetry/instrumentation-undici': {},
+          "@opentelemetry/instrumentation-http": {},
+          "@opentelemetry/instrumentation-undici": {},
         }),
       ],
-    })
+    });
 
-    sdk.start()
-  })
+    sdk.start();
+  });
   ```
 
 ### Patch Changes
