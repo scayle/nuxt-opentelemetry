@@ -372,13 +372,13 @@
 
   ```ts
   // ./server/plugins/instrument.ts
-  import { defineNitroPlugin } from "nitropack/runtime/plugin";
-  import type { NitroApp } from "nitropack/types";
-  import { getNodeAutoInstrumentations } from "@opentelemetry/auto-instrumentations-node";
-  import { NodeSDK } from "@opentelemetry/sdk-node";
-  import { PeriodicExportingMetricReader } from "@opentelemetry/sdk-metrics";
-  import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-proto";
-  import { OTLPMetricExporter } from "@opentelemetry/exporter-metrics-otlp-proto";
+  import { defineNitroPlugin } from 'nitropack/runtime/plugin'
+  import type { NitroApp } from 'nitropack/types'
+  import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node'
+  import { NodeSDK } from '@opentelemetry/sdk-node'
+  import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics'
+  import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-proto'
+  import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-proto'
 
   export default defineNitroPlugin((_nitroApp: NitroApp) => {
     const sdk = new NodeSDK({
@@ -388,14 +388,14 @@
       }),
       instrumentations: [
         getNodeAutoInstrumentations({
-          "@opentelemetry/instrumentation-http": {},
-          "@opentelemetry/instrumentation-undici": {},
+          '@opentelemetry/instrumentation-http': {},
+          '@opentelemetry/instrumentation-undici': {},
         }),
       ],
-    });
+    })
 
-    sdk.start();
-  });
+    sdk.start()
+  })
   ```
 
 ### Patch Changes
