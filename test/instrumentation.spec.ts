@@ -117,8 +117,7 @@ describe('test instrumentation', async () => {
   it('successful request', async () => {
     await $fetchRaw('/hello')
 
-    const spans = memoryExporter
-      .getFinishedSpans()
+    const spans = memoryExporter.getFinishedSpans()
 
     const { nitroSpan, httpSpan } = getImportantSpans(spans)
     validateSpans(httpSpan, nitroSpan)
@@ -136,8 +135,7 @@ describe('test instrumentation', async () => {
   it('includes search query attribute', async () => {
     await $fetchRaw('/hello?param=true')
 
-    const spans = memoryExporter
-      .getFinishedSpans()
+    const spans = memoryExporter.getFinishedSpans()
 
     const { nitroSpan, httpSpan } = getImportantSpans(spans)
     validateSpans(httpSpan, nitroSpan)
@@ -156,8 +154,7 @@ describe('test instrumentation', async () => {
   it('successful request with alternative status code', async () => {
     await $fetchRaw('/created')
 
-    const spans = memoryExporter
-      .getFinishedSpans()
+    const spans = memoryExporter.getFinishedSpans()
 
     const { nitroSpan, httpSpan } = getImportantSpans(spans)
     validateSpans(httpSpan, nitroSpan)
@@ -175,8 +172,7 @@ describe('test instrumentation', async () => {
   it('thrown error in handler', async () => {
     await $fetchRaw('/throw')
 
-    const spans = memoryExporter
-      .getFinishedSpans()
+    const spans = memoryExporter.getFinishedSpans()
 
     const { nitroSpan, httpSpan } = getImportantSpans(spans)
     validateSpans(httpSpan, nitroSpan)
@@ -194,8 +190,7 @@ describe('test instrumentation', async () => {
   it('thrown h3 error in handler', async () => {
     await $fetchRaw('/throw_h3')
 
-    const spans = memoryExporter
-      .getFinishedSpans()
+    const spans = memoryExporter.getFinishedSpans()
 
     const { nitroSpan, httpSpan } = getImportantSpans(spans)
     validateSpans(httpSpan, nitroSpan)
@@ -213,8 +208,7 @@ describe('test instrumentation', async () => {
   it('thrown error in response hook', async () => {
     await $fetchRaw('/plugin_error')
 
-    const spans = memoryExporter
-      .getFinishedSpans()
+    const spans = memoryExporter.getFinishedSpans()
 
     const { nitroSpan, httpSpan } = getImportantSpans(spans)
     validateSpans(httpSpan, nitroSpan)
@@ -232,8 +226,7 @@ describe('test instrumentation', async () => {
   it('response with 4xx status code', async () => {
     await $fetchRaw('/missing')
 
-    const spans = memoryExporter
-      .getFinishedSpans()
+    const spans = memoryExporter.getFinishedSpans()
 
     const { nitroSpan, httpSpan } = getImportantSpans(spans)
     validateSpans(httpSpan, nitroSpan)
@@ -251,8 +244,7 @@ describe('test instrumentation', async () => {
   it('response with 5xx status code', async () => {
     await $fetchRaw('/bad_gateway')
 
-    const spans = memoryExporter
-      .getFinishedSpans()
+    const spans = memoryExporter.getFinishedSpans()
 
     const { nitroSpan, httpSpan } = getImportantSpans(spans)
     validateSpans(httpSpan, nitroSpan)
@@ -274,8 +266,7 @@ describe('test instrumentation', async () => {
 
     await $fetchRaw('/hello')
 
-    const spans = memoryExporter
-      .getFinishedSpans()
+    const spans = memoryExporter.getFinishedSpans()
 
     const { nitroSpan, httpSpan } = getImportantSpans(spans)
     expect(httpSpan).toBeDefined()
@@ -292,8 +283,7 @@ describe('test instrumentation', async () => {
 
     await $fetchRaw('/hello_:)')
 
-    const spans = memoryExporter
-      .getFinishedSpans()
+    const spans = memoryExporter.getFinishedSpans()
 
     const { nitroSpan, httpSpan } = getImportantSpans(spans)
     expect(httpSpan).toBeDefined()
@@ -308,8 +298,7 @@ describe('test instrumentation', async () => {
 
     await $fetchRaw('/hello_:)')
 
-    const spans = memoryExporter
-      .getFinishedSpans()
+    const spans = memoryExporter.getFinishedSpans()
 
     const { nitroSpan, httpSpan } = getImportantSpans(spans)
     expect(httpSpan).toBeDefined()
@@ -322,8 +311,7 @@ describe('test instrumentation', async () => {
   it('child spans', async () => {
     await $fetchRaw('/with_children')
 
-    const spans = memoryExporter
-      .getFinishedSpans()
+    const spans = memoryExporter.getFinishedSpans()
 
     const { nitroSpan, httpSpan } = getImportantSpans(spans)
     validateSpans(httpSpan, nitroSpan)
@@ -342,8 +330,7 @@ describe('test instrumentation', async () => {
       },
     })
 
-    const spans = memoryExporter
-      .getFinishedSpans()
+    const spans = memoryExporter.getFinishedSpans()
 
     const { nitroSpan, httpSpan } = getImportantSpans(spans)
     validateSpans(httpSpan, nitroSpan)
@@ -356,8 +343,9 @@ describe('test instrumentation', async () => {
       'http.request.header.accept': ['application/json'],
       'http.request.header.x-my-header': ['value1'],
     })
-    expect(nitroSpan.attributes['http.request.header.x-skipped-header'])
-      .toBeUndefined()
+    expect(
+      nitroSpan.attributes['http.request.header.x-skipped-header'],
+    ).toBeUndefined()
     expect(nitroSpan.parentSpanContext).toBeDefined()
     expect(nitroSpan.status.code).toEqual(SpanStatusCode.OK)
   })
@@ -374,8 +362,7 @@ describe('test instrumentation', async () => {
       headers,
     })
 
-    const spans = memoryExporter
-      .getFinishedSpans()
+    const spans = memoryExporter.getFinishedSpans()
 
     const { nitroSpan, httpSpan } = getImportantSpans(spans)
     validateSpans(httpSpan, nitroSpan)
@@ -397,8 +384,7 @@ describe('test instrumentation', async () => {
     })
     await $fetchRaw('/hello')
 
-    const spans = memoryExporter
-      .getFinishedSpans()
+    const spans = memoryExporter.getFinishedSpans()
 
     const { nitroSpan, httpSpan } = getImportantSpans(spans)
     validateSpans(httpSpan, nitroSpan)
@@ -424,8 +410,7 @@ describe('test instrumentation', async () => {
     })
     await $fetchRaw('/hello')
 
-    const spans = memoryExporter
-      .getFinishedSpans()
+    const spans = memoryExporter.getFinishedSpans()
 
     const { nitroSpan, httpSpan } = getImportantSpans(spans)
     validateSpans(httpSpan, nitroSpan)
@@ -449,8 +434,7 @@ describe('test instrumentation', async () => {
     })
     await $fetchRaw('/de/hello')
 
-    const spans = memoryExporter
-      .getFinishedSpans()
+    const spans = memoryExporter.getFinishedSpans()
 
     const { nitroSpan, httpSpan } = getImportantSpans(spans)
     validateSpans(httpSpan, nitroSpan)
@@ -474,8 +458,7 @@ describe('test instrumentation', async () => {
 
     await $fetchRaw('/hello_:)')
 
-    const spans = memoryExporter
-      .getFinishedSpans()
+    const spans = memoryExporter.getFinishedSpans()
 
     const { nitroSpan, httpSpan } = getImportantSpans(spans)
     validateSpans(httpSpan, nitroSpan)

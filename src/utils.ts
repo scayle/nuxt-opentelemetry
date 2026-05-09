@@ -54,25 +54,19 @@ export async function nitroSetup(
 
   // Add nitro server plugins
   nitroConfig.plugins = nitroConfig.plugins ?? []
-  nitroConfig.plugins.push(
-    resolve('./runtime/nitro/plugins/nitroAppPlugin'),
-  )
+  nitroConfig.plugins.push(resolve('./runtime/nitro/plugins/nitroAppPlugin'))
 
   if (moduleOptions.disableAutomaticInitialization) {
     logger.info('Automatic instrumentation is disabled.')
   } else if (nitroConfig.preset?.includes('vercel')) {
-    nitroConfig.plugins.push(
-      resolve('./runtime/nitro/plugins/sdkInitVercel'),
-    )
+    nitroConfig.plugins.push(resolve('./runtime/nitro/plugins/sdkInitVercel'))
   } else {
-    if (!(nitroConfig.preset?.startsWith('node'))) {
+    if (!nitroConfig.preset?.startsWith('node')) {
       logger.warn(
         `Using preset: ${nitroConfig.preset}. Only node and vercel presets are officially supported.`,
       )
     }
-    nitroConfig.plugins.push(
-      resolve('./runtime/nitro/plugins/sdkInitNode'),
-    )
+    nitroConfig.plugins.push(resolve('./runtime/nitro/plugins/sdkInitNode'))
   }
 }
 
@@ -89,7 +83,7 @@ export function prepareEntry(nitro: Nitro, options: ModuleOptions) {
           resolver.resolve('./runtime/node-hooks'),
         ]
       }
-      rollupConfig.output.entryFileNames = function(info) {
+      rollupConfig.output.entryFileNames = function (info) {
         if (info.name === 'node-hooks') {
           return 'node-hooks.mjs'
         }

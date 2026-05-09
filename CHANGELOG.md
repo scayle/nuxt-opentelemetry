@@ -86,7 +86,6 @@
 
 - Introduced support for Nuxt 4 while maintaining full backward compatibility with Nuxt 3.
   This enables consumers to migrate to Nuxt 4 ahead of the Nuxt 3 end of support on 31 Jan 2026.
-
   - **Version Requirements:**
     - Nuxt 3: `v3.13.0+`
     - Nuxt 4: `v4.2.0+`
@@ -183,7 +182,6 @@
 - Updated dependency `@opentelemetry/sdk-trace-node@2.1.0` to `@opentelemetry/sdk-trace-node@2.2.0`
 - Updated dependency `@vercel/otel@1.13.1` to `@vercel/otel@1.14.0`
 - Expose `NitroInstrumentation` via the new public export `@scayle/nuxt-opentelemetry/instrumentation`.
-
   - Add subpath export for `NitroInstrumentation`
   - Document usage in README with example
   - No runtime behavior changes (non‑breaking)

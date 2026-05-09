@@ -78,12 +78,9 @@ export default defineNuxtModule<ModuleOptions>({
       filename: '#opentelemetry/public-assets',
       getContents: async () => `
         export const assets = new Set([
-          ${
-        (await getPublicAssets(nuxt, resolver)).map((asset) => `'${asset}'`)
-          .join(
-            ',',
-          )
-      }
+          ${(await getPublicAssets(nuxt, resolver))
+            .map((asset) => `'${asset}'`)
+            .join(',')}
         ])
       `,
     })

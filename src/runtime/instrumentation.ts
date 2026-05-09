@@ -86,9 +86,7 @@ function getRequestHeaderAttributes(
     const headerValue = getRequestHeader(event, header)
     if (headerValue) {
       // Note: The OTEL spec requires the value to be an array
-      attributes[ATTR_HTTP_REQUEST_HEADER(header.toLowerCase())] = [
-        headerValue,
-      ]
+      attributes[ATTR_HTTP_REQUEST_HEADER(header.toLowerCase())] = [headerValue]
     }
     return attributes
   }, {})
@@ -119,9 +117,7 @@ function getResponseHeaderAttributes(
 type EventHook = (event: H3Event, span: Span) => void
 type RouteNameHook = (event: H3Event) => string | undefined
 
-export class NitroInstrumentation
-  extends InstrumentationBase<NitroInstrumentationConfig>
-{
+export class NitroInstrumentation extends InstrumentationBase<NitroInstrumentationConfig> {
   isInstalled: boolean = false
 
   requestHook?: EventHook
@@ -151,7 +147,7 @@ export class NitroInstrumentation
 
   getRouteName(event: H3Event) {
     return this.routeNameHook
-      ? this.routeNameHook(event) ?? event.path
+      ? (this.routeNameHook(event) ?? event.path)
       : event.path
   }
 
@@ -197,10 +193,7 @@ export class NitroInstrumentation
           span.setStatus({ code: SpanStatusCode.OK })
         }
 
-        span.setAttribute(
-          ATTR_HTTP_RESPONSE_STATUS_CODE,
-          status,
-        )
+        span.setAttribute(ATTR_HTTP_RESPONSE_STATUS_CODE, status)
 
         span.setAttributes(
           getResponseHeaderAttributes(
@@ -234,10 +227,7 @@ export class NitroInstrumentation
           if (e.statusCode >= 500 && e.statusCode <= 599) {
             span.setStatus({ code: SpanStatusCode.ERROR })
           }
-          span.setAttribute(
-            ATTR_HTTP_RESPONSE_STATUS_CODE,
-            e.statusCode,
-          )
+          span.setAttribute(ATTR_HTTP_RESPONSE_STATUS_CODE, e.statusCode)
 
           span.recordException(e)
           span.setAttribute(ATTR_ERROR_TYPE, e.name)
@@ -255,10 +245,7 @@ export class NitroInstrumentation
           span.setStatus({ code: SpanStatusCode.ERROR })
           // Unknown errors will be 500, but if we were to call getResponseStatus
           // at this point, it would return 200 as the error has not been processed at this point.
-          span.setAttribute(
-            ATTR_HTTP_RESPONSE_STATUS_CODE,
-            500,
-          )
+          span.setAttribute(ATTR_HTTP_RESPONSE_STATUS_CODE, 500)
         }
 
         span.setAttributes(
@@ -286,47 +273,41 @@ export class NitroInstrumentation
 
           const route = this.getRouteName(event)
 
-          const span = this.tracer.startSpan(
-            `${event.method} ${route}`,
-            {
-              attributes: {
-                // Required
-                [ATTR_HTTP_REQUEST_METHOD]: event.method,
-                [ATTR_URL_PATH]: url.pathname,
-                [ATTR_URL_SCHEME]: url.protocol.replace(':', ''),
-                [ATTR_NETWORK_PROTOCOL_NAME]: 'http',
+          const span = this.tracer.startSpan(`${event.method} ${route}`, {
+            attributes: {
+              // Required
+              [ATTR_HTTP_REQUEST_METHOD]: event.method,
+              [ATTR_URL_PATH]: url.pathname,
+              [ATTR_URL_SCHEME]: url.protocol.replace(':', ''),
+              [ATTR_NETWORK_PROTOCOL_NAME]: 'http',
 
-                // Recommended
-                [ATTR_CLIENT_ADDRESS]: getRequestIP(event, {
-                  xForwardedFor: true,
-                }),
-                [ATTR_CLIENT_PORT]: event.node.req.socket.remotePort,
-                [ATTR_SERVER_ADDRESS]: url.hostname,
-                [ATTR_SERVER_PORT]: url.port,
-                [ATTR_NETWORK_PEER_ADDRESS]: getRequestIP(event, {
-                  xForwardedFor: true,
-                }),
-                [ATTR_NETWORK_PEER_PORT]: event.node.req.socket.remotePort,
+              // Recommended
+              [ATTR_CLIENT_ADDRESS]: getRequestIP(event, {
+                xForwardedFor: true,
+              }),
+              [ATTR_CLIENT_PORT]: event.node.req.socket.remotePort,
+              [ATTR_SERVER_ADDRESS]: url.hostname,
+              [ATTR_SERVER_PORT]: url.port,
+              [ATTR_NETWORK_PEER_ADDRESS]: getRequestIP(event, {
+                xForwardedFor: true,
+              }),
+              [ATTR_NETWORK_PEER_PORT]: event.node.req.socket.remotePort,
 
-                [ATTR_USER_AGENT_ORIGINAL]: getRequestHeader(
-                  event,
-                  'User-Agent',
-                ),
-                [ATTR_NETWORK_PROTOCOL_VERSION]: event.node.req.httpVersion,
+              [ATTR_USER_AGENT_ORIGINAL]: getRequestHeader(event, 'User-Agent'),
+              [ATTR_NETWORK_PROTOCOL_VERSION]: event.node.req.httpVersion,
 
-                // Conditionally Required
-                ...(url.search
-                  ? { [ATTR_URL_QUERY]: url.search.substring(1) }
-                  : {}),
+              // Conditionally Required
+              ...(url.search
+                ? { [ATTR_URL_QUERY]: url.search.substring(1) }
+                : {}),
 
-                // Headers
-                ...getRequestHeaderAttributes(
-                  event,
-                  this.getConfig().requestHeaders ?? [],
-                ),
-              },
+              // Headers
+              ...getRequestHeaderAttributes(
+                event,
+                this.getConfig().requestHeaders ?? [],
+              ),
             },
-          )
+          })
 
           const ctx = trace.setSpan(context.active(), span)
 
@@ -384,8 +365,7 @@ export class NitroInstrumentation
   protected override init():
     | InstrumentationModuleDefinition
     | InstrumentationModuleDefinition[]
-    | void
-  {
+    | void {
     return []
   }
 }

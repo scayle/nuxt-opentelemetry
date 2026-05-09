@@ -16,7 +16,7 @@ describe('getPublicAssets', () => {
     vol.fromNestedJSON({
       '/public': {
         'index.html': 'Hello, world!',
-        'assets': {
+        assets: {
           'image.png': 'Hello, world!',
         },
       },

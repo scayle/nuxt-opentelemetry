@@ -12,21 +12,23 @@ export default defineNitroConfig({
   modules: [
     process.env.VITEST
       ? {
-        setup(nitro) {
-          const resolver = createResolver(import.meta.url)
-          nitro.options.plugins.push(resolver.resolve('plugins/errorPlugin'))
-          nitro.options.plugins.push(
-            resolver.resolve('../../src/runtime/nitro/plugins/nitroAppPlugin'),
-          )
-        },
-      }
+          setup(nitro) {
+            const resolver = createResolver(import.meta.url)
+            nitro.options.plugins.push(resolver.resolve('plugins/errorPlugin'))
+            nitro.options.plugins.push(
+              resolver.resolve(
+                '../../src/runtime/nitro/plugins/nitroAppPlugin',
+              ),
+            )
+          },
+        }
       : nitroModule({ enabled: true }),
   ],
   externals: {
     traceInclude: ['import-in-the-middle'],
   },
   replace: {
-    '__package_version': `'${packageJson.version}'`,
-    '__package_name': `'${packageJson.name}'`,
+    __package_version: `'${packageJson.version}'`,
+    __package_name: `'${packageJson.name}'`,
   },
 })

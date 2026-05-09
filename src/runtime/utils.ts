@@ -30,8 +30,10 @@ export function getRouteName(
   event: H3Event,
   replace: (path: string) => string,
 ): string | undefined {
-  const matchedRoute = event.context.matchedVueRoute?.[event.path]?.path ??
-    event.context.matchedRoute?.path ?? event.path
+  const matchedRoute =
+    event.context.matchedVueRoute?.[event.path]?.path ??
+    event.context.matchedRoute?.path ??
+    event.path
 
   if (matchedRoute) {
     return replace(matchedRoute)

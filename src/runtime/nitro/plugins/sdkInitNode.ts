@@ -13,10 +13,12 @@ import { getReplace, getRouteName, getFilter } from '../../utils'
 import { assets } from '#opentelemetry/public-assets'
 
 function ignorePath(path: string): boolean {
-  return path.startsWith('/_nuxt') ||
+  return (
+    path.startsWith('/_nuxt') ||
     path.startsWith('/_fonts') ||
     path.startsWith('/__nuxt_vite_node__') ||
     (assets as Set<string>).has(path)
+  )
 }
 
 export default defineNitroPlugin((_nitroApp: NitroApp) => {

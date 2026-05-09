@@ -1,41 +1,21 @@
 {
-  "extends": [
-    "//"
-  ],
+  "extends": ["//"],
   "tasks": {
     "prep": {
-      "dependsOn": [
-        "^build"
-      ],
-      "outputs": [
-        ".nuxt/**",
-        "./playground/.nuxt/**"
-      ]
+      "dependsOn": ["^build"],
+      "outputs": [".nuxt/**", "./playground/.nuxt/**"],
     },
     "build": {
-      "dependsOn": [
-        "^build",
-        "prep"
-      ]
+      "dependsOn": ["^build", "prep"],
     },
     "test": {
-      "dependsOn": [
-        "^build",
-        "prep"
-      ]
+      "dependsOn": ["^build", "prep"],
     },
     "test:ci": {
-      "dependsOn": [
-        "^build",
-        "prep"
-      ]
+      "dependsOn": ["^build", "prep"],
     },
     "typecheck": {
-      "dependsOn": [
-        "^build",
-        "build",
-        "prep"
-      ]
-    }
-  }
+      "dependsOn": ["^build", "build", "prep"],
+    },
+  },
 }
