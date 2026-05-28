@@ -39,7 +39,7 @@
     "nuxt": "^3.10"
   },
   "scripts": {
-    "clean": "rimraf ./dist",
+    "clean": "node -e \"require('fs').rmSync('./dist',{recursive:true,force:true})\"",
     "build": "nuxt-module-build build",
     "dev": "nuxt dev playground",
     "dev:build": "nuxt build playground",
@@ -90,7 +90,6 @@
     "nitropack": "catalog:",
     "nuxt": "catalog:nuxt3",
     "publint": "catalog:",
-    "rimraf": "catalog:",
     "typescript": "catalog:",
     "unbuild": "catalog:",
     "vitest": "catalog:",
