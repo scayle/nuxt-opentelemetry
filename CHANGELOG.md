@@ -1,5 +1,23 @@
 # @scayle/nuxt-opentelemetry
 
+## 1.0.3
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/auto-instrumentations-node@^0.76.0` to `@opentelemetry/auto-instrumentations-node@^0.77.0`
+- Updated dependency `@opentelemetry/core@^2.7.1` to `@opentelemetry/core@^2.8.0`
+- Updated dependency `@opentelemetry/exporter-metrics-otlp-proto@^0.218.0` to `@opentelemetry/exporter-metrics-otlp-proto@^0.219.0`
+- Updated dependency `@opentelemetry/exporter-trace-otlp-proto@^0.218.0` to `@opentelemetry/exporter-trace-otlp-proto@^0.219.0`
+- Updated dependency `@opentelemetry/instrumentation@^0.218.0` to `@opentelemetry/instrumentation@^0.219.0`
+- Updated dependency `@opentelemetry/sdk-metrics@^2.7.1` to `@opentelemetry/sdk-metrics@^2.8.0`
+- Updated dependency `@opentelemetry/sdk-node@^0.218.0` to `@opentelemetry/sdk-node@^0.219.0`
+- Updated dependency `@opentelemetry/sdk-trace-base@^2.7.1` to `@opentelemetry/sdk-trace-base@^2.8.0`
+- Updated dependency `@opentelemetry/sdk-trace-node@^2.7.1` to `@opentelemetry/sdk-trace-node@^2.8.0`
+- Updated dependency `@vercel/otel@^2.1.2` to `@vercel/otel@^2.1.3`
+- **\[Security\]** Use the patched Nuxt for build — `nuxt@3.21.8` (3.x) / `nuxt@4.4.8` (4.x), with matching `@nuxt/kit` and `@nuxt/schema` — which includes the fix for [CVE-2026-53721](https://nvd.nist.gov/vuln/detail/CVE-2026-53721) ([GHSA-mm7m-92g8-7m47](https://github.com/nuxt/nuxt/security/advisories/GHSA-mm7m-92g8-7m47)), a route-rule middleware bypass.
+
+  Compatibility with previously-supported Nuxt versions is unchanged and remains specified via each package's `peerDependencies` and the Nuxt compatibility flag. `@scayle/storefront-core` is released in lockstep with `@scayle/storefront-nuxt`.
+
 ## 1.0.2
 
 ### Patch Changes
