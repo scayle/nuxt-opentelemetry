@@ -363,9 +363,7 @@ export class NitroInstrumentation extends InstrumentationBase<NitroInstrumentati
   }
 
   protected override init():
-    | InstrumentationModuleDefinition
-    | InstrumentationModuleDefinition[]
-    | void {
+    InstrumentationModuleDefinition | InstrumentationModuleDefinition[] | void {
     return []
   }
 }
