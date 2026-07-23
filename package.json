@@ -85,7 +85,7 @@
     "@vitest/coverage-v8": "catalog:",
     "eslint": "catalog:",
     "eslint-formatter-gitlab": "catalog:",
-    "memfs": "4.57.7",
+    "memfs": "4.64.0",
     "nitro-test-utils": "catalog:",
     "nitropack": "catalog:",
     "nuxt": "catalog:nuxt3",
