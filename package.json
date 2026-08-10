@@ -15,6 +15,10 @@
   "repository": {
     "url": "git+https://github.com/scayle/nuxt-opentelemetry.git"
   },
+  "homepage": "https://github.com/scayle/nuxt-opentelemetry#readme",
+  "bugs": {
+    "url": "https://github.com/scayle/nuxt-opentelemetry/issues"
+  },
   "website": "https://scayle.dev/en/core-documentation/storefront-guide/storefront-application/integrations/open-telemetry",
   "exports": {
     ".": {
