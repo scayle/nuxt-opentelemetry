@@ -114,26 +114,72 @@ describe('test instrumentation', async () => {
     memoryExporter.reset()
   })
 
-  it('successful request', async () => {
-    await $fetchRaw('/hello')
+  it.each([
+    {
+      name: 'successful request',
+      path: '/hello',
+      attributes: {
+        'http.request.method': 'GET',
+        'url.path': '/hello',
+        'url.scheme': 'http',
+        'http.response.status_code': 200,
+      },
+      statusCode: SpanStatusCode.OK,
+    },
+    {
+      name: 'includes search query attribute',
+      path: '/hello?param=true',
+      attributes: {
+        'http.request.method': 'GET',
+        'url.path': '/hello',
+        'url.scheme': 'http',
+        'http.response.status_code': 200,
+        'url.query': 'param=true',
+      },
+      statusCode: SpanStatusCode.OK,
+    },
+    {
+      name: 'successful request with alternative status code',
+      path: '/created',
+      attributes: {
+        'http.request.method': 'GET',
+        'url.path': '/created',
+        'url.scheme': 'http',
+        'http.response.status_code': 204,
+      },
+      statusCode: SpanStatusCode.OK,
+    },
+  ])('$name', async ({ path, attributes, statusCode }) => {
+    await $fetchRaw(path)
 
     const spans = memoryExporter.getFinishedSpans()
 
     const { nitroSpan, httpSpan } = getImportantSpans(spans)
     validateSpans(httpSpan, nitroSpan)
 
-    expect(nitroSpan.attributes).toMatchObject({
-      'http.request.method': 'GET',
-      'url.path': '/hello',
-      'url.scheme': 'http',
-      'http.response.status_code': 200,
-    })
+    expect(nitroSpan.attributes).toMatchObject(attributes)
     expect(nitroSpan.parentSpanContext).toBeDefined()
-    expect(nitroSpan.status.code).toEqual(SpanStatusCode.OK)
+    expect(nitroSpan.status.code).toEqual(statusCode)
   })
 
-  it('includes search query attribute', async () => {
-    await $fetchRaw('/hello?param=true')
+  it.each([
+    {
+      name: 'thrown error in handler',
+      path: '/throw',
+      statusCode: 500,
+    },
+    {
+      name: 'thrown h3 error in handler',
+      path: '/throw_h3',
+      statusCode: 503,
+    },
+    {
+      name: 'thrown error in response hook',
+      path: '/plugin_error',
+      statusCode: 500,
+    },
+  ])('$name', async ({ path, statusCode }) => {
+    await $fetchRaw(path)
 
     const spans = memoryExporter.getFinishedSpans()
 
@@ -142,82 +188,9 @@ describe('test instrumentation', async () => {
 
     expect(nitroSpan.attributes).toMatchObject({
       'http.request.method': 'GET',
-      'url.path': '/hello',
+      'url.path': path,
       'url.scheme': 'http',
-      'http.response.status_code': 200,
-      'url.query': 'param=true',
-    })
-    expect(nitroSpan.parentSpanContext).toBeDefined()
-    expect(nitroSpan.status.code).toEqual(SpanStatusCode.OK)
-  })
-
-  it('successful request with alternative status code', async () => {
-    await $fetchRaw('/created')
-
-    const spans = memoryExporter.getFinishedSpans()
-
-    const { nitroSpan, httpSpan } = getImportantSpans(spans)
-    validateSpans(httpSpan, nitroSpan)
-
-    expect(nitroSpan.attributes).toMatchObject({
-      'http.request.method': 'GET',
-      'url.path': '/created',
-      'url.scheme': 'http',
-      'http.response.status_code': 204,
-    })
-    expect(nitroSpan.parentSpanContext).toBeDefined()
-    expect(nitroSpan.status.code).toEqual(SpanStatusCode.OK)
-  })
-
-  it('thrown error in handler', async () => {
-    await $fetchRaw('/throw')
-
-    const spans = memoryExporter.getFinishedSpans()
-
-    const { nitroSpan, httpSpan } = getImportantSpans(spans)
-    validateSpans(httpSpan, nitroSpan)
-
-    expect(nitroSpan.attributes).toMatchObject({
-      'http.request.method': 'GET',
-      'url.path': '/throw',
-      'url.scheme': 'http',
-      'http.response.status_code': 500,
-    })
-    expect(nitroSpan.parentSpanContext).toBeDefined()
-    expect(nitroSpan.status.code).toEqual(SpanStatusCode.ERROR)
-  })
-
-  it('thrown h3 error in handler', async () => {
-    await $fetchRaw('/throw_h3')
-
-    const spans = memoryExporter.getFinishedSpans()
-
-    const { nitroSpan, httpSpan } = getImportantSpans(spans)
-    validateSpans(httpSpan, nitroSpan)
-
-    expect(nitroSpan.attributes).toMatchObject({
-      'http.request.method': 'GET',
-      'url.path': '/throw_h3',
-      'url.scheme': 'http',
-      'http.response.status_code': 503,
-    })
-    expect(nitroSpan.parentSpanContext).toBeDefined()
-    expect(nitroSpan.status.code).toEqual(SpanStatusCode.ERROR)
-  })
-
-  it('thrown error in response hook', async () => {
-    await $fetchRaw('/plugin_error')
-
-    const spans = memoryExporter.getFinishedSpans()
-
-    const { nitroSpan, httpSpan } = getImportantSpans(spans)
-    validateSpans(httpSpan, nitroSpan)
-
-    expect(nitroSpan.attributes).toMatchObject({
-      'http.request.method': 'GET',
-      'url.path': '/plugin_error',
-      'url.scheme': 'http',
-      'http.response.status_code': 500,
+      'http.response.status_code': statusCode,
     })
     expect(nitroSpan.parentSpanContext).toBeDefined()
     expect(nitroSpan.status.code).toEqual(SpanStatusCode.ERROR)
@@ -273,7 +246,7 @@ describe('test instrumentation', async () => {
     expect(nitroSpan).toBeUndefined()
 
     // There should be no nitro span
-    expect(spans.length).toBe(1)
+    expect(spans).toHaveLength(1)
   })
 
   it('filtered routes - non-regex', async () => {
@@ -290,7 +263,7 @@ describe('test instrumentation', async () => {
     expect(nitroSpan).toBeUndefined()
 
     // There should be no nitro span
-    expect(spans.length).toBe(1)
+    expect(spans).toHaveLength(1)
   })
 
   it('disabled instrumentation', async () => {
@@ -305,7 +278,7 @@ describe('test instrumentation', async () => {
     expect(nitroSpan).toBeUndefined()
 
     // There should be no nitro span
-    expect(spans.length).toBe(1)
+    expect(spans).toHaveLength(1)
   })
 
   it('child spans', async () => {
@@ -316,7 +289,7 @@ describe('test instrumentation', async () => {
     const { nitroSpan, httpSpan } = getImportantSpans(spans)
     validateSpans(httpSpan, nitroSpan)
 
-    expect(spans.length).toBe(3)
+    expect(spans).toHaveLength(3)
   })
 
   it('records request headers in span attributes', async () => {
