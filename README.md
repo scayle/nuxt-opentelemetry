@@ -110,6 +110,10 @@ This enables the creation of custom instrumentation within a Nitro plugin locate
 offering enhanced customization and adaptability for your instrumentation configuration.
 The example provided demonstrates a basic instrumentation setup utilizing the `@opentelemetry/sdk-node`.
 
+A Nitro plugin runs after the server has loaded its dependencies, and an instrumentation can only patch modules loaded after it is created.
+Instrumentations created in the plugin therefore miss modules the server loads at startup, for example `redis` when a storage driver imports it.
+To trace those, register the instrumentations before the server starts, for example with a file passed to `node --import`.
+
 For advanced use cases, like customizing HTTP span instrumentation,
 you can import and extend the `NitroInstrumentation` class from `@scayle/nuxt-opentelemetry/instrumentation`.
 

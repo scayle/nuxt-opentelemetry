@@ -1,9 +1,10 @@
-import { createResolver, useLogger } from '@nuxt/kit'
+import { createResolver, resolvePath, useLogger } from '@nuxt/kit'
 import type { Resolver } from '@nuxt/kit'
 import { genImport } from 'knitwork'
 import type { NitroConfig, Nitro } from 'nitropack'
 import { existsSync, readdirSync, statSync } from 'node:fs'
 import { join, relative } from 'node:path'
+import { pathToFileURL } from 'node:url'
 import type { Nuxt } from 'nuxt/schema'
 import type { ModuleOptions } from './module'
 
@@ -12,8 +13,15 @@ function getInstrumentedEntryFileForPreset(
   baseEntry: string,
   include?: string[],
   exclude?: string[],
+  instrumentationsEntry?: string,
 ) {
   let entryFile
+
+  // Create the instrumentations before the application loads its
+  // dependencies, so their module hooks see them.
+  const loadApplication = instrumentationsEntry
+    ? `import("${instrumentationsEntry}").then(() => import("${baseEntry}"))`
+    : `import("${baseEntry}")`
 
   if (preset === 'node-server') {
     entryFile = `
@@ -30,7 +38,7 @@ function getInstrumentedEntryFileForPreset(
   // https://nodejs.org/api/module.html#customization-hooks
 
   // Then load our application's entry point
-  import("${baseEntry}")`
+  ${loadApplication}`
   } else if (preset.includes('vercel')) {
     entryFile = `
     ${genImport(baseEntry, 'handler')}
@@ -75,8 +83,25 @@ export function prepareEntry(nitro: Nitro, options: ModuleOptions) {
   const { entry, preset } = nitro.options
 
   // For the node presets, we need to add module customization hooks
+  const instrumentationsEntry = options.disableAutomaticInitialization
+    ? undefined
+    : resolver.resolve('./runtime/nitro/nodeInstrumentations')
+
   if (preset === 'node-server') {
     nitro.hooks.hook('rollup:before', (_nitro, rollupConfig) => {
+      // Rollup would otherwise merge the instrumentations into the `nitro`
+      // chunk, because the SDK plugin there imports them. Loading that chunk
+      // evaluates the whole server, so the entry could no longer create the
+      // instrumentations before the application's dependencies load.
+      const manualChunks = rollupConfig.output.manualChunks
+      if (instrumentationsEntry && typeof manualChunks === 'function') {
+        rollupConfig.output.manualChunks = (id, meta) => {
+          if (id.startsWith(`${instrumentationsEntry}.`)) {
+            return 'nitro/instrumentations'
+          }
+          return manualChunks(id, meta)
+        }
+      }
       if (typeof rollupConfig.input === 'string') {
         rollupConfig.input = [
           rollupConfig.input,
@@ -92,11 +117,43 @@ export function prepareEntry(nitro: Nitro, options: ModuleOptions) {
     })
   }
 
+  // The dev server bundles everything into one file, which imports the
+  // application's dependencies before any of its own code runs. Nitro starts
+  // the dev worker from `index.mjs`, so the bundle moves to `server.mjs` and
+  // `index.mjs` becomes a wrapper that creates the instrumentations first.
+  // They come from the package file itself, since the bundle cannot be split.
+  if (preset === 'nitro-dev' && instrumentationsEntry) {
+    nitro.hooks.hook('rollup:before', async (_nitro, rollupConfig) => {
+      const instrumentationsFile = pathToFileURL(
+        await resolvePath(instrumentationsEntry),
+      ).href
+      rollupConfig.output.entryFileNames = 'server.mjs'
+      rollupConfig.plugins = [
+        rollupConfig.plugins,
+        {
+          name: '@scayle/nuxt-opentelemetry:dev-worker-entry',
+          generateBundle() {
+            this.emitFile({
+              type: 'asset',
+              fileName: 'index.mjs',
+              source: [
+                `await import(${JSON.stringify(instrumentationsFile)})`,
+                `await import('./server.mjs')`,
+                '',
+              ].join('\n'),
+            })
+          },
+        },
+      ]
+    })
+  }
+
   const newEntry = getInstrumentedEntryFileForPreset(
     preset,
     entry,
     options.include,
     options.exclude,
+    instrumentationsEntry,
   )
 
   if (newEntry) {

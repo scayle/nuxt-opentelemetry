@@ -1,6 +1,5 @@
 import { defineNitroPlugin } from 'nitropack/runtime/plugin'
 import type { NitroApp } from 'nitropack/types'
-import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node'
 import { NodeSDK } from '@opentelemetry/sdk-node'
 import { PeriodicExportingMetricReader } from '@opentelemetry/sdk-metrics'
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-proto'
@@ -9,6 +8,7 @@ import { RuntimeNodeInstrumentation } from '@opentelemetry/instrumentation-runti
 import { NitroInstrumentation } from '../../instrumentation'
 import { useRuntimeConfig } from 'nitropack/runtime'
 import { getReplace, getRouteName, getFilter } from '../../utils'
+import { nodeInstrumentations, setPathFilter } from '../nodeInstrumentations'
 // @ts-expect-error import aliases are currently unable to be properly resolved during typechecking
 import { assets } from '#opentelemetry/public-assets'
 
@@ -25,6 +25,8 @@ export default defineNitroPlugin((_nitroApp: NitroApp) => {
   const config = useRuntimeConfig()
   const replace = getReplace(config.opentelemetry.pathReplace)
   const filter = getFilter(config.opentelemetry.pathBlocklist)
+  // Filter out static _nuxt requests
+  setPathFilter((path) => ignorePath(path) || filter(path))
 
   // In this file we initialize the Node OpenTelemetry SDK and the OTLP Exporter
   const sdk = new NodeSDK({
@@ -33,23 +35,7 @@ export default defineNitroPlugin((_nitroApp: NitroApp) => {
       exporter: new OTLPMetricExporter(),
     }),
     instrumentations: [
-      getNodeAutoInstrumentations({
-        '@opentelemetry/instrumentation-http': {
-          // Filter out static _nuxt requests
-          ignoreIncomingRequestHook: (req) => {
-            if (!req.url) {
-              return false
-            }
-            return ignorePath(req.url) || filter(req.url)
-          },
-        },
-        '@opentelemetry/instrumentation-undici': {
-          // Filter out static _nuxt requests
-          ignoreRequestHook({ path }) {
-            return ignorePath(path) || filter(path)
-          },
-        },
-      }),
+      nodeInstrumentations,
       new NitroInstrumentation({
         ...config.opentelemetry,
         routeNameHook: (event) => {
