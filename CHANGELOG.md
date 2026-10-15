@@ -1,5 +1,15 @@
 # @scayle/nuxt-opentelemetry
 
+## 1.0.6
+
+### Patch Changes
+
+- Fixed missing Redis spans with the `node-server` preset and in `nuxt dev`.
+
+  The module created the Node.js auto-instrumentations in a Nitro plugin, but the server bundle loads its dependencies before any Nitro plugin runs. An instrumentation can only patch modules loaded after it is created, so `redis` (loaded by the SCAYLE KV storage driver) and other modules the server loads at startup were never patched, and no `redis-GET`, `redis-SET` or `redis-connect` spans were exported. The server entry now creates the auto-instrumentations before it loads the application, and the SDK plugin passes those same instances to `NodeSDK`. In `nuxt dev`, the dev server bundle is written to `server.mjs`, and the `index.mjs` that Nitro starts the dev worker from creates the instrumentations before importing it.
+
+  Instrumentations that `OTEL_NODE_ENABLED_INSTRUMENTATIONS` enables for modules loaded at startup, such as `fs` and `net`, now emit spans as well. With `disableAutomaticInitialization`, the module does not create any instrumentations, and a custom Nitro plugin still runs after the server has loaded its dependencies.
+
 ## 1.0.5
 
 ### Patch Changes
