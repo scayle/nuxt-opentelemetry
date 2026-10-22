@@ -132,7 +132,16 @@ export function prepareEntry(nitro: Nitro, options: ModuleOptions) {
         rollupConfig.plugins,
         {
           name: '@scayle/nuxt-opentelemetry:dev-worker-entry',
-          generateBundle() {
+          // Typed by hand because the inline plugin's `this` no longer resolves
+          // to rollup's plugin context since nitropack 2.13.5 widened
+          // `RollupConfig.plugins`. We avoid importing rollup types directly.
+          generateBundle(this: {
+            emitFile: (file: {
+              type: 'asset'
+              fileName: string
+              source: string
+            }) => string
+          }) {
             this.emitFile({
               type: 'asset',
               fileName: 'index.mjs',
