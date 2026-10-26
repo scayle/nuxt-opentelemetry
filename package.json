@@ -75,6 +75,7 @@
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "catalog:",
+    "@nuxt/kit": "catalog:nuxt3",
     "@nuxt/module-builder": "catalog:",
     "@nuxt/schema": "catalog:nuxt3",
     "@opentelemetry/context-async-hooks": "^2.8.0",
