@@ -3,10 +3,23 @@ import type { Resolver } from '@nuxt/kit'
 import { genImport } from 'knitwork'
 import type { NitroConfig, Nitro } from 'nitropack'
 import { existsSync, readdirSync, statSync } from 'node:fs'
+import { createRequire } from 'node:module'
 import { join, relative } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import type { Nuxt } from 'nuxt/schema'
 import type { ModuleOptions } from './module'
+
+// import-in-the-middle before 3.1.0 has no `register-hooks.mjs`. Projects that
+// still pin it there keep the async loader.
+function resolveSyncHooks(): string | undefined {
+  try {
+    return createRequire(import.meta.url).resolve(
+      'import-in-the-middle/register-hooks.mjs',
+    )
+  } catch {
+    return undefined
+  }
+}
 
 function getInstrumentedEntryFileForPreset(
   preset: string,
@@ -29,10 +42,25 @@ function getInstrumentedEntryFileForPreset(
   import { pathToFileURL } from 'node:url'
 
   const require = createRequire(import.meta.url)
-  register(pathToFileURL(require.resolve("./node-hooks.mjs")), import.meta.url, { data: {
+  const hookOptions = {
     include: ${JSON.stringify(include)},
     exclude: ${JSON.stringify(exclude)},
-  }})
+  }
+  // Node.js 26 deprecates \`module.register()\` (DEP0205). Node.js before
+  // 22.22.3 and 24.11.1 cannot run the synchronous hooks, and
+  // import-in-the-middle before 3.1.0 has no \`register-hooks.mjs\`, so both
+  // keep the async loader.
+  let syncHooks
+  try {
+    syncHooks = await import(
+      pathToFileURL(require.resolve("import-in-the-middle/register-hooks.mjs")).href
+    )
+  } catch {}
+  if (syncHooks?.supportsSyncHooks()) {
+    syncHooks.register(hookOptions)
+  } else {
+    register(pathToFileURL(require.resolve("./node-hooks.mjs")), import.meta.url, { data: hookOptions })
+  }
 
   // We should use dynamic imports after registering the customization hooks
   // https://nodejs.org/api/module.html#customization-hooks
@@ -59,6 +87,12 @@ export async function nitroSetup(
   nitroConfig.externals ??= {}
   nitroConfig.externals.traceInclude ??= []
   nitroConfig.externals.traceInclude.push('import-in-the-middle')
+  // The entry resolves `register-hooks.mjs` at runtime, so the tracer cannot
+  // find it through an import. Nitro takes this entry as a file path.
+  const syncHooksPath = resolveSyncHooks()
+  if (syncHooksPath) {
+    nitroConfig.externals.traceInclude.push(syncHooksPath)
+  }
 
   // Add nitro server plugins
   nitroConfig.plugins = nitroConfig.plugins ?? []

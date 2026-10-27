@@ -69,6 +69,22 @@ describe('prepareEntry', () => {
     expect(nitro.options.entry).toBe('#virtual/instrumented-entry')
   })
 
+  // Node.js 26 deprecates `module.register()` (DEP0205), which the entry
+  // keeps only for Node.js versions without synchronous hook support.
+  it('registers the synchronous hooks when Node supports them on node-server', () => {
+    const nitro = createNitro('node-server')
+    prepareEntry(nitro, { enabled: true, include: ['pg'] })
+
+    const entry = getEntry(nitro)
+    expect(entry).toContain(
+      'require.resolve("import-in-the-middle/register-hooks.mjs")',
+    )
+    expect(entry).toContain(
+      'if (syncHooks?.supportsSyncHooks()) {\n    syncHooks.register(hookOptions)\n  } else {\n    register(pathToFileURL(require.resolve("./node-hooks.mjs")), import.meta.url, { data: hookOptions })\n  }',
+    )
+    expect(entry).toContain('include: ["pg"]')
+  })
+
   it('loads only the application when automatic initialization is disabled', () => {
     const nitro = createNitro('node-server')
     prepareEntry(nitro, { enabled: true, disableAutomaticInitialization: true })
