@@ -1,5 +1,18 @@
 # @scayle/nuxt-opentelemetry
 
+## 1.0.7
+
+### Patch Changes
+
+- Updated dependency `@opentelemetry/sdk-node@^0.219.0` to `@opentelemetry/sdk-node@^0.222.0`
+- The `node-server` entry registers the `import-in-the-middle` hooks with the synchronous `module.registerHooks()`, so Node.js 26 no longer prints the `module.register()` deprecation warning (DEP0205) at startup, and the server starts under `--throw-deprecation`. Node.js versions without synchronous hook support (before 22.22.3 and 24.11.1) keep the `module.register()` loader.
+
+  The synchronous hooks resolve and load modules in the application thread instead of a loader thread. If you enable the `fs` instrumentation (it is off by default), the first request that loads a server chunk now also contains the `fs` spans of that module loading.
+
+  The module now depends on `import-in-the-middle` `^3.3.3`, the version `@opentelemetry/instrumentation` already asks for, so one copy serves both. A project that pins `import-in-the-middle` below `3.1.0`, for example through `pnpm` overrides, keeps working with the `module.register()` loader. Raise that pin to `^3.3.3` to get the synchronous hooks.
+
+- Updated `@opentelemetry/sdk-node` to `^0.222.0`, so it matches the other OpenTelemetry packages of the module (`exporter-*-otlp-proto` and `instrumentation`). Before, `^0.219.0` resolved `@opentelemetry/propagator-jaeger` `2.8.0`, which is affected by GHSA-45rx-2jwx-cxfr. `sdk-node` `0.222.0` resolves `2.9.0` or later.
+
 ## 1.0.6
 
 ### Patch Changes
